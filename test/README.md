@@ -1,6 +1,8 @@
 # MLRI - test directory
 
-This directory is for test scripts to check the integrity of source code developed for this project.
+This directory has been created to allow for testing of the code
+developed for this repository.  None of the functionality for the project
+should be stored in files in this directory.
 
 ----------------------------
 Project Authors:
