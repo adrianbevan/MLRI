@@ -1,4 +1,4 @@
-Isotope,Half_Life(Days),Decay_Constant
+Isotope,Half_Life(Hours),Decay_Constant
 bismuth-199,0.45,1.540327068
 einsteinium-248,0.45,1.540327068
 mendelevium-254m,0.466666667,1.485315387
