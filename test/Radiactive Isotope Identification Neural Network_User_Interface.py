@@ -45,8 +45,10 @@ while True:
     print("{:50s} {:50s}".format("Create :","1"))
     print("{:50s} {:50s}".format("Load :","2"))
     
-    if UI_Options['Training_DataFrame'] == True:
+    if UI_Options['Training_DataFrame'] == True  or UI_Options['Trained_Model'] ==True :
         print("{:50s} {:50s}".format("Train Model :","3"))
+
+    if UI_Options['Training_DataFrame'] == True  or UI_Options['Testing_DataFrame']== True :    
         print("{:50s} {:50s}".format("Plot Dataframe :","4"))
 
     if UI_Options['Trained_Model'] == True:  
@@ -224,68 +226,90 @@ while True:
             os.system('cls||clear')
             time.sleep(0.5)
 
-    elif Option == "3" and UI_Options['Training_DataFrame'] == True:
+    elif Option == "3":
         Option=''
+        if UI_Options['Training_DataFrame'] == True  or UI_Options['Trained_Model'] ==True:
+            while True:
 
-        while True:
+                clear_output()
+                os.system('cls||clear')
+                time.sleep(0.5)
 
+
+                print("{:20s}{:30s}".format("","Training Screen \n"))
+
+                if UI_Options['Training_DataFrame'] == True:
+                    print("{:50s} {:50s}".format("Train Model :","1"))
+
+                if UI_Options['Trained_Model'] == True:
+                    print("{:50s} {:50s}".format("Model Info :","2"))
+                
+                if UI_Options['Trained_Model'] == True:
+                    print("{:50s} {:50s}".format("Save Model :","3"))
+
+                print("{:51s} {:50s}".format("\nQuit :","q"))
+
+                Option=input("option : ")
+
+                if Option == '1' and UI_Options['Training_DataFrame'] == True:
+                    clear_output()
+                    os.system('cls||clear')
+                    time.sleep(0.5)
+                    model , history , df_train = training_V2 ( Training_Data , Isotope_List )
+                    UI_Options['Trained_Model']=True
+
+
+                elif Option == '2' and UI_Options['Trained_Model'] == True:
+                    clear_output()
+                    os.system('cls||clear')
+                    time.sleep(0.5)
+                    print(model.summary())
+                    while True:
+                        print("{:51s} {:50s}".format("\nQuit :","q"))
+                        Option=input("option : ")
+
+                        if Option =='1':
+                            clear_output()
+                            os.system('cls||clear')
+                            time.sleep(0.5)
+                            break
+
+                        clear_output()
+                        os.system('cls||clear')
+
+                elif Option == '3' and UI_Options['Trained_Model'] == True :
+                    clear_output()
+                    os.system('cls||clear')
+                    time.sleep(0.5)
+                    model.save(input("Pick filename for Trained Model"))
+
+                
+
+
+                elif Option == 'q':
+                    clear_output()
+                    os.system('cls||clear')
+                    time.sleep(0.5)
+                    break
+            
             clear_output()
             os.system('cls||clear')
             time.sleep(0.5)
 
+    elif Option == "4":
 
-            print("{:20s}{:30s}".format("","Training Screen \n"))
-            print("{:50s} {:50s}".format("Train Model :","1"))
-
-            if UI_Options['Trained_Model'] == True:
-                print("{:50s} {:50s}".format("Save Model :","2"))
-
-            print("{:51s} {:50s}".format("\nQuit :","q"))
-
-            Option=input("option :")
-
-            if Option == '1':
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
-                model , history , df_train = training_V2 ( Training_Data , Isotope_List )
-                UI_Options['Trained_Model']=True
-
-            
-
-
-            elif Option == '2':
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
-                model.save(input("Pick filename for Trained Model"))
-
-            
-
-
-            elif Option == 'q':
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
-                break
-            
+        if UI_Options['Training_DataFrame'] ==True or UI_Options['Testing_DataFrame']== True:
             clear_output()
             os.system('cls||clear')
             time.sleep(0.5)
 
-    elif Option == "4" and UI_Options['Training_DataFrame'] == True:
-
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(0.5)
-
-        Option=''
-        try:
-            Plot_Data_Frame(Training_Data , Isotope_List)
-        except:
-            Plot_Data_Frame(Testing_Data , Isotope_List)
-        else:
-            print("ERROR : Either Training Data or Testing Data  is missing")
+            Option=''
+            try:
+                Plot_Data_Frame(Training_Data , Isotope_List)
+            except:
+                Plot_Data_Frame(Testing_Data , Isotope_List)
+            else:
+                print("ERROR : Either Training Data or Testing Data  is missing")
 
 
     elif Option == "5" and UI_Options['Testing_DataFrame'] == True and UI_Options['Trained_Model'] == True:
@@ -336,3 +360,4 @@ while True:
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END OF PROGRAM~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
