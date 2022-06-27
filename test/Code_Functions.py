@@ -81,7 +81,7 @@ def Create_Data_Set( DF , std =0.01):
 
     # Original_Half_Life  is just an array of the original Half-Life in days before the Digital twin is created
 
-    Original_Half_Life = np.array( ( DF['Half_Life(Days)'] ))
+    Original_Half_Life = np.array( ( DF['Half_Life(Hours)'] ))
     
  
 
@@ -102,7 +102,7 @@ def Create_Data_Set( DF , std =0.01):
 
         Noisey_Decay = ( np.log(2) ) / Noisey_Half_Life
 
-        Noisey_Data = pd.DataFrame( {'Half_Life(Days)' : Noisey_Half_Life , 'Decay_Constant' : Noisey_Decay } )
+        Noisey_Data = pd.DataFrame( {'Half_Life(Hours)' : Noisey_Half_Life , 'Decay_Constant' : Noisey_Decay } )
 
         DF = pd.concat([DF, Noisey_Data] )
 
@@ -170,7 +170,7 @@ def Create_Data_Set( DF , std =0.01):
     DF = pd.concat( [DF , Numeric_Isotope_Identifications] , axis=1 )
 
     DF.pop('Decay_Constant')
-    DF.pop('Half_Life(Days)')
+    DF.pop('Half_Life(Hours)')
 
     return DF 
 
