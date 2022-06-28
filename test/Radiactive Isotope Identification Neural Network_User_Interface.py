@@ -268,7 +268,7 @@ while True:
                         print("{:51s} {:50s}".format("\nQuit :","q"))
                         Option=input("option : ")
 
-                        if Option =='1':
+                        if Option =='q':
                             clear_output()
                             os.system('cls||clear')
                             time.sleep(0.5)
