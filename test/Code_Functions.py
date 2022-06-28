@@ -90,7 +90,7 @@ def Create_Data_Set( DF , std =0.01):
 
 
 
-#input the number the times you want the training data to be replicated with a guassian noise (currently set to 1000) Total number of rows = 1000* (Oringinal amount of rows )
+#input the number the times you want the training data to be replicated with guassian noise (currently set to 1000) Total number of rows = 1000* (Oringinal amount of rows )
 
 #The higher the range the more RAM this dataframe will take up most machines will be able to handle 1000, change at your on discretion.
 
@@ -119,8 +119,7 @@ def Create_Data_Set( DF , std =0.01):
 
    
  
-
-    #The for loop simulates the dacay of each element and appends it to DF
+#The code below 
 
     test_xaxis = []
     test_xaxis_loop=0
@@ -132,7 +131,7 @@ def Create_Data_Set( DF , std =0.01):
             test_xaxis_loop+=multiplyer
         multiplyer=multiplyer*10 
 
-
+#The for loop simulates the dacay of each element and appends it to DF
 
     for  t in test_xaxis:
         
@@ -206,36 +205,59 @@ def Plot_Data_Frame(Training_df , Isotope_List):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 
-def training_V2 ( Training_df  ,Isotope_List ):
+def training_V2 ( Training_df  ,Isotope_List , New_Model=True , model = None):
 
-    sx = MinMaxScaler()
-    sy = MinMaxScaler()
-    scaled_df = sx.fit_transform(Training_df.drop('Isotope', axis='columns' ))
-    
-    df_train = Training_df.pop('Isotope')
+    if New_Model== True: 
+        sx = MinMaxScaler()
+        sy = MinMaxScaler()
+        scaled_df = sx.fit_transform(Training_df.drop('Isotope', axis='columns' ))
+        
+        df_train = Training_df.pop('Isotope')
 
-    Training_df,df_train = shuffle( Training_df, df_train )
+        Training_df,df_train = shuffle( Training_df, df_train )
 
-    scaler = MinMaxScaler(feature_range=(0,1))
+        scaler = MinMaxScaler(feature_range=(0,1))
 
-    scaled_df = scaler.fit_transform(Training_df)
-
-
-    tf.random.set_seed(42)
-    
-    model = Sequential([Dense(128 ,activation='sigmoid'),
-                        Dense(64 , activation='sigmoid'),
-                        Dense(len(Isotope_List),activation='softmax')])
+        scaled_df = scaler.fit_transform(Training_df)
 
 
-    model.compile(optimizer=Adam(learning_rate=0.0001), 
-                loss='sparse_categorical_crossentropy', 
-                metrics=['accuracy',])
-    
-    history  = model.fit(scaled_df, df_train, epochs=50 ,verbose=2)  #100 looks good 
-    
+        tf.random.set_seed(42)
+        
+        model = Sequential([Dense(128 ,activation='sigmoid'),
+                            Dense(64 , activation='sigmoid'),
+                            Dense(len(Isotope_List),activation='softmax')])
 
-    return model , history ,df_train
+
+        model.compile(optimizer=Adam(learning_rate=0.0001), 
+                    loss='sparse_categorical_crossentropy', 
+                    metrics=['accuracy',])
+        
+        history  = model.fit(scaled_df, df_train, epochs=50 ,verbose=2)  #100 looks good 
+        
+
+        return model , history ,df_train
+
+    elif New_Model==False:
+        
+        sx = MinMaxScaler()
+        sy = MinMaxScaler()
+        scaled_df = sx.fit_transform(Training_df.drop('Isotope', axis='columns' ))
+        
+        df_train = Training_df.pop('Isotope')
+
+        Training_df,df_train = shuffle( Training_df, df_train )
+
+        scaler = MinMaxScaler(feature_range=(0,1))
+
+        scaled_df = scaler.fit_transform(Training_df)
+
+
+        tf.random.set_seed(42)
+
+        history  = model.fit(scaled_df, df_train, epochs=50 ,verbose=2)
+
+        return model , history ,df_train
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -319,4 +341,3 @@ def Load_model():
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END OF FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-
