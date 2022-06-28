@@ -239,31 +239,49 @@ while True:
                 print("{:20s}{:30s}".format("","Training Screen \n"))
 
                 if UI_Options['Training_DataFrame'] == True:
-                    print("{:50s} {:50s}".format("Train Model :","1"))
+                    print("{:50s} {:50s}".format("Train New Model :","1"))
+
+                if  UI_Options['Training_DataFrame'] == True and UI_Options['Trained_Model']== True:
+                    print("{:50s} {:50s}".format("Train Existing Model :","2"))
 
                 if UI_Options['Trained_Model'] == True:
-                    print("{:50s} {:50s}".format("Model Info :","2"))
+                    print("{:50s} {:50s}".format("Model Info :","3"))
                 
                 if UI_Options['Trained_Model'] == True:
-                    print("{:50s} {:50s}".format("Save Model :","3"))
+                    print("{:50s} {:50s}".format("Save Model :","4"))
 
                 print("{:51s} {:50s}".format("\nQuit :","q"))
 
                 Option=input("option : ")
 
-                if Option == '1' and UI_Options['Training_DataFrame'] == True:
+                if Option == '1' and UI_Options['Training_DataFrame'] == True :
                     clear_output()
                     os.system('cls||clear')
                     time.sleep(0.5)
                     model , history , df_train = training_V2 ( Training_Data , Isotope_List )
                     UI_Options['Trained_Model']=True
 
+                elif Option == '2' and UI_Options['Training_DataFrame'] and UI_Options['Trained_Model'] == True:
+                    clear_output()
+                    os.system('cls||clear')
+                    time.sleep(0.5)
+                    try:
+                        model , history , df_train = training_V2 ( Training_Data ,Isotope_List , New_Model=False , model = model)
+                        UI_Options['Trained_Model']=True
+                    except:
+                        print('Must Create a set of "Training Data" to "Train Existing Model" ')
+                        time.sleep(2)
+                    
 
-                elif Option == '2' and UI_Options['Trained_Model'] == True:
+
+
+                elif Option == '3' and UI_Options['Trained_Model'] == True:
                     clear_output()
                     os.system('cls||clear')
                     time.sleep(0.5)
                     print(model.summary())
+                    print("\nWEIGHTS :\n")
+                    print(model.weights)
                     while True:
                         print("{:51s} {:50s}".format("\nQuit :","q"))
                         Option=input("option : ")
@@ -277,7 +295,7 @@ while True:
                         clear_output()
                         os.system('cls||clear')
 
-                elif Option == '3' and UI_Options['Trained_Model'] == True :
+                elif Option == '4' and UI_Options['Trained_Model'] == True :
                     clear_output()
                     os.system('cls||clear')
                     time.sleep(0.5)
@@ -360,4 +378,3 @@ while True:
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END OF PROGRAM~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-
