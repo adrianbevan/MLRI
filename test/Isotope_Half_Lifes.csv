@@ -1,232 +1,232 @@
-Isotope,Half_Life(Hours),Decay_Constant
-bismuth-199,0.45,1.540327068
-einsteinium-248,0.45,1.540327068
-mendelevium-254m,0.466666667,1.485315387
-radon-209,0.475,1.459257222
-fermium-250,0.506666667,1.368053646
-thorium-226,0.5095,1.360445889
-astatine-206,0.51,1.359112119
-bismuth-200m1,0.516666667,1.341575188
-plutonium-232,0.561666667,1.234089936
-lead-211,0.601666667,1.152045175
-neptunium-233,0.603333333,1.14886273
-bismuth-200,0.606666667,1.142550298
-polonium-203,0.611666667,1.133210649
-lead-196,0.616666667,1.124022455
-thorium-236,0.625,1.109035489
-protactinium-227,0.638333333,1.085870257
-americium-246,0.65,1.066380278
-radium-227,0.703333333,0.985517318
-lead-197m1,0.715,0.969436616
-lawrencium-261,0.733333333,0.945200701
-polonium-202,0.745,0.9303989
-californium-245,0.75,0.924196241
-bismuth-213,0.759833333,0.912235816
-neptunium-231,0.813333333,0.85223014
-berkelium-251,0.926666667,0.748000555
-mendelevium-258m,0.95,0.729628611
-uranium-229,0.966666667,0.717048807
-nobelium-259,0.966666667,0.717048807
-bismuth-201m1,0.985,0.703702721
-dubnium-270,1,0.693147181
-bismuth-212,1.0092,0.68682836
-neptunium-240,1.032,0.671654245
-actinium-229,1.045,0.663298737
-curium-249,1.0692,0.648285803
-lead-204m2,1.12,0.618881411
-gallium-68,1.1285,0.614219921
-americium-237,1.22,0.568153427
-mendelevium-256,1.283,0.540255012
-rutherfordium-267,1.3,0.533190139
-dubnium-266,1.33,0.521163294
-californium-255,1.417,0.489165265
-lead-199,1.5,0.46209812
-radium-230,1.55,0.447191729
-mendelevium-259,1.6,0.433216988
-americium-238,1.63,0.425243669
-astatine-208,1.63,0.425243669
-polonium-205,1.66,0.417558543
-einsteinium-249,1.703,0.407015373
-bismuth-202,1.72,0.402992547
-astatine-207,1.8,0.385081767
-bismuth-201,1.8,0.385081767
-protactinium-239,1.8,0.385081767
-fluorine-18,1.8295,0.378872468
-americium-245,2.05,0.338120576
-einsteinium-250m,2.22,0.31222846
-radon-210,2.4,0.288811325
-lead-198,2.4,0.288811325
-curium-238,2.4,0.288811325
-curium-239,2.5,0.277258872
-fermium-256,2.627,0.263855036
-actinium-224,2.78,0.249333518
-californium-247,3.11,0.222876907
-berkelium-250,3.212,0.215799247
-fermium-254,3.24,0.213934315
-lead-209,3.253000008,0.213079366
-lead-202m1,3.529999992,0.196358975
-polonium-204,3.529999992,0.196358975
-lawrencium-262,3.6,0.192540883
-berkelium-244,4.35,0.159344179
-berkelium-243,4.5,0.154032707
-dubnium-267,4.600000008,0.150684169
-plutonium-243,4.956,0.139860206
-fermium-251,5.299999992,0.130782487
-polonium-207,5.800000008,0.119508134
-astatine-209,5.410000008,0.128123323
-mendelevium-257,5.52,0.125570141
-actinium-228,6.130000008,0.113074581
-protactinium-234,6.700000008,0.103454803
-astatine-211,7.213999992,0.096083613
-einsteinium-256m,7.600000008,0.091203576
-astatine-210,8.1,0.085573726
-einsteinium-250,8.599999992,0.080598509
-plutonium-234,8.800000008,0.078766725
-lead-201,9.33,0.074292302
-americium-244,10.09999999,0.068628434
-erbium-165,10.36000001,0.066906098
-plutonium-245,10.5,0.066014017
-lead-212,10.63999999,0.065145412
-lawrencium-266,10.99999999,0.06301338
-bismuth-204,11.22,0.061777824
-bismuth-203,11.76,0.058941087
-americium-239,11.89999999,0.058247662
-uranium-240,14.1,0.049159375
-radon-211,14.59999999,0.047475834
-sodium-24,14.95999999,0.046333368
-americium-242,16.02,0.043267614
-fermium-255,20.07,0.034536481
-lead-200,21.49999999,0.032239404
-protactinium-228,22.00000001,0.03150669
-neptunium-236m,22.5,0.030806541
-berkelium-248m,23.7,0.029246716
-fermium-252,25.392,0.027297857
-thorium-231,25.5216,0.027159237
-dubnium-268,30.792,0.022510626
-erbium-160,28.584,0.024249482
-actinium-226,29.3712,0.023599553
-protactinium-232,31.44,0.022046666
-einsteinium-251,33,0.02100446
-californium-246,35.7,0.019415887
-protactinium-229,36,0.019254088
-einsteinium-255,39.3,0.017637333
-berkelium-246,43.2,0.016045074
-neptunium-238,50.808,0.013642481
-americium-240,50.808,0.013642481
-lead-203,51.87312,0.013362358
-plutonium-247,54.48,0.012722966
-neptunium-239,56.544,0.012258545
-gold-198,64.68,0.010716561
-fermium-253,72,0.009627044
-gold-199,76.056,0.009113642
-radium-224,87.1656,0.007952073
-radon-222,91.764,0.007553585
-uranium-231,100.8,0.00687646
-neptunium-234,105.6,0.006563894
-calcium-47,108.864,0.006367093
-berkelium-245,118.56,0.005846383
-bismuth-210,120.288,0.005762397
-manganese-52,134.184,0.005165647
-gold-196,148.392,0.004671055
-bismuth-206,149.832,0.004626163
-uranium-237,162,0.004278686
-einsteinium-257,184.8,0.003750796
-iodine-131,192.48,0.003601139
-polonium-206,211.2,0.003281947
-thulium-167,222,0.003122285
-actinium-225,240,0.002888113
-plutonium-246,260.16,0.002664311
-radium-223,274.32,0.002526783
-phosphorus-32,342.96,0.002021073
-radium-225,357.6,0.001938331
-bismuth-205,367.44,0.001886423
-vanadium-48,383.364,0.001808065
-protactinium-230,417.6,0.001659835
-californium-253,427.44,0.001621625
-thorium-227,448.32,0.001546099
-einsteinium-253,491.28,0.0014109
-uranium-230,499.2,0.001388516
-thorium-234,578.4,0.001198387
-protactinium-233,647.4,0.001070663
-curium-240,648,0.001069672
-chromium-51,664.86,0.001042546
-mendelevium-260,667.2,0.00103889
-curium-241,787.2,0.000880522
-einsteinium-255,955.2,0.000725657
-plutonium-237,1084.8,0.000638963
-mendelevium-258,1236,0.000560799
-beryllium-7,1274.88,0.000543696
-californium-254,1452,0.000477374
-cobalt-56,1854.48,0.000373769
-scandium-46,2010.96,0.000344685
-sulfur-35,2095.68,0.00033075
-thulium-168,2234.4,0.000310216
-fermium-257,2412,0.000287374
-thulium-170,3086.4,0.000224581
-polonium-210,3321.024,0.000208715
-calcium-45,3904.8,0.000177512
-curium-242,3907.2,0.000177403
-gold-195,4466.4,0.000155191
-zinc-65,5848.8,0.000118511
-cobalt-57,6522.96,0.000106263
-einsteinium-254,6616.8,0.000104756
-vanadium-49,7920,8.75E-05
-berkelium-249,7920,8.75E-05
-californium-248,8004,8.66E-05
-ruthenium-106,8967.772678,7.73E-05
-neptunium-235,9506.890978,0.00007291
-cadmium-109,11106.71357,6.24E-05
-einsteinium-252,11321.48428,6.12E-05
-thorium-228,16757.37463,4.14E-05
-thulium-171,16831.0103,4.12E-05
-caesium-134,18103.85546,3.83E-05
-sodium-22,22809.52542,3.04E-05
-californium-252,23186.46992,2.99E-05
-iron-55,24159.51271,2.87E-05
-plutonium-236,25053.66012,2.77E-05
-polonium-208,25404.30617,2.73E-05
-rhodium-101,28928.29896,2.40E-05
-cobalt-60,46209.88944,0.000015
-radium-228,50405.3694,1.38E-05
-krypton-85,94288.72231,7.35E-06
-hydrogen-3,107998.9828,6.42E-06
-californium-250,114661.2577,6.05E-06
-plutonium-241,125268.3006,5.53E-06
-niobium-93m,141398.0189,4.90E-06
-curium-244,158667.3367,4.37E-06
-actinium-227,190856.6439,3.63E-06
-lead-210,195485.1718,3.55E-06
-strontium-90,252377.4931,2.75E-06
-curium-243,255094.9999,2.72E-06
-caesium-137,264474.7817,2.62E-06
-bismuth-207,288406.3745,2.40E-06
-titanium-44,552267.5256,1.26E-06
-uranium-232,603987.8177,1.15E-06
-plutonium-238,768791.4602,9.02E-07
-samarium-151,846810.2059,8.19E-07
-nickel-63,877491.7351,7.90E-07
-polonium-209,1097522.13,6.32E-07
-americium-242m1,1236027.319,5.61E-07
-silicon-32,1490245.704,4.65E-07
-argon-39,2358094.673,2.94E-07
-berkelium-248,2629845.36,2.64E-07
-californium-249,3076919.071,2.25E-07
-silver-108m,3664251.202,1.89E-07
-americium-241,3788730.549,1.83E-07
-mercury-194,3892171.133,1.78E-07
-niobium-91,5960982.816,1.16E-07
-californium-251,7889536.08,8.79E-08
-holmium-166m1,10519381,6.59E-08
-berkelium-247,12097289,5.73E-08
-radium-226,14025842,4.94E-08
-molybdenum-93,35064605,1.98E-08
-holmium-163,40061311,1.73E-08
-curium-246,41726880,1.66E-08
-carbon-14,50230046,1.38E-08
-plutonium-240,57514718,1.21E-08
-thorium-229,64343550,1.08E-08
-americium-243,64606534,1.07E-08
-curium-250,72759055,9.53E-09
-curium-245,74512285,9.30E-09
-niobium-94,177952869,3.90E-09
-plutonium-239,211351905,3.28E-09
+Isotope,Half_Life(Seconds),Type_of _Decay_1,Daughter_1,Daughter_1_Half_Life(Hours),Daughter_1_Prob
+bismuth-199,1620,beta +,lead-199,5400,1
+einsteinium-248,1620,beta +,californium-248,28814400,0.9975
+mendelevium-254m,1680.000001,beta +,fermium-254,11664,1
+radon-209,1710,beta +,astatine-209,19476,0.83
+fermium-250,1824.000001,alpha,californium-246,128520,0.9
+thorium-226,1834.2,alpha,radium-222,38.0000016,1
+astatine-206,1836,beta +,polonium-206,760320,0.9911
+bismuth-200m1,1860.000001,electron capture,lead-200,77400,0.9
+plutonium-232,2022.000001,electron capture,neptunium-232,882,0.89
+lead-211,2166.000001,beta -,bismuth-211,128.4000012,1
+neptunium-233,2171.999999,beta +,uranium-233,5.02397E+12,0.9999
+bismuth-200,2184.000001,beta +,lead-200,77400,1
+polonium-203,2202.000001,beta +,bismuth-203,42336,0.9989
+lead-196,2220.000001,beta +,thallium-196,#VALUE!,1
+thorium-236,2250,beta -,protactinium-236,546.0000012,1
+protactinium-227,2297.999999,alpha,actinium-223,126,0.85
+americium-246,2340,beta -,curium-246,31557600,1
+radium-227,2531.999999,beta -,actinium-227,687072240,1
+lead-197m1,2574,beta -,thallium-197,#VALUE!,0.81
+lawrencium-261,2639.999999,spontaneous fission,(various),#VALUE!,
+polonium-202,2682,beta +,bismuth-202,6192,0.98
+californium-245,2700,beta +,berkelium-245,426816,0.64
+bismuth-213,2735.399999,beta -,polonium-213,3.64E-06,0.9791
+neptunium-231,2927.999999,beta +,uranium-231,362880,0.98
+berkelium-251,3336.000001,beta -,californium-251,28401840000,1
+mendelevium-258m,3420,electron capture,fermium-258,3.71E-04,0.7
+uranium-229,3480.000001,beta +,protactinium-229,129600,0.8
+nobelium-259,3480.000001,alpha,fermium-255,72252,0.75
+bismuth-201m1,3546,electron capture,lead-200,77400,0.9
+dubnium-270,3600,alpha,lawrencium-266,39600,0.83
+bismuth-212,3633.12,beta -,polonium-212,2.99E-07,0.6405
+neptunium-240,3715.2,beta -,plutonium-240,2.07049E+11,1
+actinium-229,3762,beta -,thorium-231,91877.76,1
+curium-249,3849.12,beta -,berkelium-249,28512000,1
+lead-204m2,4032,,,0,
+gallium-68,4062.6,beta +,zinc-68,0,1
+americium-237,4392,beta +,plutonium-237,3905280,0.9997
+mendelevium-256,4618.8,beta +,fermium-256,9457.2,0.89
+rutherfordium-267,4680,spontaneous fission,(various),0,1
+dubnium-266,4788,spontaneous fission,(various),0,?
+californium-255,5101.2,beta -,einsteinium-255,141480,0.9999
+lead-199,5400,beta +,thallium-199,0,1
+radium-230,5580,beta -,actinium-230,121.799988,1
+mendelevium-259,5760,spontaneous fission,(various),0,0.987
+americium-238,5868,beta +,plutonium-238,2767601520,1
+astatine-208,5868,beta +,polonium-208,91453932,0.995
+polonium-205,5976,beta +,bismuth-205,1322784,0.9996
+einsteinium-249,6130.8,beta +,californium-249,11076717600,0.9943
+bismuth-202,6192,beta +,lead-202,1.65677E+12,1
+astatine-207,6480,beta +,polonium-207,20880,0.91
+bismuth-201,6480,beta +,lead-201,33588,0.9999
+protactinium-239,6480,beta -,uranium-239,1406.99988,1
+fluorine-18,6586.2,beta +,oxygen-18,0,0.97
+americium-245,7380,beta -,curium-245,2.6824E+11,1
+einsteinium-250m,7992,electron capture,californium-250,412773480,0.99
+radon-210,8640,alpha,polonium-206,760320,0.96
+lead-198,8640,beta +,thallium-198,0,1
+curium-238,8640,electron capture,americium-238,0,0.9
+curium-239,9000,beta +,americium-239,42840,0.999
+fermium-256,9457.2,spontaneous fission,(various),0,0.919
+actinium-224,10008,beta +,radium-224,313796.16,0.909
+californium-247,11196,electron capture,berkelium-247,43549488000,0.9996
+berkelium-250,11563.2,beta -,californium-250,412773480,1
+fermium-254,11664,alpha,californium-250,412773480,0.9994
+lead-209,11710.80003,beta -,bismuth-209,6.34E+26,1
+lead-202m1,12707.99997,nuclear isomer,lead-202 ,1.65677E+12,0.905
+polonium-204,12707.99997,beta +,bismuth-204,40392,0.9933
+lawrencium-262,12960,beta +,nobelium-262,5.00E-03,1
+berkelium-244,15660,beta +,curium-244,571192560,0.9999
+berkelium-243,16200,beta +,curium-243,918326160,0.9985
+dubnium-267,16560.00003,spontaneous fission,(various),0,1
+plutonium-243,17841.6,beta -,americium-243,2.3258E+11,1
+fermium-251,19079.99997,beta +,einsteinium-251,118800,0.982
+polonium-207,20880.00003,beta +,bismuth-207,1038245040,0.9997
+astatine-209,19476.00003,beta +,polonium-209,3951010800,0.96
+mendelevium-257,19872,electron capture,fermium-257,8683200,0.848
+actinium-228,22068.00003,beta +,thorium-228,60325524,1
+protactinium-234,24120.00003,beta -,uranium-234,7.74739E+12,1
+astatine-211,25970.39997,electron capture,polonium-211,0.5159988,0.582
+einsteinium-256m,27360.00003,beta -,fermium-256,9457.2,1
+astatine-210,29160,beta +,polonium-210,11955686.4,0.998
+einsteinium-250,30959.99997,beta +,californium-250,412773480,0.997
+plutonium-234,31680.00003,electron capture,neptunium-234,380160,0.9999
+lead-201,33588,electron capture,thallium-201,0,1
+americium-244,36359.99996,beta -,curium-244,571192560,1
+erbium-165,37296.00004,electron capture,holmium-165,0,1
+plutonium-245,37800,beta -,americium-245,7380,1
+lead-212,38303.99996,beta -,bismuth-212,3633.12,1
+lawrencium-266,39599.99996,spontaneous fission,(various),0,1
+bismuth-204,40392,beta +,lead-204,0,1
+bismuth-203,42336,beta +,lead-203,186743.232,1
+americium-239,42839.99996,electron capture,plutonium-239,2083104000,0.9999
+uranium-240,50760,beta -,neptunium-240,3715.2,1
+radon-211,52559.99996,alpha,polonium-208,91453932,0.726
+sodium-24,53855.99996,beta -,magnesium-24,0,1
+americium-242,57672,beta -,curium-242,14065920,0.827
+fermium-255,72252,alpha,californium-251,3240000,1
+lead-200,77399.99996,beta +,thallium-200,0,1
+protactinium-228,79200.00004,beta +,thorium-228,60325524,0.9815
+neptunium-236m,81000,electron capture,uranium-236,7.38E+14,0.52
+berkelium-248m,85320,beta -,californium-248,28814400,1
+fermium-252,91411.2,alpha,californium-248,28814400,0.9999
+thorium-231,91877.76,beta -,protactinium-231,1.03383E+12,1
+dubnium-268,110851.2,spontaneous fission,(various),0,1
+erbium-160,102902.4,electron capture,holmium-160,0,1
+actinium-226,105736.32,beta +,thorium-226,1834.2,0.83
+protactinium-232,113184,beta -,uranium-232,2174318640,1
+einsteinium-251,118800,electron capture,californium-251,28401840000,0.9951
+californium-246,128520,alpha,curium-242,14065920,1
+protactinium-229,129600,electron capture,thorium-229,5137578000,0.9952
+einsteinium-255,141480,beta -,fermium-255,72252,0.92
+berkelium-246,155520,electron capture,curium-246,1.50214E+11,0.998
+neptunium-238,182908.8,beta -,plutonium-238,2767601520,1
+americium-240,182908.8,beta +,plutonium-240,2.07049E+11,1
+lead-203,186743.232,electron capture,thallium-203,0,1
+plutonium-247,196128,beta -,americium-247,1379.99988,1
+neptunium-239,203558.4,beta -,plutonium-239,7.60854E+11,1
+gold-198,232848,beta -,mercury-198,0,1
+fermium-253,259200,electron capture,einsteinium-253,1768608,0.88
+gold-199,273801.6,beta -,mercury-199,0,1
+radium-224,313796.16,alpha,radon-220,55.599984,1
+radon-222,330350.4,alpha,polonium-218,3.0999996,1
+uranium-231,362880,electron capture,protactinium-231,1.03383E+12,1
+neptunium-234,380160,beta +,uranium-234,7.74739E+12,1
+calcium-47,391910.4,beta -,scandium-47,0,1
+berkelium-245,426816,electron capture,curium-245,2.6824E+11,0.9988
+bismuth-210,433036.8,beta -,polonium-210,11955686.4,1
+manganese-52,483062.4,beta +,chromium-52,0,1
+gold-196,534211.2,electron capture,platinum-196,0,0.9305
+bismuth-206,539395.2,beta +,lead-206 ,0,1
+uranium-237,583200,beta -,neptunium-237,6.76595E+13,1
+einsteinium-257,665280,beta -,fermium-257,8683200,1
+iodine-131,692928,beta -,xenon-131,0,1
+polonium-206,760320,beta +,bismuth-206,539395.2,0.9455
+thulium-167,799200,electron capture,erbium-167,0,1
+actinium-225,864000,alpha,francium-221,294.000012,1
+plutonium-246,936576,beta -,americium-246m,1500.00012,1
+radium-223,987552,alpha,radon-219,3.96,1
+phosphorus-32,1234656,beta -,sulfur-32,0,1
+radium-225,1287360,beta -,actinium-225,864000,1
+bismuth-205,1322784,beta +,lead-205,5.47E+14,1
+vanadium-48,1380110.4,beta -,titanium-48,0,1
+protactinium-230,1503360,beta +,thorium-230,2.37881E+12,0.916
+californium-253,1538784,beta -,einsteinium-253,1768608,0.9969
+thorium-227,1613952,alpha,radium-223,987552,1
+einsteinium-253,1768608,alpha,berkelium-249,28512000,1
+uranium-230,1797120,alpha,thorium-226,1834.2,1
+thorium-234,2082240,beta -,protactinium-234m,70.2,1
+protactinium-233,2330640,beta -,uranium-233,5.02397E+12,1
+curium-240,2332800,alpha,plutonium-236,90191628,0.995
+chromium-51,2393496,electron capture,vanadium-51,0,1
+mendelevium-260,2401920,spontaneous fission,(various),0,0.85
+curium-241,2833920,electron capture,americium-241,13639194000,0.99
+einsteinium-255,3438720,beta -,fermium-255,72252,0.92
+plutonium-237,3905280,electron capture,neptunium-237,6.76595E+13,1
+mendelevium-258,4449600,alpha,einsteinium-254,23820480,0.9999
+beryllium-7,4589568,electron capture,lithium-7,0,1
+californium-254,5227200,spontaneous fission,(various),0,0.9969
+cobalt-56,6676128,beta +,iron-58,0,1
+scandium-46,7239456,beta -,titanium-46,0,1
+sulfur-35,7544448,beta -,chlorine-35,0,1
+thulium-168,8043840,beta +,erbium-168,0,0.9999
+fermium-257,8683200,alpha,californium-253,1538784,0.9979
+thulium-170,11111040,beta -,yttriumb-170,0,1
+polonium-210,11955686.4,alpha,lead-206,0,1
+calcium-45,14057280,beta -,scandium-45,0,1
+curium-242,14065920,alpha,plutonium-238,2767601520,1
+gold-195,16079040,electron capture,platinum-195,0,1
+zinc-65,21055680,beta +,copper-65,0,1
+cobalt-57,23482656,electron capture,iron-57,0,1
+einsteinium-254,23820480,alpha,berkelium-250,11563.2,1
+vanadium-49,28512000,electron capture,titanium-29 ,0,1
+berkelium-249,28512000,beta -,californium-249,11076717600,1
+californium-248,28814400,alpha,curium-244 ,571192560,0.9999
+ruthenium-106,32283981.64,beta -,rhodium-106,0,1
+neptunium-235,34224807.52,electron capture,uranium-235,2.22E+16,1
+cadmium-109,39984168.85,electron capture,silver-109,0,1
+einsteinium-252,40757343.41,alpha,berkelium-109,0,0.76
+thorium-228,60326548.67,alpha,radium-224,313796.16,1
+thulium-171,60591637.08,beta -,yttriumb-170,0,0.9986
+caesium-134,65173879.66,beta -,barium-134,0,1
+sodium-22,82114291.51,beta +,neon-22,0,0.9057
+californium-252,83471291.71,alpha,curium-248,1.0982E+13,0.969
+iron-55,86974245.76,electron capture,manganese-55,0,1
+plutonium-236,90193176.43,alpha,uranium-232,2174318640,1
+polonium-208,91455502.21,alpha,lead-204,0,1
+rhodium-101,104141876.3,electron capture,ruthenium-101,0,1
+cobalt-60,166355602,beta -,nickel-60,0,1
+radium-228,181459329.8,beta -,actinium-228,22068,1
+krypton-85,339439400.3,beta -,rubidium-85,0,1
+hydrogen-3,388796338.1,beta -,helium-3,0,1
+californium-250,412780527.7,alpha,curium-246,1.50214E+11,0.9992
+plutonium-241,450965882.2,beta -,americium-241,13639194000,1
+niobium-93m,509032868,nuclear isomer,niobium-93,0,1
+curium-244,571202412.1,alpha,plutonium-240,2.07049E+11,1
+actinium-227,687083918,beta -,thorium-227,1613952,0.9861
+lead-210,703746618.5,beta -,mercury-206,0,1
+strontium-90,908558975.2,beta -,yttrium-90,0,1
+curium-243,918341999.6,alpha,plutonium-239,7.60854E+11,0.9971
+caesium-137,952109214.1,beta -,barium-137,0,1
+bismuth-207,1038262948,beta +,lead-207,0,1
+titanium-44,1988163092,electron capture,scandium-44,0,1
+uranium-232,2174356144,alpha,thorium-228,60325524,1
+plutonium-238,2767649257,alpha,uranium-234,7.74739E+12,1
+samarium-151,3048516741,beta -,europium-151,1.58E+26,1
+nickel-63,3158970246,beta -,copper-65,0,1
+polonium-209,3951079668,alpha,lead-205,5.47E+14,0.9954
+americium-242m1,4449698348,nuclear isomer,americium-242,57672,0.9954
+silicon-32,5364884534,beta -,phosphorus-32,1234656,1
+argon-39,8489140823,beta -,potassium-41,0,1
+berkelium-248,9467443296,alpha,americium-244,36360,1
+californium-249,11076908656,alpha,curium-245,2.6824E+11,1
+silver-108m,13191304327,beta +,lead-108,0,0.913
+americium-241,13639429976,alpha,neptunium-237,6.76595E+13,1
+mercury-194,14011816079,electron capture,gold-194,0,1
+niobium-91,21459538138,electron capture,zirconium-91,0,0.9998
+californium-251,28402329888,alpha,curium-247,4.92299E+13,1
+holmium-166m1,37869771600,beta -,erbium-166,0,1
+berkelium-247,43550240400,alpha,americium-243,2.3258E+11,1
+radium-226,50493031200,alpha,radon-222,330350.4,1
+molybdenum-93,1.26E+11,electron capture,niobium-93,0,1
+holmium-163,1.44E+11,electron capture,dysprosium-163,0,1
+curium-246,1.50E+11,alpha,plutonium-242,1.18341E+13,0.9997
+carbon-14,1.81E+11,beta -,nitrogen-14,0,1
+plutonium-240,2.07E+11,alpha,uranium-236,7.38E+17,1
+thorium-229,2.32E+11,alpha,radium-225,1287360,1
+americium-243,2.33E+11,alpha,neptunium-239,203558.4,1
+curium-250,2.62E+11,spontaneous fission,(various),0,0.74
+curium-245,2.68E+11,alpha,plutonium-241,450957960,1
+niobium-94,6.41E+11,beta -,molybdenum-94,0,1
+plutonium-239,7.61E+11,alpha,uranium-235,2.22E+16,1
