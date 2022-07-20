@@ -316,7 +316,7 @@ while True:
                             elif Option=='5':
 
                                 try:
-                                    model = Load_Example_model(filename = str(file_path+""))
+                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Example_Model_Seconds_1Yr_500Skips_Daughter_Data"))
                                     UI_Options['Trained_Model']=True
                                 except:
                                     print("Example file(s) are missing ")
