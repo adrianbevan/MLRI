@@ -1,9 +1,9 @@
-import os
-import time
-
-from IPython.display import clear_output
 
 from Code_Functions import *
+
+
+
+
 
 
 
@@ -29,12 +29,11 @@ UI_Options = {  'Training_DataFrame'    : False ,
                 'Trained_Model'         : False , 
                 'Isotope_List'          : False ,
                 'Model_Evaluated'       : False ,
+                'Daughter_Data'         : False ,
+                'Radioactive_Shopping_List' : False , 
                 'Unit Of Time'          :'Seconds' }
 
-clear_output()
-os.system('cls||clear')
-time.sleep(0.5)                
-
+refresh()
 
 while True:
     
@@ -60,7 +59,7 @@ while True:
         print("{:52s} {:50s}".format("\n\nUnknown Isotope :","7"))
 
     print("{:50s} {:50s}".format("Testing :","8"))
-    print("{:50s} {:50s}".format("Change Unit of time:","9"))
+    print("{:50s} {:50s}".format("Configure:","9"))
     print("{:50s} {:50s}".format("Info :","i"))
     print("{:51s} {:50s}".format("\nQuit :","q"))
     
@@ -68,9 +67,7 @@ while True:
 
     if Option=="1":
         Option=''
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(0.5)
+        refresh()
 
         while True:
 
@@ -87,43 +84,62 @@ while True:
             if UI_Options['Isotope_List'] == True:
                 print("{:50s} {:50s}".format("Save Isotope List :","5"))
 
+            if UI_Options['Training_DataFrame'] == True:
+                print("{:50s} {}".format("Show Training Data :","6"))
+
+            if UI_Options['Testing_DataFrame'] == True:
+                print("{:50s} {}".format("Show Testing Data :","7"))
+            
+
 
             print("{:51s} {:50s}".format("\nBack :","q"))
 
             Option=input("option : ")
             
             if Option == '1':
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
+                refresh()
                 try:
-                    Training_Data, Isotope_List = Read_File( str(file_path+ filename) ) 
+                    if UI_Options["Daughter_Data"]== False:
+                        Training_Data, Isotope_List = Read_File( filename= str(file_path+ filename) , Unit_Of_Time = UI_Options['Unit Of Time'] )
+                    else:
+                        Training_Data, Isotope_List = Read_File( filename = str(file_path+ filename) , Daughter_Data= True , Unit_Of_Time = UI_Options['Unit Of Time']  )
+
                 except:
                     print("FileNotFoundError: [Errno 2] No such file or directory:{}".format(filename))
                     print("File Path in varaible 'filename' (line 21) \n")
                     time.sleep(2)
                     continue
+                
+                if UI_Options['Daughter_Data'] == False:
 
-                Training_Data = Create_Data_Set( Training_Data , std =0.01 , Num_Of_Replicates = 10 , Unit_Of_Time = UI_Options['Unit Of Time'] )
+                    Training_Data = Create_Data_Set( Training_Data , std =0.01 , Num_Of_Replicates = 10 , Unit_Of_Time = UI_Options['Unit Of Time'] )
+
+                else:
+                    Training_Data = Create_Data_Set_2( Training_Data , std =0.01 , Num_Of_Replicates = 10 , Unit_Of_Time = UI_Options['Unit Of Time'] )
 
                 UI_Options['Training_DataFrame']=True
                 UI_Options['Isotope_List'] = True
 
-
             elif Option == '2':
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
+                refresh()
 
                 try:
-                    Testing_Data, Isotope_List = Read_File( str(file_path+ filename) )
-                    
+                    if UI_Options["Daughter_Data"]== False:
+                        Testing_Data, Isotope_List = Read_File( filename = str(file_path+ filename) , Unit_Of_Time = UI_Options['Unit Of Time']  )
+                    else :
+                        Testing_Data, Isotope_List = Read_File( filename = str(file_path+ filename) , Daughter_Data = True , Unit_Of_Time = UI_Options['Unit Of Time'] ) 
                 except:
                     print("File Path in varaible 'filename' (line 21) \n")
                     time.sleep(2)
                     continue
 
-                Testing_Data = Create_Data_Set( Testing_Data , std =0.01 , Num_Of_Replicates = 1 , Unit_Of_Time = UI_Options['Unit Of Time'] )
+                if UI_Options['Daughter_Data'] == False:
+
+                    Testing_Data = Create_Data_Set( Testing_Data , std =0.01 , Num_Of_Replicates = 1 , Unit_Of_Time = UI_Options['Unit Of Time'] )
+
+                else:
+                    Testing_Data = Create_Data_Set_2( Testing_Data , std =0.01 , Num_Of_Replicates = 1 , Unit_Of_Time = UI_Options['Unit Of Time'] )
+
 
                 UI_Options['Testing_DataFrame']=True
                 UI_Options['Isotope_List'] = True
@@ -143,24 +159,40 @@ while True:
                     file_content='\n'.join(Isotope_List)
                     file.write(file_content)
 
+            elif Option=='6' and  UI_Options['Training_DataFrame'] == True :
+
+                refresh()
+                while True:
+                    print(Training_Data)
+                    print("{:51s} {:50s}".format("\nQuit :","q"))
+
+                    Option=input("option : ")
+                    if Option == 'q':
+                        break
+
+            elif Option=='7' and  UI_Options['Testing_DataFrame'] == True :
+
+                refresh()
+                while True:                    
+                    print(Testing_Data)
+                    print("{:51s} {:50s}".format("\nQuit :","q"))
+
+                    Option=input("option : ")
+                    if Option == 'q':
+                        break
+
 
             elif Option == 'q':
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
+                refresh()
 
                 break
             
-            clear_output()
-            os.system('cls||clear')
-            time.sleep(0.5)
+            refresh()
         
 
     elif Option == "2":
         Option=''
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(0.5)
+        refresh()
 
         while True:
 
@@ -169,13 +201,12 @@ while True:
             print("{:50s} {:50s}".format("Load Training Data :","1"))
             print("{:50s} {:50s}".format("Load Testing Data :","2"))
             print("{:50s} {:50s}".format("Load Model :","3"))
+            print("{:50s} {:50s}".format("Isotope List :","4"))
             print("{:51s} {:50s}".format("\nBack :","q"))
             Option=input("option : ")
 
             if Option == '1':
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
+                refresh()
 
                 try:
                     Training_Data = Load_DataFrame()
@@ -184,19 +215,9 @@ while True:
                     print("Training Data Missing or Path not entered corectly")
                     time.sleep(2)
 
-                try:
-                    Data = open(input("Enter file name or Path : "), 'r').read()
-                    Isotope_List = Data.splitlines()
-                    UI_Options['Isotope_List']=True
-                
-                except:
-                    print("Isotope List File Missing or Path not entered corectly")
-                    time.sleep(2)
 
             elif Option == '2':
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
+                refresh()
 
                 try:
                     Testing_Data = Load_DataFrame()
@@ -205,22 +226,13 @@ while True:
                     print("Testing Data Missing or Path not entered corectly")
                     time.sleep(2)
 
-                try:
-                    Data = open(input("Enter file name or Path : "), 'r').read()
-                    Isotope_List = Data.splitlines()
-                    UI_Options['Isotope_List']=True
-                
-                except:
-                    print("Isotope List File Missing or Path not entered corectly")
-                    time.sleep(2)
+
 
             elif Option == '3':
 
 
                 while True :
-                    clear_output()
-                    os.system('cls||clear')
-                    time.sleep(0.5)
+                    refresh()
                     Option=''
                     print("{:20s}{:30s}".format("","Load Model \n"))
                     print("{:50s} {:50s}".format("Load Specific Model :","1"))
@@ -245,33 +257,37 @@ while True:
                     elif Option == '2':
 
                         while True :
-
-                            clear_output()
-                            os.system('cls||clear')
-                            time.sleep(0.5)
+                            refresh()
 
                             Option=''
-                            print('{:20s}{:30s}(Currrently on "{}")'.format("","Load Example Model \n", UI_Options['Unit Of Time']) )
+                            print('{:10s}{:}(Currrently on "{}" & Daughter_Data "{}")\n'.format("","Load Example Model \n", UI_Options['Unit Of Time'] , UI_Options["Daughter_Data"] ) )
                             print("{:50s} {:50s}".format("Load Seconds  Model :","1"))
                             print("{:50s} {:50s}".format("Load Minutes  Model :","2"))
                             print("{:50s} {:50s}".format("Load Hours    Model :","3"))
                             print("{:50s} {:50s}".format("Load Days     Model :","4"))
+
+                            if UI_Options["Daughter_Data"] == True :
+                                print("\n{:50s} {:50s}".format("Load Seconds  Model for Daughter Data :","5"))
+                                print("{:50s} {:50s}".format("Load Minutes  Model for Daughter Data :","6"))
+                                print("{:50s} {:50s}".format("Load Hours    Model for Daughter Data :","7"))
+                                print("{:50s} {:50s}".format("Load Days     Model for Daughter Data :","8"))
+
                             print("{:51s} {:50s}".format("\nBack :","q"))
                             Option=input("option : ")
 
                             if Option=='1':
 
-                                # try:
-                                model = Load_Example_model(filename = str(file_path+"\Example_Models\Model_Half_Life(Seconds)_001"))
-                                UI_Options['Trained_Model']=True
-                                # except:
-                                #     print("Example file(s) are missing ")
-                                #     time.sleep(2)
+                                try:
+                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Example_Model_Seconds_10k_NoSkips"))
+                                    UI_Options['Trained_Model']=True
+                                except:
+                                    print("Example file(s) are missing ")
+                                    time.sleep(2)
 
                             elif Option=='2':
 
                                 try:
-                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Model_Half_Life(Minutes)_001"))
+                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Example_Model_Minutes_10k_NoSkips"))
                                     UI_Options['Trained_Model']=True
                                 except:
                                     print("Example file(s) are missing ")
@@ -281,7 +297,7 @@ while True:
                             elif Option=='3':
 
                                 try:
-                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Model_Half_Life(Hours)_001"))
+                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Example_Model_Hours_10k_NoSkips"))
                                     UI_Options['Trained_Model']=True
                                 except:
                                     print("Example file(s) are missing ")
@@ -291,38 +307,75 @@ while True:
                             elif Option=='4':
 
                                 try:
-                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Model_Half_Life(Days)_001"))
+                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Example_Model_Days_10k_NoSkips"))
+                                    UI_Options['Trained_Model']=True
+                                except:
+                                    print("Example file(s) are missing ")
+                                    time.sleep(2)
+
+                            elif Option=='5':
+
+                                try:
+                                    model = Load_Example_model(filename = str(file_path+""))
                                     UI_Options['Trained_Model']=True
                                 except:
                                     print("Example file(s) are missing ")
                                     time.sleep(2)
 
                             elif Option=='q':
-                                clear_output()
-                                os.system('cls||clear')
-                                time.sleep(0.5)
+                                refresh()
                                 break
+                    elif Option=='q':
+                        refresh()
+                        break
+                
 
+            elif Option == '4':
+
+                refresh()                     
+
+                while True :
+                    Option=''
+                    print("{:20s}{:30s}".format("","Load Isotpe List \n"))
+                    print("{:50s} {:50s}".format("Load Specific Isotope List :","1"))
+                    print("{:50s} {:50s}".format("Load Example  Isotope List :","2"))
+                    print("{:51s} {:50s}".format("\nBack :","q"))
+
+                    Option=input("option : ")
+
+                    if Option == '1':
+                        
+                        try:
+                            Data = open(input("Enter file name or Path : "), 'r').read()
+                            Isotope_List = Data.splitlines()
+                            UI_Options['Isotope_List']=True
+                        
+                        except:
+                            print("Isotope List File Missing or Path not entered corectly")
+                            time.sleep(2)
+
+                    elif Option =='2':
+                        try:
+                            Data = open(file_path+'\Isotope_List.txt', 'r').read()
+                            Isotope_List = Data.splitlines()
+                            UI_Options['Isotope_List']=True
+                        except:
+                            print("Isotope List File Missing or Path not entered corectly")
+                            time.sleep(2)
 
                     elif Option == 'q':
-
-                        clear_output()
-                        os.system('cls||clear')
-                        time.sleep(0.5)
+                        refresh()
                         break
 
+                    refresh()
 
-           
+          
 
             elif Option == 'q':
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
+                refresh()
                 break
             
-            clear_output()
-            os.system('cls||clear')
-            time.sleep(0.5)
+            refresh()
 
 
     elif Option == "3":
@@ -352,17 +405,13 @@ while True:
 
                 Option=input("option : ")
 
-                if Option == '1' and UI_Options['Training_DataFrame'] == True :
-                    clear_output()
-                    os.system('cls||clear')
-                    time.sleep(0.5)
+                if Option == '1' and UI_Options['Training_DataFrame'] == True and UI_Options['Isotope_List'] == True :
+                    refresh()
                     model , history  = training_V2 ( Training_Data , Isotope_List )
                     UI_Options['Trained_Model']=True
 
-                elif Option == '2' and UI_Options['Training_DataFrame'] and UI_Options['Trained_Model'] == True:
-                    clear_output()
-                    os.system('cls||clear')
-                    time.sleep(0.5)
+                elif Option == '2' and UI_Options['Training_DataFrame'] and UI_Options['Trained_Model'] == True and UI_Options['Isotope_List'] == True:
+                    refresh()
                     try:
                         model , history  = training_V2 ( Training_Data ,Isotope_List , New_Model=False , model = model)
                         UI_Options['Trained_Model']=True
@@ -372,9 +421,7 @@ while True:
                     
 
                 elif Option == '3' and UI_Options['Trained_Model'] == True:
-                    clear_output()
-                    os.system('cls||clear')
-                    time.sleep(0.5)
+                    refresh()
                     print(model.summary())
                     print("\nWEIGHTS :\n")
                     print(model.weights)
@@ -383,59 +430,43 @@ while True:
                         Option=input("option : ")
 
                         if Option =='q':
-                            clear_output()
-                            os.system('cls||clear')
-                            time.sleep(0.5)
+                            refresh()
                             break
 
                         clear_output()
                         os.system('cls||clear')
 
                 elif Option == '4' and UI_Options['Trained_Model'] == True :
-                    clear_output()
-                    os.system('cls||clear')
-                    time.sleep(0.5)
+                    refresh()
                     model.save(input("Pick filename for Trained Model"))
 
                 elif Option == 'q':
-                    clear_output()
-                    os.system('cls||clear')
-                    time.sleep(0.5)
+                    refresh()
                     break
             
-            clear_output()
-            os.system('cls||clear')
-            time.sleep(0.5)
+                refresh()
 
         else:
-            clear_output()
-            os.system('cls||clear')
-            time.sleep(0.5)
+            refresh()
 
     elif Option == "4":
 
 
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(0.5)
+        refresh()
 
         Option=''
         try:
-            Plot_Data_Frame( filename = str(file_path+ filename) , Unit_Of_Time = UI_Options['Unit Of Time'] )
+            Plot_Data_Frame( filename = str(file_path+ filename) , Unit_Of_Time = UI_Options['Unit Of Time'] , Daughter_Data = UI_Options["Daughter_Data"])
         except:
             print("ERROR : Either Training Data or Testing Data  is missing")
             time.sleep(5)
 
+        refresh()
 
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(0.5)
 
     elif Option == "5" and UI_Options['Testing_DataFrame'] == True and UI_Options['Trained_Model'] == True:
         Option=''
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(0.5)
+        refresh()
         
         eval_result  , df_test_eval  = Evaluate( Testing_Data , model)
         UI_Options['Testing_DataFrame'] = False
@@ -445,51 +476,54 @@ while True:
             Option=input("option : ")
 
             if Option == 'q':
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
+                refresh()
                 break
 
-    elif Option == "6" and UI_Options['Model_Evaluated'] == True:
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(0.5)
-        Further_Evalutaion ( eval_result, Isotope_List ,df_test_eval)
+    elif Option == "6" and UI_Options['Model_Evaluated'] == True and UI_Options['Isotope_List'] == True:
+        refresh()
+        Further_Evalutaion ( eval_result, Isotope_List ,df_test_eval ,)
         break
 
 
     elif Option == "7" and UI_Options['Trained_Model'] == True:
         Option=''
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(0.5)
-        Unknown_Isotope( model , filename = str(file_path+ filename) , Unit_Of_Time=UI_Options['Unit Of Time'] )
+        refresh() 
+        try:
+            if UI_Options["Radioactive_Shopping_List"] == True :
+                Unknown_Isotope(    model , filename = str(file_path+ filename) , Unit_Of_Time=UI_Options['Unit Of Time'] ,
 
-        while True:
-            print("{:50s} {:50s}".format("Back :","q"))
-
-            Option=input("option : ")
-
-            if Option=="q":
-
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
-                break
-
+                                    Radioactive_Shopping_List = UI_Options["Radioactive_Shopping_List"] , Shopping_List = Shopping_List )
 
             else:
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
+                Unknown_Isotope( model , filename = str(file_path+ filename) , Unit_Of_Time=UI_Options['Unit Of Time']  )
 
+
+            while True:
+                print("{:50s} {:50s}".format("Back :","q"))
+
+                Option=input("option : ")
+
+                if Option=="q":
+
+                    clear_output()
+                    os.system('cls||clear')
+                    time.sleep(0.5)
+                    break
+
+
+                else:
+                    clear_output()
+                    os.system('cls||clear')
+                    time.sleep(0.5)
+        except:
+            print("ERROR")
 
     elif Option== "8":
         Option=''
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(1)
-        DF, Isotope_List = Read_File(filename = str(file_path+ filename) , Daughter_Data= True )
+        refresh()
+        DF, Isotope_List = Read_File(filename = str(file_path+ filename) , Daughter_Data= True , Unit_Of_Time = UI_Options['Unit Of Time']  )
+
+        
         while True:
             print("{:20s}{:30s}".format("","Testing (Probably not working) \n"))
             print("{:50s} {:50s}".format("Print Decay graph :","1"))
@@ -501,32 +535,28 @@ while True:
             Option=input("option : ")
             if Option == "1":
                 print(DF)
-                Test_func(DF , Option = 1 , Parent_List= Isotope_List)
+                Test_func(DF , Option = 1 , Parent_List= Isotope_List , Unit_Of_Time = UI_Options['Unit Of Time'] )
 
 
             elif Option =="q":
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(1)
+                refresh()
                 break
 
-            clear_output()
-            os.system('cls||clear')
-            time.sleep(1)
+            refresh()
 
 
     elif Option == "9":
         Option=''
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(0.5)
+        refresh()
 
         while True:
-            print("{:20s}{:30s} ( Currently {} ) \n".format( "", "Select Unit of time ", UI_Options['Unit Of Time'] ))
+            print("{:10s}{:}( Currently {:} ) \n".format( "", "Select Unit of time ", UI_Options['Unit Of Time'] ))
             print("{:50s} {:50s}".format("Seconds:","1"))
             print("{:50s} {:50s}".format("Minutes:","2"))
             print("{:50s} {:50s}".format("Hours:","3"))
             print("{:50s} {:50s}".format("Days:","4"))
+            print("{:51s} {:50s}".format("\nSet Daughter Data ({}):".format(str( not UI_Options['Daughter_Data'] )),"5"))
+            print("{:50s} {:50s}".format("Select Specific Isotopes:","6"))
             print("{:50s} {:50s}".format("Back :","q"))
 
 
@@ -551,22 +581,46 @@ while True:
                 UI_Options['Training_DataFrame']    = False
                 UI_Options['Testing_DataFrame']     = False
 
+            elif Option == "5":
+                UI_Options['Daughter_Data'] = not UI_Options['Daughter_Data']
+
+            elif Option =="6":
+
+                refresh()
+                Option = ''
+                if UI_Options["Isotope_List"] == False :  
+                    print("Isotope List Not Found")
+                    time.sleep(3)
+
+                else:
+                    try :
+                        Shopping_List
+                        try:
+                            Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List, Shopping_List = Shopping_List)
+                            
+                        except:
+                            pass
+                            
+                    except:
+                        try:
+                            Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List )
+                            UI_Options["Radioactive_Shopping_List"] == True
+
+                        except:
+                            print("No Isotopes Selected")
+                            UI_Options["Radioactive_Shopping_List"] == False
+                            time.sleep(3)
 
             elif Option =="q":
-                clear_output()
-                os.system('cls||clear')
-                time.sleep(0.5)
+                refresh()
                 break
 
-            clear_output()
-            os.system('cls||clear')
-            time.sleep(0.5)
+            refresh()
+       
 
 
     elif Option== "i":
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(1)
+        refresh()
         print(str(UI_Options)+"\n")
 
 
@@ -580,9 +634,6 @@ while True:
 
 
     else:
-        clear_output()
-        os.system('cls||clear')
-        time.sleep(0.5)
-
+        refresh()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END OF PROGRAM~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
