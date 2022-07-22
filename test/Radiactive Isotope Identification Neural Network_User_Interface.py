@@ -16,10 +16,8 @@ from Code_Functions import *
 
 
 
-file_path = os.path.dirname(__file__)
 
-filename ='\Isotope_Half_Lifes.csv'
-
+path , file_paths , Operating_system = Get_OS()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -100,12 +98,12 @@ while True:
                 refresh()
                 try:
                     if UI_Options["Daughter_Data"]== False:
-                        Training_Data, Isotope_List = Read_File( filename= str(file_path+ filename) , Unit_Of_Time = UI_Options['Unit Of Time'] )
+                        Training_Data, Isotope_List = Read_File( filename= str(path + file_paths['CSV_filename']) , Unit_Of_Time = UI_Options['Unit Of Time'] )
                     else:
-                        Training_Data, Isotope_List = Read_File( filename = str(file_path+ filename) , Daughter_Data= True , Unit_Of_Time = UI_Options['Unit Of Time']  )
+                        Training_Data, Isotope_List = Read_File( filename = str( path + file_paths['CSV_filename'] ) , Daughter_Data= True , Unit_Of_Time = UI_Options['Unit Of Time']  )
 
                 except:
-                    print("FileNotFoundError: [Errno 2] No such file or directory:{}".format(filename))
+                    print("FileNotFoundError: [Errno 2] No such file or directory:{}".format(file_paths['CSV_filename']))
                     print("File Path in varaible 'filename' (line 21) \n")
                     time.sleep(2)
                     continue
@@ -125,9 +123,9 @@ while True:
 
                 try:
                     if UI_Options["Daughter_Data"]== False:
-                        Testing_Data, Isotope_List = Read_File( filename = str(file_path+ filename) , Unit_Of_Time = UI_Options['Unit Of Time']  )
+                        Testing_Data, Isotope_List = Read_File( filename = str( path + file_paths['CSV_filename']) , Unit_Of_Time = UI_Options['Unit Of Time']  )
                     else :
-                        Testing_Data, Isotope_List = Read_File( filename = str(file_path+ filename) , Daughter_Data = True , Unit_Of_Time = UI_Options['Unit Of Time'] ) 
+                        Testing_Data, Isotope_List = Read_File( filename = str( path + file_paths['CSV_filename'] ) , Daughter_Data = True , Unit_Of_Time = UI_Options['Unit Of Time'] ) 
                 except:
                     print("File Path in varaible 'filename' (line 21) \n")
                     time.sleep(2)
@@ -278,7 +276,7 @@ while True:
                             if Option=='1':
 
                                 try:
-                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Example_Model_Seconds_10k_NoSkips"))
+                                    model = Load_Example_model(filename = str( path + file_paths['Example_Seconds'] ))
                                     UI_Options['Trained_Model']=True
                                 except:
                                     print("Example file(s) are missing ")
@@ -287,7 +285,7 @@ while True:
                             elif Option=='2':
 
                                 try:
-                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Example_Model_Minutes_10k_NoSkips"))
+                                    model = Load_Example_model(filename = str( path + file_paths['Example_Minutes'] ))
                                     UI_Options['Trained_Model']=True
                                 except:
                                     print("Example file(s) are missing ")
@@ -297,7 +295,7 @@ while True:
                             elif Option=='3':
 
                                 try:
-                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Example_Model_Hours_10k_NoSkips"))
+                                    model = Load_Example_model(filename = str( path + file_paths['Example_Hours'] ))
                                     UI_Options['Trained_Model']=True
                                 except:
                                     print("Example file(s) are missing ")
@@ -307,7 +305,7 @@ while True:
                             elif Option=='4':
 
                                 try:
-                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Example_Model_Days_10k_NoSkips"))
+                                    model = Load_Example_model(filename = str( path + file_paths['Example_Days'] ))
                                     UI_Options['Trained_Model']=True
                                 except:
                                     print("Example file(s) are missing ")
@@ -316,7 +314,7 @@ while True:
                             elif Option=='5':
 
                                 try:
-                                    model = Load_Example_model(filename = str(file_path+"\Example_Models\Example_Model_Seconds_1Yr_500Skips_Daughter_Data"))
+                                    model = Load_Example_model(filename = str( path + file_paths['Example_Seconds_DD'] ))
                                     UI_Options['Trained_Model']=True
                                 except:
                                     print("Example file(s) are missing ")
@@ -356,7 +354,7 @@ while True:
 
                     elif Option =='2':
                         try:
-                            Data = open(file_path+'\Isotope_List.txt', 'r').read()
+                            Data = open(path+'\Isotope_List.txt', 'r').read()
                             Isotope_List = Data.splitlines()
                             UI_Options['Isotope_List']=True
                         except:
@@ -456,7 +454,7 @@ while True:
 
         Option=''
         try:
-            Plot_Data_Frame( filename = str(file_path+ filename) , Unit_Of_Time = UI_Options['Unit Of Time'] , Daughter_Data = UI_Options["Daughter_Data"])
+            Plot_Data_Frame( filename = str(path+ file_paths["CSV_filename"]) , Unit_Of_Time = UI_Options['Unit Of Time'] , Daughter_Data = UI_Options["Daughter_Data"])
         except:
             print("ERROR : Either Training Data or Testing Data  is missing")
             time.sleep(5)
@@ -490,12 +488,12 @@ while True:
         refresh() 
         try:
             if UI_Options["Radioactive_Shopping_List"] == True :
-                Unknown_Isotope(    model , filename = str(file_path+ filename) , Unit_Of_Time=UI_Options['Unit Of Time'] ,
+                Unknown_Isotope(    model , filename = str(path + file_paths['CSV_filename']) , Unit_Of_Time=UI_Options['Unit Of Time'] ,
 
                                     Radioactive_Shopping_List = UI_Options["Radioactive_Shopping_List"] , Shopping_List = Shopping_List )
 
             else:
-                Unknown_Isotope( model , filename = str(file_path+ filename) , Unit_Of_Time=UI_Options['Unit Of Time']  )
+                Unknown_Isotope( model , filename = str(path + file_paths['CSV_filename']) , Unit_Of_Time=UI_Options['Unit Of Time']  )
 
 
             while True:
@@ -521,7 +519,7 @@ while True:
     elif Option== "8":
         Option=''
         refresh()
-        DF, Isotope_List = Read_File(filename = str(file_path+ filename) , Daughter_Data= True , Unit_Of_Time = UI_Options['Unit Of Time']  )
+        DF, Isotope_List = Read_File(filename = str( path + file_paths['CSV_filename'] ) , Daughter_Data= True , Unit_Of_Time = UI_Options['Unit Of Time']  )
 
         
         while True:
@@ -557,6 +555,7 @@ while True:
             print("{:50s} {:50s}".format("Days:","4"))
             print("{:51s} {:50s}".format("\nSet Daughter Data ({}):".format(str( not UI_Options['Daughter_Data'] )),"5"))
             print("{:50s} {:50s}".format("Select Specific Isotopes:","6"))
+            print("{:50s} {:50s}".format('Switch OS from "{:}":'.format(Operating_system),"7"))
             print("{:50s} {:50s}".format("Back :","q"))
 
 
@@ -610,6 +609,23 @@ while True:
                             print("No Isotopes Selected")
                             UI_Options["Radioactive_Shopping_List"] == False
                             time.sleep(3)
+
+            elif Option =="7":
+                refresh()
+                Option = ''
+                while True:
+                    print("{:10s}{:}( Currently {:} ) \n".format( "", "Select OS ", Operating_system))
+                    print("{:50s} {:50s}".format("Windows:","1"))
+                    print("{:50s} {:50s}".format("Linux:","2"))
+                    print("{:50s} {:50s}".format("Back:","q"))
+                    Option=input("option : ")
+
+                    if Option == "q":
+                        break
+
+                    refresh()
+
+                    
 
             elif Option =="q":
                 refresh()
