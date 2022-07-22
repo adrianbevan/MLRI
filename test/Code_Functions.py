@@ -46,6 +46,12 @@ def Get_OS(Operating_system = platform.system()):
         for string in  file_paths:
             file_paths[string] = file_paths[string].replace('\\', '/' )
 
+    elif Operating_system == 'Darwin':
+        Operating_system = 'Mac'
+        path = path.replace('\\', '/')
+        for string in  file_paths:
+            file_paths[string] = file_paths[string].replace('\\', '/' )
+
     return path , file_paths , Operating_system
 
 
