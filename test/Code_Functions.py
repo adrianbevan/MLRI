@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import warnings
 import os
+import sys
+import platform
 import time
 
 from IPython.display import clear_output
@@ -20,6 +22,37 @@ def refresh():
   time.sleep(0.5)   
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+def Get_OS(Operating_system = platform.system()):
+
+    file_paths = {      'CSV_filename'          :'\Isotope_Half_Lifes.csv',
+                        'Example_Seconds'       :'\Example_Models\Example_Model_Seconds_10k_NoSkips',
+                        'Example_Minutes'       :'\Example_Models\Example_Model_Minutes_10k_NoSkips',
+                        'Example_Hours'         :'\Example_Models\Example_Model_Hours_10k_NoSkips',
+                        'Example_Days'          :'\Example_Models\Example_Model_Days_10k_NoSkips',
+                        'Isotope_list'          :'\Isotope_Half_Lifes.csv',
+                        'Example_Seconds_DD'    : '\Example_Models\Example_Model_Seconds_1Yr_500Skips_Daughter_Data'                        
+                    }
+
+   
+    path = os.path.abspath(os.path.dirname(sys.argv[0])) 
+
+    if Operating_system == 'Windows':
+        path = path.replace('/', '\\')
+
+
+    elif Operating_system == 'Linux':
+        path = path.replace('\\', '/')
+        for string in  file_paths:
+            file_paths[string] = file_paths[string].replace('\\', '/' )
+
+    return path , file_paths , Operating_system
+
+
+    
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
 
 def Read_File( filename , Daughter_Data = False , Unit_Of_Time = 'Seconds' ):
   
@@ -414,7 +447,7 @@ def Plot_Data_Frame(filename , Unit_Of_Time = 'Seconds' ,Daughter_Data = False):
 
                       N = sum( Exp_form( X0 = N0 , Parent_decay_constant= P_D_C  , t = t ) , Exp_form( X0 = N0 , Parent_decay_constant = P_D_C , Daughter_decay_constant = D_D_C , t = t , Daughter_Data = True ) )
                       Time_Dict[t].append(N[0])
-
+          print(t) 
 
 
   Time_Dict = pd.DataFrame(Time_Dict)  
