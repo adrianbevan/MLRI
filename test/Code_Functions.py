@@ -21,17 +21,16 @@ def refresh():
   os.system('cls||clear')
   time.sleep(0.5)   
 
+
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
 
 def Get_OS(Operating_system = platform.system()):
 
-    file_paths = {      'CSV_filename'          :'\More_Isotopes_csv.csv',
-                        'Example_Seconds'       :'\Example_Models\Example_Model_Seconds_10k_NoSkips',
-                        'Example_Minutes'       :'\Example_Models\Example_Model_Minutes_10k_NoSkips',
-                        'Example_Hours'         :'\Example_Models\Example_Model_Hours_10k_NoSkips',
-                        'Example_Days'          :'\Example_Models\Example_Model_Days_10k_NoSkips',
-                        'Isotope_list'          :'\Isotope_Half_Lifes.csv',
-                        'Example_Seconds_DD'    : '\Example_Models\Example_Model_Seconds_1Yr_500Skips_Daughter_Data'                        
+    file_paths = {      'CSV_filename'          :'\Isotope_Half_Lifes_CSV.csv',
+                        'Example_Seconds'       :'\Example_Model_Seconds_0_Decay_Chain',
+                        'Isotope_List'          :'\Isotope_List.txt'               
                     }
 
    
@@ -102,36 +101,46 @@ def gaussian_noise( Data , mu = 0.0 , std = 0.01 ):
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-
-#This function adds guassian noise to the data which is used to create a digital twin.
-
-
-
 def Bateman_equation( X0 , Decay_constants , t = None ):
   
   X = []
-  
+  X0 = X0*(10**100)
+  e  = np.e
   while True:
 
     number_of_decays=len(Decay_constants)
   
     if number_of_decays == 1:
 
-        X.append( X0 * np.e**(-Decay_constants[0]*t) )
+        X.append( X0 * e**(-Decay_constants[0]*t) )
 
         break
 
     else:
       decay_product = np.prod([ i for i in Decay_constants[:number_of_decays-1] ])
       summarization = []
+      
+      product_optimizer =[]
+      
       for i in Decay_constants:
 
-          summarization.append( (np.e**(-i*t)) / np.prod(  [ j - i  for j in Decay_constants if j!=i ] )  ) 
+          product_optimizer.append(   [ j - i  for j in Decay_constants if j!=i ]   ) 
+          
+
+      product_optimizer = np.prod( product_optimizer , axis = 1 ) 
+       
+      for i,prdct in zip(Decay_constants,product_optimizer) :
+      
+        summarization.append( (e**(-i*t)) / prdct )
+      
+        
 
       X.append( X0 * decay_product * sum(summarization) )
 
       Decay_constants = Decay_constants[:len(Decay_constants)-1]
-    
+  
+  X = list(map(lambda x : x/(10**100) , X) )
+     
   return list(reversed(X))
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -180,7 +189,7 @@ def get_decay_chain( dataframe = None , Unit_Of_Time = None ,chain_num = 0 ):
   unique_decay_types = dataframe.Type_of_Decay.unique()
   unique_decay_types = sorted(unique_decay_types)
   #22 is max chain
-  return Decay_const , type_of_decay_chain , unique_decay_types
+  return Decay_const , type_of_decay_chain , unique_decay_types , decay_name_chain
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -295,13 +304,15 @@ def Set_Unit_Of_Time( DF , Unit_Of_Time = None , Csv_Col='Half_Life'):
 
 
 def Get_Time_List(List_Type = 'Long'):
+  print("Simulating Time...")
     
   if List_Type == 'Long':
     time_list = [0,315576000]
-
+    Progression( 0 , 11)
+    
     for i in range(11):
-      append_cnt=0
-      while append_cnt <=1000:
+      random_list = np.random.rand(1,1*10**4)[0]
+      for t  in random_list :
         t = np.random.rand()*(10**i)
         
         while t<1 :
@@ -309,12 +320,13 @@ def Get_Time_List(List_Type = 'Long'):
         
         if t<315576000:
           [time_list.append( int(t) ) for j in range(1) if int(t) not in time_list ]
-          append_cnt+=1
           
-
-         
-                 
-    time_list = sorted(time_list)   
+          
+      Progression( i , 11)
+    
+    time_list = sorted(time_list)
+    refresh()   
+ 
      
 
   elif List_Type == 'Random':
@@ -347,7 +359,7 @@ def Get_Time_List(List_Type = 'Long'):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 
-def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Seconds' , decay_chain=0 , List_Type = 'Long' , original_Data = None , recurring_DF = None ) :
+def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Seconds' , decay_chain=0 , List_Type = 'Long' , original_Data = None , recurring_DF = None , Shopping_List = []) :
 
     if str(type(recurring_DF)) != "<class 'pandas.core.frame.DataFrame'>" :
       original_Data = DF
@@ -355,11 +367,13 @@ def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Se
       DF = original_Data
       DF['Half_Life({:})'.format(Unit_Of_Time)] = [gaussian_noise( Data= half_life , mu = 0.0 , std = 0.01 )  for half_life in list(DF['Half_Life({:})'.format(Unit_Of_Time)]) ]
 
+    time_list = Get_Time_List(List_Type = List_Type)
+    
     print("Creating Data Set Please Wait... ({:} Replications Left)".format(Num_Of_Replicates))
     
 
-    time_list = Get_Time_List(List_Type = List_Type)
-    Decay_const , type_of_decay_chain ,unique_decay_types  = get_decay_chain( dataframe = DF , Unit_Of_Time = Unit_Of_Time , chain_num = decay_chain )
+    
+    Decay_const , type_of_decay_chain , unique_decay_types , decay_name_chain  = get_decay_chain( dataframe = DF , Unit_Of_Time = Unit_Of_Time , chain_num = decay_chain )
 
     N0=1
     DF ={ 'N'           : [],
@@ -367,8 +381,18 @@ def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Se
           'Decay_Type'  : [],
           'Isotope'     : [] }
 
+    if Shopping_List == [] :
+      Decay_const ,type_of_decay_chain = Decay_const[679:848] ,list(type_of_decay_chain.values())[679:848]
+    else :
+      Decay_const_holder         = []
+      type_of_decay_chain_holder = []
+      for  i in  Shopping_List:
+        Decay_const_holder.append(Decay_const[i])
+        type_of_decay_chain_holder.append( list(type_of_decay_chain.values())[i])
 
-    Decay_const ,type_of_decay_chain = Decay_const[680:] ,list(type_of_decay_chain.values())[680:]
+      
+      Decay_const ,type_of_decay_chain = Decay_const_holder , type_of_decay_chain_holder
+
     All_decay_types=[]
     [ All_decay_types.append( i ) for i in type_of_decay_chain  ]
 
@@ -377,37 +401,36 @@ def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Se
 
 
 
-    Progression( 0 , len(Decay_const) )                                # range should be going from one when i appple the stable isotope identifications.
+    Progression( 0 , len(Decay_const) )                               # range should be going from one when i appple the stable isotope identifications.
     for isotope_decay_chain , index , decay_types in zip( Decay_const, range(len(Decay_const)) , All_decay_types ):
+
+      
 
       
 
       for t in time_list:
         
-        Specific_Decay_Sum = { i : [] for i in np.unique(decay_types) }
+        Specific_Decay_Sum = { i : [] for i in decay_types }
         Ns = Bateman_equation( X0 = N0 , Decay_constants = isotope_decay_chain , t=t )
         
         if sum(Ns)!=0:
 
           for  i , N in enumerate(Ns) :
-  
+    
             Specific_Decay_Sum[ decay_types[i] ].append( N )
-  
-          for Decay_Sum in Specific_Decay_Sum:
-            if N !=0:
-              N = sum( Specific_Decay_Sum[Decay_Sum] )
-  
-              DF['N'].append(N)
-              DF['t'].append(t)
-              DF['Decay_Type'].append(Numerical_Decay_Types[ Decay_Sum ])
-              DF['Isotope'].append(index)
+    
+            for Decay_Sum in Specific_Decay_Sum:
+              total_abundance = sum( Specific_Decay_Sum[Decay_Sum] )
               
-        #elif N ==0:
-        #  DF['N'].append(sum(Ns))
-        #  DF['t'].append(t)
-        #  DF['Decay_Type'].append( 0 )
-        #  DF['Isotope'].append(index)
-                
+              if total_abundance !=0:                
+        
+                DF['N'].append(total_abundance)                          
+                DF['t'].append(t)
+                DF['Decay_Type'].append(Numerical_Decay_Types[ Decay_Sum ])
+                DF['Isotope'].append(index)
+
+        
+        
 
       Progression(index+1 , len(Decay_const) )
 
@@ -452,14 +475,15 @@ def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Se
 def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Specific_Radioisotope = False):
 
   if Specific_Radioisotope == False:
+    time_list = Get_Time_List( List_Type = 'Long' )
     print("Plotting Data Please Wait...")
 
     DF , Isotope_List  = Read_File( filename = filename , Unit_Of_Time = Unit_Of_Time )
 
-    time_list = Get_Time_List( List_Type = 'Long' )
+    
 
-    Decay_const , type_of_decay_chain , unique_decay_types = get_decay_chain( dataframe = DF , Unit_Of_Time = Unit_Of_Time , chain_num = decay_chain )
-    Decay_const = Decay_const[680:]
+    Decay_const , type_of_decay_chain , unique_decay_types , decay_name_chain = get_decay_chain( dataframe = DF , Unit_Of_Time = Unit_Of_Time , chain_num = decay_chain )
+    Decay_const = Decay_const[679:848]
     N0=1
     Progression(0 , len(Decay_const) )
     for isotope , index in zip(Decay_const,range(len(Decay_const))):
@@ -489,9 +513,10 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
 
       time_list = Get_Time_List( List_Type = 'Long' )
 
-      Decay_const , type_of_decay_chain , unique_decay_types = get_decay_chain( dataframe = DF , Unit_Of_Time = Unit_Of_Time , chain_num = decay_chain )
+      Decay_const , type_of_decay_chain , unique_decay_types , decay_name_chain = get_decay_chain( dataframe = DF , Unit_Of_Time = Unit_Of_Time , chain_num = decay_chain )
       Decay_const = Decay_const[isotope-3:isotope-2][0]
-
+      type_of_decay_chain = list(type_of_decay_chain.values())[isotope]
+      decay_name_chain = list(decay_name_chain.values())[isotope]
 
       plot_dict = { i : [] for i in range(len(Decay_const)) }
 
@@ -507,11 +532,12 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
 
         if sum(Ns) == 0: break
       
-      for i in plot_dict:
+      for i , t_o_d ,d_n_c in zip( plot_dict , type_of_decay_chain , decay_name_chain):
 
         plt.ylim(0, 1.2)
-        plt.plot(x_axis,plot_dict[i])
+        plt.plot( x_axis , plot_dict[i] , label = "{:}-{:}".format( str(d_n_c), str(t_o_d)))
 
+      plt.legend()
       plt.xlabel(f"time in {Unit_Of_Time}")
       plt.ylabel(f"N")
       plt.title(str(Isotope_List[isotope]))
@@ -525,7 +551,7 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 
-def training_V2 ( Training_df  ,Isotope_List , New_Model=True , model = None , Training_Logs = False , Operating_system =None):
+def training_V2 ( Training_df  , Config_Receipt = {} , New_Model=True , model = None , Training_Logs = False , Operating_system =None):
 
     if New_Model== True and Training_Logs == False: 
 
@@ -538,17 +564,17 @@ def training_V2 ( Training_df  ,Isotope_List , New_Model=True , model = None , T
         Training_df[['t','Decay_Type']] = scaler.fit_transform(Training_df[['t','Decay_Type']])
 
 
-        model = Sequential([Dense(512 , input_shape=((Training_df.shape)[1],) ,activation='sigmoid'),
-                            Dense(512 , activation='sigmoid'),
-                            #Dense(38 , activation='sigmoid'),
-                            #Dense(38 , activation='sigmoid'),
+
+        model = Sequential([Dense(16 , input_shape=((Training_df.shape)[1],) ,activation='sigmoid'),
+                            Dense(32 , activation='sigmoid'),
                             Dense(len(train_labels.unique()),activation='softmax')])
 
 
         model.compile(optimizer=Adam(learning_rate=0.01), 
                     loss='sparse_categorical_crossentropy', 
                     metrics=['accuracy',])
-
+        
+        print("\n{:}\n\n".format(Config_Receipt))
         print(model.summary())
 
         history  = model.fit(   Training_df, train_labels , 
@@ -578,18 +604,21 @@ def training_V2 ( Training_df  ,Isotope_List , New_Model=True , model = None , T
         scaler = MinMaxScaler()
 
         Training_df[['t','Decay_Type']] = scaler.fit_transform(Training_df[['t','Decay_Type']])
+        
 
 
-        model = Sequential([Dense(256, input_shape=((Training_df.shape)[1],) ,activation='sigmoid'),
-                            Dense(256, activation='sigmoid'),
+        model = Sequential([Dense(16, input_shape=((Training_df.shape)[1],) ,activation='sigmoid'),
+                            Dense(32, activation='sigmoid'),
                             Dense(len(train_labels.unique()),activation='softmax')])
 
 
         model.compile(optimizer=Adam(learning_rate=0.01), 
                     loss='sparse_categorical_crossentropy', 
                     metrics=['accuracy',])
-
+                    
+        print("\n{:}\n\n".format(Config_Receipt))
         print(model.summary())
+        
         history  = model.fit( Training_df, train_labels , validation_split=0.1 , epochs=1 , shuffle=True , verbose=2)
 
 
@@ -599,6 +628,10 @@ def training_V2 ( Training_df  ,Isotope_List , New_Model=True , model = None , T
             
             with open("Model_Log_{:}\Model_Logs_{:}.txt".format(Log_Date,Log_Date),'a') as file:
               model.summary(print_fn=lambda x: file.write(x + '\n'))
+
+              for Data_Name in Config_Receipt :
+                file.write("\n{:} : {:}\n".format( Data_Name , Config_Receipt[Data_Name] ))
+
               file.write("\n{:} - Epoch_{:} ".format( history.history , 1 ))
               
         else:
@@ -606,6 +639,10 @@ def training_V2 ( Training_df  ,Isotope_List , New_Model=True , model = None , T
             
             with open("Model_Log_{:}/Model_Logs_{:}.txt".format(Log_Date,Log_Date),'a') as file:
               model.summary(print_fn=lambda x: file.write(x + '\n'))
+
+              for Data_Name in Config_Receipt :
+                file.write("\n{:} : {:}".format( Data_Name , Config_Receipt[Data_Name] ))
+                
               file.write("\n{:} - Epoch_{:} ".format( history.history , 1 ))
 
 
@@ -762,6 +799,16 @@ def Evaluate( Testing_df , model , Unknown_Isotope = False):
 
 def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown_Isotope = False , Radioactive_Shopping_List = False  , Shopping_List = None):
 
+  if Shopping_List == [] :
+    Isotope_List = Isotope_List[679:848] 
+    
+  else :
+    Isotope_List_holder = []
+  
+    for  i in  Shopping_List:
+      Isotope_List_holder.append(Isotope_List[i])
+    
+    Isotope_List = Isotope_List_holder
 
   if Unknown_Isotope == False:
       
@@ -772,15 +819,15 @@ def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown
           
           Most_Probable_Index_2nd  = []
 
-          Most_Probable_Index_3rd = []
+
 
           for  i in Ordered_Predictions:
 
               Most_Probable_Index_1st.append(i[0])
               Most_Probable_Index_2nd.append(i[1])
-              Most_Probable_Index_3rd.append(i[2])
 
-          for MP1 , MP2 ,MP3, real , prob in zip( Most_Probable_Index_1st , Most_Probable_Index_2nd, Most_Probable_Index_3rd , df_test_eval , eval_result):
+
+          for MP1 , MP2 , real , prob in zip( Most_Probable_Index_1st , Most_Probable_Index_2nd , df_test_eval , eval_result):
               
               answer = ""
               if MP1 == real :
@@ -789,8 +836,8 @@ def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown
               else:
                   answer= "Wrong"
 
-              print("{:10n} : {:.2f}  {:10n} : {:.2f} {:10n} : {:.2f} Answer Given: {:8s} ..... {:11n} ".format(MP1, prob[MP1], MP2 , prob[MP2] , MP3 , prob[MP3] , answer , real ))
-              # print("{:20s} : {:.2f}  {:20s} : {:.2f} Answer Given: {:8s} ..... {:11s} ".format(Isotope_List[MP1], prob[MP1], Isotope_List[MP2] , prob[MP2] , answer , Isotope_List[real] ))
+              #print("{:10n} : {:.2f}  {:10n} : {:.2f} {:10n} : {:.2f} Answer Given: {:8s} ..... {:11n} ".format(MP1, prob[MP1], MP2 , prob[MP2] , MP3 , prob[MP3] , answer , real ))
+              print("{:20s} : {:.2f}  {:20s} : {:.2f} Answer Given: {:8s} ..... {:11s} ".format(Isotope_List[MP1], prob[MP1], Isotope_List[MP2] , prob[MP2] , answer , Isotope_List[real] ))
       
       if Unknown_Isotope == True:
 
@@ -819,15 +866,13 @@ def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown
           
           Most_Probable_Index_2nd  = []
 
-          Most_Probable_Index_3rd = []
 
           for  i in Ordered_Predictions:
 
               Most_Probable_Index_1st.append(i[0])
               Most_Probable_Index_2nd.append(i[1])
-              Most_Probable_Index_3rd.append(i[2])
 
-          for MP1 , MP2 ,MP3 , prob in zip( Most_Probable_Index_1st , Most_Probable_Index_2nd, Most_Probable_Index_3rd  , eval_result):
+          for MP1 , MP2  , prob in zip( Most_Probable_Index_1st , Most_Probable_Index_2nd  , eval_result):
               
               # print("{:10n} : {:.2f}  {:10n} : {:.2f} {:10n} : {:.2f}  ".format(MP1, prob[MP1], MP2 , prob[MP2] , MP3 , prob[MP3]  ))
               print("{:20s} : {:.2f}  {:20s} : {:.2f}  ".format(Isotope_List[MP1], prob[MP1], Isotope_List[MP2] , prob[MP2]  ))
