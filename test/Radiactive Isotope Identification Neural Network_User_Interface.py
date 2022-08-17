@@ -10,6 +10,7 @@ from Code_Functions import *
 
 
 
+
 ############### Enter the file path below if not working ####################################
 
 
@@ -29,7 +30,8 @@ UI_Options = {  'Training_DataFrame'        : False ,
                 'Model_Evaluated'           : False ,
                 'Decay_Chain'               : 0     ,
                 'Number_Of_Replicants'      : 0     ,
-                'Radioactive_Shopping_List' : False , 
+                'Radioactive_Shopping_List' : False ,
+                'Shopping_List'             : [] , 
                 'Unit Of Time'              :'Seconds' }
 
 
@@ -64,7 +66,8 @@ while True:
     Option=input("option : ")
 
     if Option=="1":
-        Option=''
+        Option  =''
+        
 
 
         while True:
@@ -107,7 +110,7 @@ while True:
                     time.sleep(2)
                     continue
                 
-                Training_Data = Create_Data_Set( DF = Training_Data  , std =0.01 , Num_Of_Replicates = UI_Options['Number_Of_Replicants']  , Unit_Of_Time = UI_Options['Unit Of Time'] , decay_chain = UI_Options['Decay_Chain'] , List_Type = 'Long'  )
+                Training_Data = Create_Data_Set( DF = Training_Data  , std =0.01 , Num_Of_Replicates = UI_Options['Number_Of_Replicants']  , Unit_Of_Time = UI_Options['Unit Of Time'] , decay_chain = UI_Options['Decay_Chain'] , List_Type = 'Long' , Shopping_List = UI_Options['Shopping_List']  )
                 
                 
                 UI_Options['Training_DataFrame']=True
@@ -126,7 +129,7 @@ while True:
                     time.sleep(2)
                     continue
 
-                Testing_Data = Create_Data_Set( DF = Testing_Data  , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = UI_Options['Unit Of Time'] , decay_chain=0 , List_Type = 'Long' )
+                Testing_Data = Create_Data_Set( DF = Testing_Data  , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = UI_Options['Unit Of Time'] , decay_chain=0 , List_Type = 'Random' , Shopping_List = UI_Options['Shopping_List'])
                 
                 
                 UI_Options['Testing_DataFrame']=True
@@ -251,17 +254,8 @@ while True:
 
                             Option=''
                             print('{:10s}{:}(Currrently on "{}" & Decay_Chain "{}")\n'.format("","Load Example Model \n", UI_Options['Unit Of Time'] , UI_Options["Decay_Chain"] ) )
-                            print("{:50s} {:50s}".format("Load Seconds  Model :","1"))
-                            print("{:50s} {:50s}".format("Load Minutes  Model :","2"))
-                            print("{:50s} {:50s}".format("Load Hours    Model :","3"))
-                            print("{:50s} {:50s}".format("Load Days     Model :","4"))
-
-                            if UI_Options["Decay_Chain"] == 30 :
-                                print("\n{:50s} {:50s}".format("Load Seconds  Model for all decay chains :","5"))
-                                print("{:50s} {:50s}".format("Load Minutes  Model for all decay chains :","6"))
-                                print("{:50s} {:50s}".format("Load Hours    Model for all decay chains :","7"))
-                                print("{:50s} {:50s}".format("Load Days     Model for all decay chains :","8"))
-                            print("{:51s} {:50s}".format("Help :","h"))
+                            print("{:50s} {:50s}".format("Load Seconds  Model (0 Decay Chain):","1"))
+                            print("{:50s} {:50s}".format("Info :","i"))
                             print("{:51s} {:50s}".format("\nBack :","q"))
                             Option=input("option : ")
 
@@ -274,44 +268,8 @@ while True:
                                     print("Example file(s) are missing ")
                                     time.sleep(2)
 
-                            elif Option=='2':
 
-                                try:
-                                    model = Example_model(filename = str( path + file_paths['Example_Minutes'] ))
-                                    UI_Options['Trained_Model']=True
-                                except:
-                                    print("Example file(s) are missing ")
-                                    time.sleep(2)
-
-
-                            elif Option=='3':
-
-                                try:
-                                    model = Example_model(filename = str( path + file_paths['Example_Hours'] ))
-                                    UI_Options['Trained_Model']=True
-                                except:
-                                    print("Example file(s) are missing ")
-                                    time.sleep(2)
-                                    
-
-                            elif Option=='4':
-
-                                try:
-                                    model = Example_model(filename = str( path + file_paths['Example_Days'] ))
-                                    UI_Options['Trained_Model']=True
-                                except:
-                                    print("Example file(s) are missing ")
-                                    time.sleep(2)
-
-                            elif Option=='5':
-
-                                try:
-                                    model = Example_model(filename = str( path + file_paths['Example_Seconds_DD'] ))
-                                    UI_Options['Trained_Model']=True
-                                except:
-                                    print("Example file(s) are missing ")
-                                    time.sleep(2)
-                            elif Option=='h':
+                            elif Option=='i':
                                 print(path)
                                 print(file_paths)
                                 time.sleep(30)
@@ -387,9 +345,13 @@ while True:
 
                 Option=input("option : ")
 
+                Config_Receipt = {  'Unit Of Time'              : UI_Options['Unit Of Time'] ,
+                                    'Number_Of_Replicants'      : UI_Options['Number_Of_Replicants'] , 
+                                    'Decay_Chain'               : UI_Options['Decay_Chain']  }
+
                 if Option == '1' and UI_Options['Training_DataFrame'] == True and UI_Options['Isotope_List'] == True :
                     refresh()
-                    model , history  = training_V2 ( Training_df = Training_Data , Isotope_List = Isotope_List , Training_Logs = UI_Options["Training_Logs"] , Operating_system = Operating_system)
+                    model , history  = training_V2 ( Training_df = Training_Data , Config_Receipt = Config_Receipt , Training_Logs = UI_Options["Training_Logs"] , Operating_system = Operating_system)
                     UI_Options['Trained_Model']=True
 
                 elif Option == '2' and UI_Options['Training_DataFrame'] and UI_Options['Trained_Model'] == True and UI_Options['Isotope_List'] == True:
@@ -469,7 +431,7 @@ while True:
 
     elif Option == "6" and UI_Options['Model_Evaluated'] == True and UI_Options['Isotope_List'] == True:
         refresh()
-        Further_Evalutaion ( eval_result, Isotope_List ,df_test_eval ,)
+        Further_Evalutaion ( eval_result, Isotope_List ,df_test_eval , Shopping_List = UI_Options['Shopping_List'] )
         break
 
 
@@ -607,15 +569,18 @@ while True:
 
                 refresh()
                 Option = ''
-                if UI_Options["Isotope_List"] == False :  
-                    print("Isotope List Not Found")
-                    time.sleep(3)
 
-                else:
+                try:
+
+                    Data = open( str(path +file_paths['Isotope_List']) , 'r').read()
+                    Isotope_List = Data.splitlines()
+                    UI_Options['Isotope_List']=True
                     try :
+
                         Shopping_List
                         try:
-                            Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List, Shopping_List = Shopping_List)
+                            Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List , Shopping_List = UI_Options['Shopping_List'])
+                            UI_Options['Shopping_List'] = Shopping_List
                             
                         except:
                             pass
@@ -623,12 +588,17 @@ while True:
                     except:
                         try:
                             Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List )
+                            UI_Options['Shopping_List'] = Shopping_List
                             UI_Options["Radioactive_Shopping_List"] == True
 
                         except:
                             print("No Isotopes Selected")
                             UI_Options["Radioactive_Shopping_List"] == False
                             time.sleep(3)
+
+                except:
+                    print('Isotope List Not Found , Go into "Load" and load an Isotope List. ')
+                    time.sleep(10)
 
             elif Option =="9":
 
