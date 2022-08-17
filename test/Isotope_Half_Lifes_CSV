@@ -3,19 +3,19 @@ fluorine-15,1.11E-21,proton emission,oxygen-12
 oxygen-12,1.14E-21,double proton emission,carbon-12
 sodium-18,1.34E-21,proton emission,neon-17
 helium-10,1.52E-21,double neutron emmision,helium-8
-lithium-10,2E-21,neutron emission,litium-9
-carbon-8,2E-21,double proton emission,beryllium-6
-beryllium-13,2.7E-21,neutron emission,beryllium-12
+lithium-10,2.00E-21,neutron emission,litium-9
+carbon-8,2.00E-21,double proton emission,beryllium-6
+beryllium-13,2.70E-21,neutron emission,beryllium-12
 helium-7,2.51E-21,neutron emission,helium-6
-lithium-13,3.3E-21,double neutron emmision,lithium-11
+lithium-13,3.30E-21,double neutron emmision,lithium-11
 neon-16,3.74E-21,double proton emission,oxygen-13
-beryllium-6,5E-21,double proton emission,helium-4
-helium-9,7E-21,neutron emission,helium-8
-fluorine-16,1.1E-20,proton emission,oxygen-16
+beryllium-6,5.00E-21,double proton emission,helium-4
+helium-9,7.00E-21,neutron emission,helium-8
+fluorine-16,1.10E-20,proton emission,oxygen-16
 boron-9,8.45E-19,proton emission,beryllium-8
 beryllium-8,8.19E-17,alpha,helium-4
 oxygen-27,1.75E-15,neutron emission,oxygen-26
-boron-16,1.9E-10,neutron emission,boron-15
+boron-16,1.90E-10,neutron emission,boron-15
 lithium-12,0.00000001,neutron emission,lithium-11
 boron-18,0.000000026,neutron emission,boron-17
 carbon-21,0.00000003,neutron emission,carbon-20
@@ -51,18 +51,18 @@ neptunium-223,0.00000215,alpha,protactinium-219
 radon-215,0.0000023,alpha,polonium-211
 polonium-213,0.00000365,alpha,lead-209
 protactinium-221,0.0000049,alpha,actinium-217
-nobelium-250,0.0000057,spontaneous fission ,(various)
+nobelium-250,0.0000057,spontaneous fission,(various)
 thorium-220,0.0000097,alpha,radium-216
 actinium-219,0.0000118,alpha,francium-215
 francium-217,0.0000168,alpha,astatine-213
 uranium-223,0.000021,alpha,thorium-219
-rutherfordium-254,0.000023,spontaneous fission ,(various)
+rutherfordium-254,0.000023,spontaneous fission,(various)
 neptunium-220,0.000025,alpha,protactinium-216
 radium-218,0.0000252,alpha,radon-214
 polonium-186,0.000034,alpha,lead-182
 neptunium-224,0.000038,alpha,protactinium-220
 radon-216,0.000045,alpha,polonium-212
-rutherfordium-253,0.000048,spontaneous fission ,(various)
+rutherfordium-253,0.000048,spontaneous fission,(various)
 uranium-219,0.000055,alpha,thorium-215
 astatine-215,0.0001,alpha,bismuth-211
 protactinium-218,0.000113,alpha,actinium-214
@@ -75,22 +75,22 @@ thorium-217,0.00024,alpha,radium-213
 darmstadtium-273,0.00024,alpha,hassium-269
 astatine-216,0.0003,alpha,bismuth-212
 nihonium-278,0.00034,alpha,roentgenium-274
-fermium-258,0.00037,spontaneous fission ,(various)
+fermium-258,0.00037,spontaneous fission,(various)
 polonium-188,0.00043,alpha,lead-184
 actinium-216,0.00044,alpha,francium-212
 hassium-264,0.00054,alpha,seaborgium-260
 radon-217,0.00054,alpha,polonium-213
 copernicium-277,0.00069,alpha,darmstadtium-273
 oganesson-294,0.00069,alpha,livermorium-290
-fermium-241,0.00073,spontaneous fission ,(various)
+fermium-241,0.00073,spontaneous fission,(various)
 hassium-263,0.00076,alpha,seaborgium-259
-fermium-242,0.0008,spontaneous fission ,(various)
-mendelevium-245,0.0009,spontaneous fission ,(various)
-copernicium-282,0.00091,spontaneous fission ,(various)
+fermium-242,0.0008,spontaneous fission,(various)
+mendelevium-245,0.0009,spontaneous fission,(various)
+copernicium-282,0.00091,spontaneous fission,(various)
 uranium-224,0.00094,alpha,thorium-220
 francium-218,0.001,alpha,astatine-214
 meitnerium-266,0.0012,alpha,bohrium-262
-nobelium-258,0.0012,spontaneous fission ,(various)
+nobelium-258,0.0012,spontaneous fission,(various)
 polonium-187,0.0014,alpha,lead-183
 nihonium-278,0.0014,alpha,roentgenium-274
 sodium-35,0.0015,beta -,magnesium-35
@@ -105,12 +105,12 @@ thorium-222,0.002237,alpha,radium-218
 uranium-215,0.00224,alpha,thorium-211
 polonium-190,0.00246,alpha,lead-186
 fluorine-29,0.0025,beta - neutron emission,neon-28
-flerovium-284,0.0025,spontaneous fission ,(various)
+flerovium-284,0.0025,spontaneous fission,(various)
 radium-202,0.0026,alpha,radon-198
 boron-19,0.00292,beta - neutron emission,carbon-18
-seaborgium-258,0.003,spontaneous fission ,(various)
+seaborgium-258,0.003,spontaneous fission,(various)
 hassium-266,0.00302,alpha,seaborgium-262
-fermium-244,0.00312,spontaneous fission ,(various)
+fermium-244,0.00312,spontaneous fission,(various)
 protactinium-222,0.0032,alpha,actinium-218
 neon-31,0.0034,beta -,sodium-31
 protactinium-217,0.00348,alpha,actinium-213
@@ -120,15 +120,15 @@ protactinium-211,0.0038,alpha,actinium-207
 lead-179,0.0039,alpha,mercury-175
 roentgenium-278,0.004,alpha,meitnerium-274
 radium-203,0.004,alpha,radon-199
-seaborgium-260,0.004,spontaneous fission ,(various)
+seaborgium-260,0.004,spontaneous fission,(various)
 uranium-216,0.0043,alpha,thorium-212
 beryllium-14,0.00435,beta - neutron emission,boron-13
 lead-180,0.0045,alpha,mercury-176
 radon-196,0.0047,alpha,polonium-192
 fluorine-27,0.005,beta - neutron emission,neon-27
 francium-214,0.005,alpha,astatine-210
-meitnerium-277,0.005,spontaneous fission ,(various)
-nobelium-262,0.005,spontaneous fission ,(various)
+meitnerium-277,0.005,spontaneous fission,(various)
+nobelium-262,0.005,spontaneous fission,(various)
 polonium-189,0.005,alpha,lead-185
 boron-17,0.00508,beta - neutron emission,carbon-16
 protactinium-223,0.0051,alpha,actinium-219
@@ -139,11 +139,11 @@ uranium-218,0.006,alpha,thorium-214
 radon-195,0.006,alpha,polonium-191
 carbon-22,0.0062,beta - neutron emission,nitrogen-21
 meitnerium-270,0.0063,alpha,bohrium-266
-rutherfordium-256,0.0064,spontaneous fission ,(various)
+rutherfordium-256,0.0064,spontaneous fission,(various)
 bismuth-184,0.0066,alpha,thallium-180
 thorium-209,0.007,alpha,radium-205
 protactinium-213,0.007,alpha,actinium-209
-seaborgium-262,0.007,spontaneous fission ,(various)
+seaborgium-262,0.007,spontaneous fission,(various)
 neon-30,0.0073,beta -,sodium-30
 protactinium-212,0.008,alpha,actinium-208
 sodium-33,0.008,beta - neutron emission,magnesium-32
@@ -153,7 +153,7 @@ lithium-11,0.00859,beta - neutron emission,beryllium-10
 fluorine-26,0.0096,beta -,neon-26
 boron-15,0.00987,beta - neutron emission,carbon-14
 radium-219,0.01,alpha,radon-215
-hassium-277,0.011,spontaneous fission ,(various)
+hassium-277,0.011,spontaneous fission,(various)
 nitrogen-12,0.011,beta +,carbon-12
 astatine-192,0.0115,alpha,bismuth-188
 bohrium-261,0.0118,alpha,dubnium-257
@@ -177,12 +177,12 @@ neon-28,0.0189,beta -,sodium-28
 livermorium-291,0.019,alpha,flerovium-287
 radon-213,0.0195,alpha,polonium-209
 actinium-205,0.02,alpha,francium-201
-rutherfordium-270,0.02,spontaneous fission ,(various)
+rutherfordium-270,0.02,spontaneous fission,(various)
 francium-219,0.02,alpha,astatine-215
 meitnerium-275,0.02,alpha,bohrium-271
 boron-12,0.0202,beta -,carbon-12
-rutherfordium-260,0.021,spontaneous fission ,(various)
-californium-238,0.0211,spontaneous fission ,(various)
+rutherfordium-260,0.021,spontaneous fission,(various)
+californium-238,0.0211,spontaneous fission,(various)
 beryllium-12,0.02149,beta -,boro-12
 tennessine-293,0.022,alpha,moscovium-289
 polonium-191,0.022,alpha,lead-187
@@ -193,7 +193,7 @@ uranium-217,0.026,alpha,thorium-213
 actinium-220,0.02636,alpha,francium-216
 thorium-216,0.0268,alpha,radium-212
 meitnerium-268,0.027,alpha,bohrium-264
-lawrencium-251,0.027,spontaneous fission ,(various)
+lawrencium-251,0.027,spontaneous fission,(various)
 astatine-193,0.028,alpha,bismuth-189
 sodium-28,0.0305,beta -,magnesium-28
 actinium-207,0.031,alpha,francium-203
@@ -206,7 +206,7 @@ radon-218,0.035,alpha,polonium-214
 neptunium-226,0.035,alpha,protactinium-222
 thorium-212,0.036,alpha,radium-208
 moscovium-287,0.037,alpha,nihonium-283
-seaborgium-264,0.037,spontaneous fission ,(various)
+seaborgium-264,0.037,spontaneous fission,(various)
 dubnium-255,0.037,alpha,lawrencium-251
 bismuth-188,0.044,alpha,thallium-184
 sodium-29,0.0449,beta -,magnesium-29
@@ -236,13 +236,13 @@ roentgenium-279,0.09,alpha,meitnerium-275
 carbon-18,0.092,beta -,nitrogen-18
 actinium-209,0.092,alpha,francium-205
 actinium-208,0.097,alpha,francium-204
-copernicium-284,0.098,spontaneous fission ,(various)
+copernicium-284,0.098,spontaneous fission,(various)
 thorium-214,0.1,alpha,radium-210
 flerovium-285,0.1,alpha,copernicium-281
 protactinium-216,0.105,alpha,actinium-212
-nobelium-260,0.106,spontaneous fission ,(various)
+nobelium-260,0.106,spontaneous fission,(various)
 helium-8,0.119,beta -,litium-8
-flerovium-286,0.12,spontaneous fission ,(various)
+flerovium-286,0.12,spontaneous fission,(various)
 carbon-9,0.1265,beta +,boron-9
 nitrogen-20,0.13,beta -,oxygen-20
 thorium-213,0.14,alpha,radium-209
@@ -254,10 +254,10 @@ copernicium-281,0.18,alpha,darmstadtium-277
 neon-26,0.192,beta -,sodium-26
 carbon-17,0.193,beta -,nitrogen-17
 seaborgium-261,0.2,alpha,rutherfordium-257
-darmstadtium-279,0.21,spontaneous fission ,(various)
+darmstadtium-279,0.21,spontaneous fission,(various)
 actinium-211,0.213,alpha,francium-207
 radium-205,0.22,alpha,radon-201
-fermium-243,0.231,spontaneous fission ,(various)
+fermium-243,0.231,spontaneous fission,(various)
 radium-206,0.24,alpha,radon-202
 astatine-196,0.253,alpha,bismuth-192
 uranium-226,0.269,alpha,thorium-222
@@ -270,7 +270,7 @@ astatine-212,0.314,alpha,bismuth-208
 astatine-195,0.328,alpha,bismuth-191
 moscovium-289,0.33,alpha,nihonium-285
 actinium-210,0.35,alpha,francium-206
-seaborgium-266,0.36,spontaneous fission ,(various)
+seaborgium-266,0.36,spontaneous fission,(various)
 astatine-197,0.39,alpha,bismuth-193
 fluorine-24,0.39,beta -,neon-24
 lawrencium-252,0.39,alpha,mendelevium-248
@@ -871,7 +871,7 @@ berkelium-247,43550240400,alpha,americium-243
 radium-226,50493031200,alpha,radon-222
 molybdenum-93,1.26E+11,electron capture,niobium-93
 holmium-163,1.44E+11,electron capture,dysprosium-163
-curium-246,1.5E+11,alpha,plutonium-242
+curium-246,1.50E+11,alpha,plutonium-242
 carbon-14,1.81E+11,beta -,nitrogen-14
 plutonium-240,2.07E+11,alpha,uranium-236
 thorium-229,2.32E+11,alpha,radium-225
@@ -882,74 +882,74 @@ niobium-94,6.41E+11,beta -,molybdenum-94
 plutonium-239,7.61E+11,alpha,uranium-235
 protactinium-231,1.03E+12,alpha,actinium-227
 lead-202,1.66E+12,electron capture,thallium-202
-lanthanum-137,1.9E+12,electron capture,barium-137
+lanthanum-137,1.90E+12,electron capture,barium-137
 thorium-230,2.38E+12,alpha,radium-226
-nickel-59,2.4E+12,electron capture,cobalt-59
-calcium-41,3.3E+12,electron capture,potassium-41
-neptunium-236,4.9E+12,electron capture,uranium-236
+nickel-59,2.40E+12,electron capture,cobalt-59
+calcium-41,3.30E+12,electron capture,potassium-41
+neptunium-236,4.90E+12,electron capture,uranium-236
 uranium-233,5.02E+12,alpha,thorium-229
-rhenium-186m,6.3E+12,nuclear isomer,rhenium-186
+rhenium-186m,6.30E+12,nuclear isomer,rhenium-186
 technetium-99,6.66E+12,beta -,ruthenium-99
-krypton-81,7.2E+12,electron capture,bromine-81
-tin-126,7.3E+12,beta -,antimony-126
+krypton-81,7.20E+12,electron capture,bromine-81
+tin-126,7.30E+12,beta -,antimony-126
 uranium-234,7.75E+12,alpha,thorium-230
-chlorine-36,9.5E+12,beta -,argon-36
+chlorine-36,9.50E+12,beta -,argon-36
 selenium-79,1.03E+13,beta -,bromine-79
-curium-248,1.1E+13,alpha,plutonium-244
+curium-248,1.10E+13,alpha,plutonium-244
 bismuth-208,1.16E+13,beta +,lead-208
 plutonium-242,1.18E+13,alpha,uranium-238
 aluminium-26,2.26E+13,beta +,magnesium-26
-beryllium-10,4.4E+13,beta -,boron-10
-zirconium-93,4.8E+13,beta -,niobium-93
-gadolinium-150,5.6E+13,alpha,samarium-146
+beryllium-10,4.40E+13,beta -,boron-10
+zirconium-93,4.80E+13,beta -,niobium-93
+gadolinium-150,5.60E+13,alpha,samarium-146
 neptunium-237,6.77E+13,alpha,plutonium-239
-caesium-135,7.3E+13,beta -,barium-135
-iron-60,8.2E+13,beta -,cobalt-60
-technetium-97,8.2E+13,electron capture,molybdenum-97
-dysprosium-154,9.5E+13,alpha,gadolinium-150
-bismuth-210m,9.6E+13,alpha,thallium-206
-manganese-53,1.2E+14,electron capture,chromium-53
-technetium-98,1.3E+14,beta -,ruthenium-98
-palladium-107,2.1E+14,beta -,silve-107
-hafnium-182,2.8E+14,beta -,tantalum-182
-lead-205,5.5E+14,electron capture,thallium-206
-curium-247,4.9E+14,alpha,plutonium-243
-iodine-129,5E+14,beta -,xenon-129
+caesium-135,7.30E+13,beta -,barium-135
+iron-60,8.20E+13,beta -,cobalt-60
+technetium-97,8.20E+13,electron capture,molybdenum-97
+dysprosium-154,9.50E+13,alpha,gadolinium-150
+bismuth-210m,9.60E+13,alpha,thallium-206
+manganese-53,1.20E+14,electron capture,chromium-53
+technetium-98,1.30E+14,beta -,ruthenium-98
+palladium-107,2.10E+14,beta -,silve-107
+hafnium-182,2.80E+14,beta -,tantalum-182
+lead-205,5.50E+14,electron capture,thallium-206
+curium-247,4.90E+14,alpha,plutonium-243
+iodine-129,5.00E+14,beta -,xenon-129
 uranium-236,7.39E+14,alpha,thorium-232
-niobium-92,1.1E+15,beta +,zirconium-91
-samarium-146,2.1E+15,alpha,neodymium-143
-plutonium-244,2.5E+15,alpha,uranium-240
+niobium-92,1.10E+15,beta +,zirconium-91
+samarium-146,2.10E+15,alpha,neodymium-143
+plutonium-244,2.50E+15,alpha,uranium-240
 uranium-235,2.22E+16,alpha,thorium-234
 potassium-40,3.95E+16,beta -,calcium-40
 uranium-238,1.41E+17,alpha,thorium-234
 thorium-232,4.43E+17,alpha,radium-228
 lutetium-176,1.19E+18,beta -,hafnium-176
-rhenium-187,1.3E+18,beta -,osmium-187
+rhenium-187,1.30E+18,beta -,osmium-187
 rubidium-87,1.57E+18,beta -,strontium-87
 lanthanum-138,3.22E+18,beta +,barium-138
 samarium-147,3.35E+18,alpha,neodymium-143
-platinum-190,2.1E+19,alpha,osmium-186
-gadolinium-152,3.5E+21,alpha,samarium-148
-indium-115,1.4E+22,beta -,tin-115
+platinum-190,2.10E+19,alpha,osmium-186
+gadolinium-152,3.50E+21,alpha,samarium-148
+indium-115,1.40E+22,beta -,tin-115
 hafnium-174,6.32E+22,alpha,ytterbium-170
 osmium-186,6.32E+22,alpha,tungsten-182
 neodymium-144,7.23E+22,alpha,cerium-140
 samarium-148,2.21E+23,alpha,neodymium-144
-cadmium-113,2.4E+23,beta -,indium-113
-vanadium-50,4.4E+24,electron capture,titanium-50
+cadmium-113,2.40E+23,beta -,indium-113
+vanadium-50,4.40E+24,electron capture,titanium-50
 tungsten-180,5.68E+25,alpha,hafnium-176
 europium-151,1.58E+26,alpha,promethium-147
 molybdenum-100,2.46E+26,double beta -,ruthenium-100
-neodymium-150,2.5E+26,double beta -,samarium-150
+neodymium-150,2.50E+26,double beta -,samarium-150
 tellurium-130,2.78E+26,double beta -,xenon-130
-zirconium-96,6.3E+26,double beta -,molybdenum-96
-bismuth-209,6.3E+26,alpha,thallium-205
+zirconium-96,6.30E+26,double beta -,molybdenum-96
+bismuth-209,6.30E+26,alpha,thallium-205
 calcium-48,7.26E+26,beta -,scandium-48
 cadmium-116,9.79E+26,double beta -,tin-116
-selenium-82,3.5E+27,double beta -,krypton-82
-barium-130,3.8E+28,double electron capture,xenon-130
-germanium-76,5.7E+28,double beta -,selenium-76
+selenium-82,3.50E+27,double beta -,krypton-82
+barium-130,3.80E+28,double electron capture,xenon-130
+germanium-76,5.70E+28,double beta -,selenium-76
 xenon-136,6.83E+28,double beta -,barium-136
-krypton-78,2.9E+29,double electron capture,selenium-78
-xenon-124,5.7E+29,beta -,caesium-133
-tellurium-128,6.9E+31,double beta -,xenon-128
+krypton-78,2.90E+29,double electron capture,selenium-78
+xenon-124,5.70E+29,beta -,caesium-133
+tellurium-128,6.90E+31,double beta -,xenon-128
