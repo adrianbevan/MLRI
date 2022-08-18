@@ -506,7 +506,7 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
     
     if Shopping_List == None:
       return
-    
+    refresh()
     for index,isotope in enumerate(Shopping_List ):
 
       print(f"Plotting Data Please Wait...{Isotope_List[isotope]}")
@@ -537,7 +537,7 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
         plt.ylim(0, 1.2)
         plt.plot( x_axis , plot_dict[i] , label = "{:}  :  {:}".format( str(d_n_c), str(t_o_d)))
 
-      plt.legend()
+      plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0)
       plt.xlabel(f"time in {Unit_Of_Time}")
       plt.ylabel(f"N")
       plt.title(str(Isotope_List[isotope]))
