@@ -514,9 +514,9 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
       time_list = Get_Time_List( List_Type = 'Long' )
 
       Decay_const , type_of_decay_chain , unique_decay_types , decay_name_chain = get_decay_chain( dataframe = DF , Unit_Of_Time = Unit_Of_Time , chain_num = decay_chain )
-      Decay_const = Decay_const[isotope-3:isotope-2][0]
-      type_of_decay_chain = list(type_of_decay_chain.values())[isotope]
-      decay_name_chain = list(decay_name_chain.values())[isotope]
+      Decay_const = Decay_const[isotope-2]
+      type_of_decay_chain = list(type_of_decay_chain.values())[isotope-2]
+      decay_name_chain = list(decay_name_chain.values())[isotope-2]
 
       plot_dict = { i : [] for i in range(len(Decay_const)) }
 
@@ -535,7 +535,7 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
       for i , t_o_d ,d_n_c in zip( plot_dict , type_of_decay_chain , decay_name_chain):
 
         plt.ylim(0, 1.2)
-        plt.plot( x_axis , plot_dict[i] , label = "{:}-{:}".format( str(d_n_c), str(t_o_d)))
+        plt.plot( x_axis , plot_dict[i] , label = "{:}  :  {:}".format( str(d_n_c), str(t_o_d)))
 
       plt.legend()
       plt.xlabel(f"time in {Unit_Of_Time}")
