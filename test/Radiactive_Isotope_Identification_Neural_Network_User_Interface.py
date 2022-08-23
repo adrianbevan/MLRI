@@ -1,4 +1,3 @@
-
 from Code_Functions import *
 
 
@@ -305,7 +304,7 @@ while True:
 
                     elif Option =='2':
                         try:
-                            Data = open(path+'\Isotope_List.txt', 'r').read()
+                            Data = open(path+'{}'.format(file_paths["Isotope_List"]), 'r').read()
                             Isotope_List = Data.splitlines()
                             UI_Options['Isotope_List']=True
                         except:
@@ -400,14 +399,14 @@ while True:
             if Option == '1':
 
                 try:
-                    Plot_Data_Frame( filename = str( path + file_paths['CSV_filename'] )  , Unit_Of_Time = UI_Options["Unit Of Time"] , decay_chain= UI_Options['Decay_Chain'] , Specific_Radioisotope = False)
+                    Plot_Data_Frame( filename = str( path + file_paths['CSV_filename'] )  , Unit_Of_Time = UI_Options["Unit Of Time"] , decay_chain= UI_Options['Decay_Chain'] , Specific_Radioisotope = False , path = path)
 
                 except:
                     print("ERROR : Either Training Data or Testing Data  is missing")
                     time.sleep(5)
 
             elif Option == '2':
-                    Plot_Data_Frame( filename = str( path + file_paths['CSV_filename'] )  , Unit_Of_Time = UI_Options["Unit Of Time"]  , decay_chain= UI_Options['Decay_Chain'] , Specific_Radioisotope = True)
+                    Plot_Data_Frame( filename = str( path + file_paths['CSV_filename'] )  , Unit_Of_Time = UI_Options["Unit Of Time"]  , decay_chain= UI_Options['Decay_Chain'] , Specific_Radioisotope = True , path = path)
 
 
             elif Option == 'q': 
@@ -431,42 +430,37 @@ while True:
 
     elif Option == "6" and UI_Options['Model_Evaluated'] == True and UI_Options['Isotope_List'] == True:
         refresh()
-        Further_Evalutaion ( eval_result, Isotope_List ,df_test_eval , Shopping_List = UI_Options['Shopping_List'] )
+        Further_Evalutaion ( eval_result, Isotope_List ,df_test_eval , Shopping_List = UI_Options['Shopping_List'] , Training_Logs = UI_Options["Training_Logs"] , path = path)
         break
 
 
     elif Option == "7" and UI_Options['Trained_Model'] == True:
         Option=''
         refresh() 
-        try:
-            if UI_Options["Radioactive_Shopping_List"] == True :
-                Unknown_Isotope(    model , filename = str(path + file_paths['CSV_filename']) , Unit_Of_Time=UI_Options['Unit Of Time'] ,
 
-                                    Radioactive_Shopping_List = UI_Options["Radioactive_Shopping_List"] , Shopping_List = Shopping_List )
+
+
+        Unknown_Isotope( model = model , filename = str(path + file_paths['CSV_filename']) , Unit_Of_Time=UI_Options['Unit Of Time'] , Radioactive_Shopping_List= UI_Options["Radioactive_Shopping_List"] , Shopping_List=UI_Options["Shopping_List"] )
+
+
+        while True:
+            print("{:50s} {:50s}".format("Back :","q"))
+
+            Option=input("option : ")
+
+            if Option=="q":
+
+                clear_output()
+                os.system('cls||clear')
+                time.sleep(0.5)
+                break
+
 
             else:
-                Unknown_Isotope( model , filename = str(path + file_paths['CSV_filename']) , Unit_Of_Time=UI_Options['Unit Of Time']  )
+                clear_output()
+                os.system('cls||clear')
+                time.sleep(0.5)
 
-
-            while True:
-                print("{:50s} {:50s}".format("Back :","q"))
-
-                Option=input("option : ")
-
-                if Option=="q":
-
-                    clear_output()
-                    os.system('cls||clear')
-                    time.sleep(0.5)
-                    break
-
-
-                else:
-                    clear_output()
-                    os.system('cls||clear')
-                    time.sleep(0.5)
-        except:
-            print("ERROR")
 
 
 
@@ -579,7 +573,7 @@ while True:
 
                         Shopping_List
                         try:
-                            Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List , Shopping_List = UI_Options['Shopping_List'])
+                            Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List , Shopping_List = UI_Options['Shopping_List'] , path = path)
                             UI_Options['Shopping_List'] = Shopping_List
                             
                         except:
@@ -587,7 +581,7 @@ while True:
                             
                     except:
                         try:
-                            Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List )
+                            Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List , path = path)
                             UI_Options['Shopping_List'] = Shopping_List
                             UI_Options["Radioactive_Shopping_List"] == True
 
@@ -621,7 +615,6 @@ while True:
             elif Option =="q":
                 break
 
-       
 
 
     elif Option== "i":
