@@ -30,7 +30,7 @@ def Get_OS(Operating_system = platform.system()):
 
     file_paths = {      'CSV_filename'          :'\Isotope_Half_Lifes_CSV.csv',
                         'Example_Seconds'       :'\Example_Model_Seconds_0_Decay_Chain',
-                        'Isotope_List'          :'\Isotope_List.txt'               
+                        'Isotope_List'          :'\Text_Files\Isotope_List.txt'               
                     }
 
    
@@ -472,7 +472,7 @@ def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Se
 
 
 
-def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Specific_Radioisotope = False):
+def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Specific_Radioisotope = False , path = ""):
 
   if Specific_Radioisotope == False:
     time_list = Get_Time_List( List_Type = 'Long' )
@@ -502,7 +502,7 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
 
   else:
     DF , Isotope_List  = Read_File( filename = filename , Unit_Of_Time = Unit_Of_Time )
-    Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List, Shopping_List = [])
+    Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List, Shopping_List = [] , path = path)
     
     if Shopping_List == None:
       return
@@ -697,7 +697,7 @@ def training_V2 ( Training_df  , Config_Receipt = {} , New_Model=True , model = 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 
-def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True):
+def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True , path = ""):
 
   Isotope_Identification = { i:index for i,index in zip( Isotope_List , range(len(Isotope_List)) )}
   Sorted_Istope_List = np.sort(Isotope_List)
@@ -735,10 +735,12 @@ def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True):
             refresh()
             Categotical_Shopping_List=[]
             for isotope in Shopping_List  :  Categotical_Shopping_List.append( Isotope_List[isotope])
-
+            Operating_system = platform.system()
             print(Categotical_Shopping_List)
 
             print( '\n{:20s} : {:} '. format( "Empty Isotope List" , "1" ) )
+            print( '\n{:20s} : {:} '. format( "Save Isotope List" , "2" ) )
+            print( '\n{:20s} : {:} '. format( "Load Isotope List" , "3" ) )
             print( '\n{:20s} : {:} '. format( "Back" , "q" ) ) 
 
             Option = input("Option : ")
@@ -746,8 +748,62 @@ def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True):
             if Option =="1":
                 Shopping_List = [] 
 
-            if Option =="q":
-                break    
+            elif Option =="2":
+              refresh()
+              List_Name = input("Enter Name for this Isotope List : ")
+
+              if Operating_system == "Windows":
+                with open(path+"\Text_Files\Saved_Shopping_List.txt",'a') as file:
+                  file.write( "{}~{}\n".format( List_Name , Shopping_List) )
+                
+              else:
+                with open(path+"/Text_Files/Saved_Shopping_List.txt",'a') as file:
+                  file.write( "{}~{}\n".format( List_Name , Shopping_List) )
+
+
+                  
+            elif Option =="3":
+              refresh()
+              try:
+                if Operating_system == "Windows":
+                  file = open(path+"\Text_Files\Saved_Shopping_List.txt",'r').read()
+                
+                else:
+                  file = open(path+"/Text_Files/Saved_Shopping_List.txt",'r').read()
+              except:
+                print("ERROR : No Found Shopping List in 'Text_Files'")
+                time.sleep(3)
+                break
+
+
+              lines = file.splitlines()
+              while True:
+                for index , line in enumerate(lines):
+
+                  name , iso_list = line.split("~")
+                  temp_Categotical_Shopping_List=[]
+
+                  for isotope in eval(iso_list)  :  temp_Categotical_Shopping_List.append( Isotope_List[isotope])
+                  print("{:20s}{:30s}   ({:})".format(name , str(temp_Categotical_Shopping_List) ,index) )
+
+                print( '\n{:20s} : {:} '. format( "Back" , "q" ) ) 
+              
+                Option = input("Option : ")
+                refresh()
+
+                if Option.isdigit() == True:
+
+                  str_list = lines[int(Option)].split('~')[1]
+                  Shopping_List= eval(str_list)
+
+                  break
+                
+                elif Option == 'q': 
+                  refresh()
+                  break
+                 
+            elif Option =="q":
+              break    
 
     elif Item == 'q':
         break 
@@ -771,10 +827,15 @@ def Evaluate( Testing_df , model , Unknown_Isotope = False):
   df_test_eval = None
   scaler = MinMaxScaler()
 
-  
-  df_test_eval = Testing_df.pop('Isotope')
+  try:
+    df_test_eval = Testing_df.pop('Isotope')
+  except:
+    pass
   Testing_df[['t','Decay_Type']] = scaler.fit_transform(Testing_df[['t','Decay_Type']])
-  scaled_df_test,df_test_eval = shuffle(Testing_df,df_test_eval)
+  try:
+    scaled_df_test,df_test_eval = shuffle(Testing_df,df_test_eval)
+  except:
+    scaled_df_test = shuffle(Testing_df)
   print("Isotope popped")
 
 
@@ -797,8 +858,8 @@ def Evaluate( Testing_df , model , Unknown_Isotope = False):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 
-def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown_Isotope = False , Radioactive_Shopping_List = False  , Shopping_List = None):
-
+def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown_Isotope = False , Radioactive_Shopping_List = False  , Shopping_List = None , Training_Logs = False , path = ""):
+  Log_Date = time.ctime(time.time()).replace(':','_').replace(' ','_')
   if Shopping_List == [] :
     Isotope_List = Isotope_List[679:848] 
     
@@ -826,19 +887,37 @@ def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown
               Most_Probable_Index_1st.append(i[0])
               Most_Probable_Index_2nd.append(i[1])
 
+          if Training_Logs == False:
+            for MP1 , MP2 , real , prob in zip( Most_Probable_Index_1st , Most_Probable_Index_2nd , df_test_eval , eval_result):
+                
+                answer = ""
+                if MP1 == real :
+                    answer = "Correct"
+                
+                else:
+                    answer= "Wrong"
 
-          for MP1 , MP2 , real , prob in zip( Most_Probable_Index_1st , Most_Probable_Index_2nd , df_test_eval , eval_result):
-              
-              answer = ""
-              if MP1 == real :
-                  answer = "Correct"
-              
-              else:
-                  answer= "Wrong"
+                #print("{:10n} : {:.2f}  {:10n} : {:.2f} {:10n} : {:.2f} Answer Given: {:8s} ..... {:11n} ".format(MP1, prob[MP1], MP2 , prob[MP2] , MP3 , prob[MP3] , answer , real ))
+                print("{:20s} : {:.2f}  {:20s} : {:.2f} Answer Given: {:8s} ..... {:11s} ".format(Isotope_List[MP1], prob[MP1], Isotope_List[MP2] , prob[MP2] , answer , Isotope_List[real] ))
 
-              #print("{:10n} : {:.2f}  {:10n} : {:.2f} {:10n} : {:.2f} Answer Given: {:8s} ..... {:11n} ".format(MP1, prob[MP1], MP2 , prob[MP2] , MP3 , prob[MP3] , answer , real ))
-              print("{:20s} : {:.2f}  {:20s} : {:.2f} Answer Given: {:8s} ..... {:11s} ".format(Isotope_List[MP1], prob[MP1], Isotope_List[MP2] , prob[MP2] , answer , Isotope_List[real] ))
-      
+          elif Training_Logs == True:
+            for MP1 , MP2 , real , prob in zip( Most_Probable_Index_1st , Most_Probable_Index_2nd , df_test_eval , eval_result):
+                
+                answer = ""
+                if MP1 == real :
+                    answer = "Correct"
+                
+                else:
+                    answer= "Wrong"
+
+                with open(path+"\Text_Files\Further_Eval_{}.txt".format(Log_Date),'a') as file:
+                  file.write( "{:20s} : {:.2f}  {:20s} : {:.2f} Answer Given: {:8s} ..... {:11s} \n".format(Isotope_List[MP1], prob[MP1], Isotope_List[MP2] , prob[MP2] , answer , Isotope_List[real] ) )
+
+
+
+
+
+
       if Unknown_Isotope == True:
 
           Shopping_list_prob = []
@@ -873,7 +952,7 @@ def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown
               Most_Probable_Index_2nd.append(i[1])
 
           for MP1 , MP2  , prob in zip( Most_Probable_Index_1st , Most_Probable_Index_2nd  , eval_result):
-              
+
               # print("{:10n} : {:.2f}  {:10n} : {:.2f} {:10n} : {:.2f}  ".format(MP1, prob[MP1], MP2 , prob[MP2] , MP3 , prob[MP3]  ))
               print("{:20s} : {:.2f}  {:20s} : {:.2f}  ".format(Isotope_List[MP1], prob[MP1], Isotope_List[MP2] , prob[MP2]  ))
 
@@ -904,11 +983,11 @@ def Unknown_Isotope ( model , filename ,Unit_Of_Time = 'Seconds' , Radioactive_S
   DF , Isotope_List = Read_File( filename = filename , Unit_Of_Time = Unit_Of_Time  )
 
 
-  Original_Type_Of_Decay= DF.pop('Type_of_Decay_1')
+  Original_Type_Of_Decay= DF.pop('Type_of_Decay')
 
   Type_Of_Decay =  np.sort ( Original_Type_Of_Decay.unique().tolist() )
 
-  Type_Of_Decay = { i:index for i,index in zip( Type_Of_Decay , range(len(Type_Of_Decay)) )}
+  Type_Of_Decay = { index:i for i,index in zip( Type_Of_Decay , range(len(Type_Of_Decay)) )}
 
   Unknown_Isotope_Dict ={ 'N'           : [],
                           't'           : [],
@@ -918,43 +997,50 @@ def Unknown_Isotope ( model , filename ,Unit_Of_Time = 'Seconds' , Radioactive_S
 
   decay_constant = np.log(2) / float(input("Half Life in ({:}) : ".format( Unit_Of_Time )))
   
-  print(Type_Of_Decay) 
+  for index , isotope  in enumerate(Type_Of_Decay.values()):
+    print("{:35s} : ({:}) ".format( isotope, str(index) ) )
+
   while True:
       
-      Decay_Type = input("input type of decay (word)")
+      Decay_Type = input("\ninput type of decay  : ")
 
-      if Decay_Type in Type_Of_Decay.keys():
-
+      if Decay_Type.isdigit() == True:
+        if int(Decay_Type) in Type_Of_Decay.keys() : 
+          Decay_Type = int(Decay_Type)
           break
+
+          
 
   N0 = 1
   for t in time_list:
-      N = Bateman_equation( N0 ,decay_constant , t = t )
-      Unknown_Isotope_Dict['N'].append(N)
+      
+      Ns = Bateman_equation( X0 = N0 , Decay_constants = [decay_constant] , t=t )
+      total_abundance = sum( Ns )
+
+      Unknown_Isotope_Dict['N'].append(total_abundance)                          
       Unknown_Isotope_Dict['t'].append(t)
-      Unknown_Isotope_Dict['Decay_Type'].append( (Type_Of_Decay[Decay_Type])/(len(Type_Of_Decay)-1) )
+      Unknown_Isotope_Dict['Decay_Type'].append(Decay_Type)
 
-
-
-      if N == 0.001* N0 :
+      if total_abundance == 0.001* N0 :
           break
 
   Unknown_Isotope = pd.DataFrame(Unknown_Isotope_Dict)
 
   scaler = MinMaxScaler()
 
-  # Unknown_Isotope[['t']] = scaler.fit_transform(Unknown_Isotope[['t']])
+  Unknown_Isotope[['t']] = scaler.fit_transform(Unknown_Isotope[['t']])
+  Unknown_Isotope['Decay_Type'] =  Unknown_Isotope['Decay_Type'].map( lambda x: x/len(Type_Of_Decay) )
 
   eval_result  , df_test_eval  = Evaluate( Unknown_Isotope , model , Unknown_Isotope = True)
   if Radioactive_Shopping_List == False:
-      Further_Evalutaion (    eval_result =eval_result , Isotope_List =Isotope_List , 
-                              df_test_eval=df_test_eval , Unknown_Isotope = True ,
+      Further_Evalutaion (    eval_result = eval_result, Isotope_List = Isotope_List, df_test_eval=df_test_eval , Unknown_Isotope = True ,
+                              Radioactive_Shopping_List = False  , Shopping_List = Shopping_List , Training_Logs = False , 
+                              path = ""
                                 )
   else:  
-      Further_Evalutaion (    eval_result =eval_result  , Isotope_List =Isotope_List , 
-                              df_test_eval=df_test_eval , Unknown_Isotope = True ,
-                              Radioactive_Shopping_List = Radioactive_Shopping_List,
-                              Shopping_List = Shopping_List )
+      Further_Evalutaion (  eval_result, Isotope_List , df_test_eval=df_test_eval , Unknown_Isotope = True , 
+                            Radioactive_Shopping_List = True  , Shopping_List = Shopping_List , Training_Logs = False ,
+                            path = "")
 
   print(Unknown_Isotope)
 
