@@ -8,14 +8,6 @@ from Code_Functions import *
 
 
 
-
-
-############### Enter the file path below if not working ####################################
-
-
-
-
-
 path , file_paths , Operating_system = Get_OS()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -30,15 +22,16 @@ UI_Options = {  'Training_DataFrame'        : False ,
                 'Decay_Chain'               : 0     ,
                 'Number_Of_Replicants'      : 0     ,
                 'Radioactive_Shopping_List' : False ,
-                'Shopping_List'             : [] , 
-                'Unit Of Time'              :'Seconds' }
+                'Shopping_List'             : []    ,
+                'Decay_Type_ Seperation'     : False , 
+                'Unit_Of_Time'              :'Seconds' }
 
 
 refresh()
 while True:
 
 
-    print("{:5s}{:30s} ({:}) \n".format("","Classification Of Nucleides By Half Life" , UI_Options['Unit Of Time' ] ))
+    print("{:5s}{:30s} ({:}) \n".format("","Classification Of Nucleides By Half Life" , UI_Options['Unit_Of_Time' ] ))
 
     print("{:50s} {:50s}".format("Create :","1"))
     print("{:50s} {:50s}".format("Load :","2"))
@@ -101,7 +94,7 @@ while True:
                 refresh()
                 try:
 
-                    Training_Data, Isotope_List = Read_File( filename = str( path + file_paths['CSV_filename'] ) , Unit_Of_Time = UI_Options['Unit Of Time']  )
+                    Training_Data, Isotope_List = Read_File( filename = str( path + file_paths['CSV_filename'] ) , Unit_Of_Time = UI_Options['Unit_Of_Time']  )
 
                 except:
                     print("FileNotFoundError: [Errno 2] No such file or directory:{}".format(file_paths['CSV_filename']))
@@ -109,7 +102,7 @@ while True:
                     time.sleep(2)
                     continue
                 
-                Training_Data = Create_Data_Set( DF = Training_Data  , std =0.01 , Num_Of_Replicates = UI_Options['Number_Of_Replicants']  , Unit_Of_Time = UI_Options['Unit Of Time'] , decay_chain = UI_Options['Decay_Chain'] , List_Type = 'Long' , Shopping_List = UI_Options['Shopping_List']  )
+                Training_Data = Create_Data_Set( DF = Training_Data  , std =0.01 , Num_Of_Replicates = UI_Options['Number_Of_Replicants']  , Unit_Of_Time = UI_Options['Unit_Of_Time'] , decay_chain = UI_Options['Decay_Chain'] , List_Type = 'Long' , Decay_Seperation = UI_Options["Decay_Type_ Seperation"] ,Shopping_List = UI_Options['Shopping_List']  )
                 
                 
                 UI_Options['Training_DataFrame']=True
@@ -120,7 +113,7 @@ while True:
 
                 try:
 
-                    Testing_Data, Isotope_List = Read_File( filename = str( path + file_paths['CSV_filename']) , Unit_Of_Time = UI_Options['Unit Of Time']  )
+                    Testing_Data, Isotope_List = Read_File( filename = str( path + file_paths['CSV_filename']) , Unit_Of_Time = UI_Options['Unit_Of_Time']  )
                   
                 except:
                     print("File Path in varaible 'filename' (line 21) \n")
@@ -128,7 +121,7 @@ while True:
                     time.sleep(2)
                     continue
 
-                Testing_Data = Create_Data_Set( DF = Testing_Data  , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = UI_Options['Unit Of Time'] , decay_chain=0 , List_Type = 'Random' , Shopping_List = UI_Options['Shopping_List'])
+                Testing_Data = Create_Data_Set( DF = Testing_Data  , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = UI_Options['Unit_Of_Time'] , decay_chain=0 , List_Type = 'Random' , Decay_Seperation = UI_Options["Decay_Type_ Seperation"] , Shopping_List = UI_Options['Shopping_List'] )
                 
                 
                 UI_Options['Testing_DataFrame']=True
@@ -252,7 +245,7 @@ while True:
                             refresh()
 
                             Option=''
-                            print('{:10s}{:}(Currrently on "{}" & Decay_Chain "{}")\n'.format("","Load Example Model \n", UI_Options['Unit Of Time'] , UI_Options["Decay_Chain"] ) )
+                            print('{:10s}{:}(Currrently on "{}" & Decay_Chain "{}")\n'.format("","Load Example Model \n", UI_Options['Unit_Of_Time'] , UI_Options["Decay_Chain"] ) )
                             print("{:50s} {:50s}".format("Load Seconds  Model (0 Decay Chain):","1"))
                             print("{:50s} {:50s}".format("Info :","i"))
                             print("{:51s} {:50s}".format("\nBack :","q"))
@@ -344,7 +337,7 @@ while True:
 
                 Option=input("option : ")
 
-                Config_Receipt = {  'Unit Of Time'              : UI_Options['Unit Of Time'] ,
+                Config_Receipt = {  'Unit_Of_Time'              : UI_Options['Unit_Of_Time'] ,
                                     'Number_Of_Replicants'      : UI_Options['Number_Of_Replicants'] , 
                                     'Decay_Chain'               : UI_Options['Decay_Chain']  }
 
@@ -399,14 +392,14 @@ while True:
             if Option == '1':
 
                 try:
-                    Plot_Data_Frame( filename = str( path + file_paths['CSV_filename'] )  , Unit_Of_Time = UI_Options["Unit Of Time"] , decay_chain= UI_Options['Decay_Chain'] , Specific_Radioisotope = False , path = path)
+                    Plot_Data_Frame( filename = str( path + file_paths['CSV_filename'] )  , Unit_Of_Time = UI_Options["Unit_Of_Time"] , decay_chain= UI_Options['Decay_Chain'] , Specific_Radioisotope = False , path = path , Shopping_List = UI_Options["Shopping_List"])
 
                 except:
                     print("ERROR : Either Training Data or Testing Data  is missing")
                     time.sleep(5)
 
             elif Option == '2':
-                    Plot_Data_Frame( filename = str( path + file_paths['CSV_filename'] )  , Unit_Of_Time = UI_Options["Unit Of Time"]  , decay_chain= UI_Options['Decay_Chain'] , Specific_Radioisotope = True , path = path)
+                    Plot_Data_Frame( filename = str( path + file_paths['CSV_filename'] )  , Unit_Of_Time = UI_Options["Unit_Of_Time"]  , decay_chain= UI_Options['Decay_Chain'] , Specific_Radioisotope = True , path = path , Shopping_List = UI_Options["Shopping_List"])
 
 
             elif Option == 'q': 
@@ -429,18 +422,47 @@ while True:
                 break
 
     elif Option == "6" and UI_Options['Model_Evaluated'] == True and UI_Options['Isotope_List'] == True:
-        refresh()
-        Further_Evalutaion ( eval_result, Isotope_List ,df_test_eval , Shopping_List = UI_Options['Shopping_List'] , Training_Logs = UI_Options["Training_Logs"] , path = path)
-        break
+        while True:
+            refresh()
+            print("{:20s}{:30s}".format("","Further_Evalutaion \n"))
+            print("{:50s} {:50s}".format("Show All predictions :","1"))
+            print("{:50s} {:50s}".format("Show Confusion Matrix :","2"))
+            print("{:50s} {:50s}".format("Back :","q"))
+
+
+            Option=input("option : ")
+            if Option == "1":
+                Further_Evalutaion ( eval_result, Isotope_List ,df_test_eval , Shopping_List = UI_Options['Shopping_List'] , Training_Logs = UI_Options["Training_Logs"] , path = path)
+                
+                while True:
+
+                    print("{:50s} {:50s}".format("Back :","q"))
+                    Option=input("option : ")                    
+                    if Option == "q":
+                        refresh()
+                        break
+                    else:
+                        refresh()
+
+            elif Option == "2":
+                Show_Confusion_Matrix(eval_result =  eval_result, Isotope_List = Isotope_List , df_test_eval = df_test_eval , Shopping_List = UI_Options['Shopping_List'] )
+                while True:
+                    print("{:50s} {:50s}".format("Back :","q"))
+                    Option=input("option : ")  
+                    if Option == "q":
+                        refresh()
+                        break
+    
+            elif Option == "q":
+                refresh()
+                break
 
 
     elif Option == "7" and UI_Options['Trained_Model'] == True:
         Option=''
         refresh() 
 
-
-
-        Unknown_Isotope( model = model , filename = str(path + file_paths['CSV_filename']) , Unit_Of_Time=UI_Options['Unit Of Time'] , Radioactive_Shopping_List= UI_Options["Radioactive_Shopping_List"] , Shopping_List=UI_Options["Shopping_List"] )
+        Unknown_Isotope( model = model , filename = str(path + file_paths['CSV_filename']) , Unit_Of_Time=UI_Options['Unit_Of_Time'] , Radioactive_Shopping_List= UI_Options["Radioactive_Shopping_List"] , Shopping_List=UI_Options["Shopping_List"] )
 
 
         while True:
@@ -469,7 +491,7 @@ while True:
 
         while True:
             refresh()
-            print("{:10s}{:}( Currently {:} ) \n".format( "", "Select Unit of time ", UI_Options['Unit Of Time'] ))
+            print("{:10s}{:}( Currently {:} ) \n".format( "", "Select Unit_Of_Time ", UI_Options['Unit_Of_Time'] ))
             print("{:50s} {:50s}".format("Seconds:","1"))
             print("{:50s} {:50s}".format("Minutes:","2"))
             print("{:50s} {:50s}".format("Hours:","3"))
@@ -478,28 +500,29 @@ while True:
             print("{:50s} {:50s}".format("Apply Gaussian Noise :","6"))
             print("{:50s} {:50s}".format("Set Training Logs ({}):".format(str( not UI_Options['Training_Logs'] )),"7"))
             print("\n{:50s} {:50s}".format("Select Specific Isotopes:","8"))
-            print("{:50s} {:50s}".format('Switch OS from "{:}":'.format(Operating_system),"9"))
-            print("{:50s} {:50s}".format("Back :","q"))
+            print("{:50s} {:50s}".format('Switch OS from "{:}":'.format( Operating_system ), "9") )
+            print("{:50s} {:50s}".format('Seperate Types of Decay ({:}):'.format( UI_Options["Decay_Type_ Seperation"] ) , "10") )
+            print("\n{:50s} {:50s}".format("Back :","q"))
 
 
             Option=input("option : ")
             if Option == "1":
-                UI_Options['Unit Of Time'] = "Seconds"
+                UI_Options['Unit_Of_Time'] = "Seconds"
                 UI_Options['Training_DataFrame']    = False
                 UI_Options['Testing_DataFrame']     = False
 
             elif Option == "2":
-                UI_Options['Unit Of Time'] = "Minutes"
+                UI_Options['Unit_Of_Time'] = "Minutes"
                 UI_Options['Training_DataFrame']    = False
                 UI_Options['Testing_DataFrame']     = False
 
             elif Option == "3":
-                UI_Options['Unit Of Time'] = "Hours"
+                UI_Options['Unit_Of_Time'] = "Hours"
                 UI_Options['Training_DataFrame']    = False
                 UI_Options['Testing_DataFrame']     = False
 
             elif Option == "4":
-                UI_Options['Unit Of Time'] = "Days"
+                UI_Options['Unit_Of_Time'] = "Days"
                 UI_Options['Training_DataFrame']    = False
                 UI_Options['Testing_DataFrame']     = False
 
@@ -610,6 +633,9 @@ while True:
                         break
 
 
+            elif Option =="10":
+
+                UI_Options["Decay_Type_ Seperation"] = not UI_Options["Decay_Type_ Seperation"]   
                     
 
             elif Option =="q":
@@ -618,9 +644,33 @@ while True:
 
 
     elif Option== "i":
-        refresh()
-        print(str(UI_Options)+"\n")
-        continue
+        RAM_Estimate = 124
+        if UI_Options["Shopping_List"] == []:
+            Amount_Of_Isotopes = 848-679
+        else :
+            Amount_Of_Isotopes = len(UI_Options["Shopping_List"])
+
+        if UI_Options['Decay_Type_ Seperation'] == False:
+            RAM_Estimate = (( RAM_Estimate + (36*Amount_Of_Isotopes) ) * 50000)* 8 *(UI_Options['Number_Of_Replicants']+1)
+        else:
+            RAM_Estimate = (( RAM_Estimate + (36*Amount_Of_Isotopes) ) * 50000)* 8 *7 *(UI_Options['Number_Of_Replicants']+1)
+
+        RAM_Estimate = RAM_Estimate/ 1073741824 
+        while True:
+            refresh()
+            print("{:20s}{:30s}".format("","Current configuration\n"))
+
+            for  key , value in zip( UI_Options.keys() , UI_Options.values() ):
+                print("{:50s} {:50s}".format( str(key) , str(value) ))
+            
+            print("\n{:51s} {:.2f} GB".format("Amount Of RAM :",RAM_Estimate))
+            print("{:51s} {:50s}".format("\nBack :","q"))
+
+        
+            Option=input("option : ")
+
+            if Option == "q":
+                break
 
 
         
