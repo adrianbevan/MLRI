@@ -2,7 +2,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import warnings
+import seaborn as sn
 import os
 import sys
 import platform
@@ -16,6 +16,10 @@ from keras.optimizers import Adam
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.utils import shuffle
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "refrsh()" Is used to clear the terminal when using the user interface # 
+
 def refresh():
   clear_output()
   os.system('cls||clear')
@@ -24,6 +28,11 @@ def refresh():
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "Get_OS" gets the system operating system that is executing the code and returns "path" , "file_paths" , "Operating_system".
+# "path" is the location of the directory that the scripts are stored in.
+# "file_paths" are the locations of specific files relative the the "path".
+
 
 
 def Get_OS(Operating_system = platform.system()):
@@ -57,6 +66,14 @@ def Get_OS(Operating_system = platform.system()):
     
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "Read_File()"  takes two arguments "filename" and "Unit_Of_Time".
+# "filename" is the file locative of the CSV file containing all of the isotope half-lifes , daughters and types of decay.
+# "Unit_Of_Time" is the time that the user wants the data to be in "Seconds", "Minutes" , "Hours" and "Days".
+# 
+# The funtion returns two variable "DF" and "Isotope_List".
+# "DF" is a pandas DataFrame of the CSV file.
+# "Isotope_List" is a list of all the names of parent radioactive nuclei from the CSV file.
 
 
 def Read_File( filename , Unit_Of_Time = 'Seconds' ):
@@ -100,6 +117,14 @@ def gaussian_noise( Data , mu = 0.0 , std = 0.01 ):
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "Bateman_equation()" is the function that calculates the abundance/activity of a radioactive isotope at a given time  and takes the arguments "X0" , "Decay_constants" , "t".
+# "X0" is the initial count or activity of the parent nuclei.
+# "Decay_constants" is a list of all decay constants of radioactive nuclei in the decay chain for a given parent.
+# "t" is the time. 
+#
+# The function returns a list of all of the counts/activties of each radioactive nuclie in the decay chain in order from parent to last daughter in decay chain. 
+
 
 def Bateman_equation( X0 , Decay_constants , t = None ):
   
@@ -145,10 +170,18 @@ def Bateman_equation( X0 , Decay_constants , t = None ):
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# "get_decay_chain()" finds all the the radioactive children in a decay chain for a radioactive parent, and returns "Decay_const" , "type_of_decay_chain" , "unique_decay_types" , "decay_name_chain".
+# The argument "dataframe" is the pandas DataFrame returned from the "Read_File()" funtion. 
+# "Unit_Of_Time" is the unit of time decided by the user "Seconds", "Minutes" , "Hours" and "Days".
+# "chain_num" is the length of how long the user want the decay chain to be, if "0" there will only be using data from the parent ... if "2" it will be using data from the parent , daughter and granddaughter.
+#
+# "Decay_const" is a list of list of all the decay chain constants for every single radioactive isotope in the Dataframe (from CSV file ).
+# "type_of_decay_chain" is a list of list of all the types of decay (example : ["alpha" , "beta +" , "alpha" ... "beta -"]) for every single radioactive isotope in the Dataframe (from CSV file )
+# "decay_name_chain" is a list of list of all the names of isotopes in the decay chain for every single radioactive isotope in the Dataframe (from CSV file )
+
 def get_decay_chain( dataframe = None , Unit_Of_Time = None ,chain_num = 0 ):
 
   Decay_Identification = { isotope : decay_time for isotope , decay_time in zip( dataframe['Isotope'] , dataframe[ 'Half_Life({:})'.format(Unit_Of_Time)] ) }
-  #might be an issue here (check later)#
 
   name_links = { isotope : daughter for isotope, daughter  in zip(dataframe['Isotope'], dataframe['Daughter']) }
   Decay_type = { isotope : daughter for isotope, daughter  in zip(dataframe['Isotope'], dataframe['Type_of_Decay']) }
@@ -178,7 +211,6 @@ def get_decay_chain( dataframe = None , Unit_Of_Time = None ,chain_num = 0 ):
 
         Half_Life_chain[key].append(Decay_Identification[isotope])
 
-        # if Decay_type[isotope] not in type_of_decay_chain[key]:
         type_of_decay_chain[key].append(Decay_type[isotope])
 
       else:
@@ -188,12 +220,18 @@ def get_decay_chain( dataframe = None , Unit_Of_Time = None ,chain_num = 0 ):
 
   unique_decay_types = dataframe.Type_of_Decay.unique()
   unique_decay_types = sorted(unique_decay_types)
-  #22 is max chain
+
   return Decay_const , type_of_decay_chain , unique_decay_types , decay_name_chain
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# "Set_Unit_Of_Time()" allows the user to switch unit of time that programme is using , as the CSV file hale-lifes are in seconds and this may want to be changed to "Minutes" , "Hours" or "Days". 
+# The argument "DF" is the pandas DataFrame returned from the "Read_File()" funtion. 
+# "Unit_Of_Time" is the unit of time decided by the user "Seconds", "Minutes" , "Hours" and "Days".
+# "Csv_Col" is part of the lable of the column that you can make changes to.
+# 
+# "DF" that is returned is the is dataframe that is inputed as a argument but the values and the column name for the Hale-Life have been changed to the users preference.
 
 
 def Set_Unit_Of_Time( DF , Unit_Of_Time = None , Csv_Col='Half_Life'):
@@ -302,6 +340,13 @@ def Set_Unit_Of_Time( DF , Unit_Of_Time = None , Csv_Col='Half_Life'):
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# "Get_Time_List()" if a funtion that returns a list of random integers that represent times.
+# It takes one argument "List_Type" and this can be equal to ('Long') , ('Random') or ('Specific')
+# When "List_Type" is "Long"  it will return a list with about 50,000 random values between 0-315576000 which is essentially 0 and 10 years in seconds.
+# When "List_Type" is "Random"  it will return a list with about 5,000 random values.
+# When "List_Type" is "Specific"  it will alllow the user to input the minimun and maximum values aswell as the number of steps.
+
+
 
 def Get_Time_List(List_Type = 'Long'):
   print("Simulating Time...")
@@ -332,7 +377,7 @@ def Get_Time_List(List_Type = 'Long'):
   elif List_Type == 'Random':
     time_list = [0,315576000]
 
-    [ time_list.append( np.random.randint(0,315576000) ) for i in range( 1000 )]
+    [ time_list.append( np.random.randint(0,315576000) ) for i in range( 5000 )]
 
   elif List_Type == 'Specific':
 
@@ -358,8 +403,22 @@ def Get_Time_List(List_Type = 'Long'):
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# "Create_Data_Set()" takes in the the original pandas DataFrame and other arguments and outputs a pandas dataframe based on the users configuration that can be used to train and evaluate the Tensorflow models.
+# "DF" is the pandas DataFrame returned from the "Read_File()" funtion.
+# "std" is the standard deviation on the half-lifes if guassion noise is applied to the dataframe when replicating.
+# "Num_Of_Replicates" is the number of times the "Create_Data_Set()" funtion will be recursive, each time guassion noise will be added to the Half-Life.
+# "Unit_Of_Time" is the unit of time decided by the user "Seconds", "Minutes" , "Hours" and "Days".
+# "decay_chain" is the length of how long the user want the decay chain to be, this will be used in the "get_decay_chain()" function.
+# "List_Type" decides the type of list returned from the "Get_Time_List()" funtion.
+# "original_Data" is a placement variable that holds the data from "DF" when the function is being recursive.
+# "recurring_DF" is a placement variable that holds the returned dataframe thats is used to get the next returned dataframe appended to it.
+# "Decay_Seperation" can either be "True" or "False". When "True" the data set will split all the types of decay apart for training , when "False" the data set will summarize all the different counts/activities and append a random tpye of decay at each instance in time.
+# "Shopping_List" is the list of specific isotopes the user is looking for.
+# 
+# If "Num_Of_Replicates" = 0 then the function will return the first data set created.
+# If "Num_Of_Replicates" > 0 then the function will return the recurring dataframe with all the data sets appended. 
 
-def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Seconds' , decay_chain=0 , List_Type = 'Long' , original_Data = None , recurring_DF = None , Shopping_List = []) :
+def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Seconds' , decay_chain=0 , List_Type = 'Long' , original_Data = None , recurring_DF = None , Decay_Seperation = False ,Shopping_List = [] ) :
 
     if str(type(recurring_DF)) != "<class 'pandas.core.frame.DataFrame'>" :
       original_Data = DF
@@ -401,12 +460,8 @@ def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Se
 
 
 
-    Progression( 0 , len(Decay_const) )                               # range should be going from one when i appple the stable isotope identifications.
+    Progression( 0 , len(Decay_const) )                            
     for isotope_decay_chain , index , decay_types in zip( Decay_const, range(len(Decay_const)) , All_decay_types ):
-
-      
-
-      
 
       for t in time_list:
         
@@ -418,7 +473,23 @@ def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Se
           for  i , N in enumerate(Ns) :
     
             Specific_Decay_Sum[ decay_types[i] ].append( N )
-    
+
+          if Decay_Seperation == False:
+            total_abundance = 0
+            random_type_of_decay = np.random.choice( list(Specific_Decay_Sum.keys()))
+
+            for Decay_Sum in Specific_Decay_Sum:
+
+              total_abundance += sum( Specific_Decay_Sum[Decay_Sum] )
+
+            DF['N'].append(total_abundance)                          
+            DF['t'].append(t)
+            DF['Decay_Type'].append(Numerical_Decay_Types[ random_type_of_decay ])
+            DF['Isotope'].append(index)
+
+
+          elif Decay_Seperation == True:
+
             for Decay_Sum in Specific_Decay_Sum:
               total_abundance = sum( Specific_Decay_Sum[Decay_Sum] )
               
@@ -455,13 +526,13 @@ def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Se
         recurring_DF = DF
         DF = None
         refresh()
-        return Create_Data_Set( DF = original_Data  , std = std , Num_Of_Replicates = Num_Of_Replicates-1 , Unit_Of_Time = 'Seconds' , decay_chain=decay_chain , List_Type = 'Long' , original_Data = original_Data , recurring_DF = recurring_DF )
+        return Create_Data_Set( DF = original_Data  , std = std , Num_Of_Replicates = Num_Of_Replicates-1 , Unit_Of_Time = Unit_Of_Time , decay_chain=decay_chain , List_Type = 'Long' , original_Data = original_Data , recurring_DF = recurring_DF , Decay_Seperation = Decay_Seperation ,Shopping_List = Shopping_List )
 
       else:
         recurring_DF = pd.concat([ recurring_DF , DF])
         DF = None
         refresh()
-        return Create_Data_Set( DF = original_Data  , std = std , Num_Of_Replicates = Num_Of_Replicates-1 , Unit_Of_Time = 'Seconds' , decay_chain=decay_chain , List_Type = 'Long' , original_Data = original_Data , recurring_DF = recurring_DF )
+        return Create_Data_Set( DF = original_Data  , std = std , Num_Of_Replicates = Num_Of_Replicates-1 , Unit_Of_Time = Unit_Of_Time , decay_chain=decay_chain , List_Type = 'Long' , original_Data = original_Data , recurring_DF = recurring_DF , Decay_Seperation = Decay_Seperation ,Shopping_List = Shopping_List )
 
 
 
@@ -470,24 +541,43 @@ def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Se
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# "Plot_Data_Frame()" is a function that allows users to plot the decay curves for one or multiple radioactive isotopes.
+# "filename" is the file locative of the CSV file containing all of the isotope half-lifes , daughters and types of decay.
+# "Unit_Of_Time" is the time that the user wants the data to be in "Seconds", "Minutes" , "Hours" and "Days".
+# "decay_chain" is the length of how long the user want the decay chain to be, this will be used in the "get_decay_chain()" function.
+# "Specific_Radioisotope" can be either "True" or "False". 
+# When True it will promt the user to plot which radioactive isotope they want to plot the decay curves to.
+# if "False" it will plot the total count/activity curves for multiple radioactive isotopes.
 
+def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Specific_Radioisotope = False , path = "" ,  Shopping_List = [] ):
 
-def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Specific_Radioisotope = False , path = ""):
+  DF , Isotope_List  = Read_File( filename = filename , Unit_Of_Time = Unit_Of_Time )
 
   if Specific_Radioisotope == False:
     time_list = Get_Time_List( List_Type = 'Long' )
     print("Plotting Data Please Wait...")
 
-    DF , Isotope_List  = Read_File( filename = filename , Unit_Of_Time = Unit_Of_Time )
-
-    
-
     Decay_const , type_of_decay_chain , unique_decay_types , decay_name_chain = get_decay_chain( dataframe = DF , Unit_Of_Time = Unit_Of_Time , chain_num = decay_chain )
-    Decay_const = Decay_const[679:848]
+
+    if Shopping_List == [] :
+      Decay_const ,type_of_decay_chain = Decay_const[679:848] ,list(type_of_decay_chain.values())[679:848]
+    else :
+      Decay_const_holder         = []
+      type_of_decay_chain_holder = []
+      decay_name_chain_holder = []
+      for  i in  Shopping_List:
+        Decay_const_holder.append(Decay_const[i])
+        type_of_decay_chain_holder.append( list(type_of_decay_chain.values())[i])
+        decay_name_chain_holder.append( list(decay_name_chain.values())[i][0])
+
+
+      Decay_const ,type_of_decay_chain ,  decay_name_chain = Decay_const_holder , type_of_decay_chain_holder , decay_name_chain_holder
+
     N0=1
     Progression(0 , len(Decay_const) )
     for isotope , index in zip(Decay_const,range(len(Decay_const))):
       Ns=[]
+      
       for t in time_list:
 
         N = Bateman_equation( X0 = N0 , Decay_constants= isotope , t=t )
@@ -496,27 +586,35 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
         
       Progression(index+1 , len(Decay_const) )
       plt.ylim(0, 1.2)
-      plt.plot(time_list,Ns)
+      if Shopping_List == []:
+        plt.plot(time_list , Ns )
+      else:
+        plt.plot(time_list , Ns , label = decay_name_chain[index])
 
+    if Shopping_List != []:
+      plt.legend(bbox_to_anchor=(1.01, 1), borderaxespad=0)
+      plt.title("Radioactive Decays of Isotopes In Example Lab Setting")
+    plt.xlabel("Time in {:}".format(Unit_Of_Time))
+    plt.ylabel("Total Activity")
     plt.show()
 
   else:
-    DF , Isotope_List  = Read_File( filename = filename , Unit_Of_Time = Unit_Of_Time )
+    
     Shopping_List = Isotope_Shopping_List(Isotope_List = Isotope_List, Shopping_List = [] , path = path)
     
     if Shopping_List == None:
       return
     refresh()
-    for index,isotope in enumerate(Shopping_List ):
+    for index , isotope in enumerate( Shopping_List ):
 
-      print(f"Plotting Data Please Wait...{Isotope_List[isotope]}")
+      print("Plotting Data Please Wait...{}".format(Isotope_List[isotope]))
 
       time_list = Get_Time_List( List_Type = 'Long' )
 
       Decay_const , type_of_decay_chain , unique_decay_types , decay_name_chain = get_decay_chain( dataframe = DF , Unit_Of_Time = Unit_Of_Time , chain_num = decay_chain )
-      Decay_const = Decay_const[isotope-2]
-      type_of_decay_chain = list(type_of_decay_chain.values())[isotope-2]
-      decay_name_chain = list(decay_name_chain.values())[isotope-2]
+      Decay_const = Decay_const[isotope]
+      type_of_decay_chain = list(type_of_decay_chain.values())[isotope]
+      decay_name_chain = list(decay_name_chain.values())[isotope]
 
       plot_dict = { i : [] for i in range(len(Decay_const)) }
 
@@ -550,10 +648,23 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# "training_V2" , is responsible for training the algorithm .
+# "Training_df" is the data set returned from "Create_Data_Set()", all the values will be scaled between 0 and 1 before training.
+# "Config_Receipt" is a dictionary containing all on the configurations by the user when "Training Logs" are set in the the User Interface.
+# "New_Model" can either be True or False. When True the programme will create and train a new model, when false the programme will continue to train the existing model.
+# "model" is a placeholder for and existing model if one is already trained.
+# If "Training_Logs" is true the programme will create text file that will store the model accuracy on each epoch trained.
+# "Operating_system" is the operating system returned from "Get_OS()".
 
 def training_V2 ( Training_df  , Config_Receipt = {} , New_Model=True , model = None , Training_Logs = False , Operating_system =None):
 
     if New_Model== True and Training_Logs == False: 
+
+        while True:
+            Num_Of_Epochs = input("Enter Number of Epochs : ")
+            if Num_Of_Epochs.isdigit() == True:
+                Num_Of_Epochs = int(Num_Of_Epochs)
+                break
 
         train_labels = Training_df.pop('Isotope')
 
@@ -579,7 +690,7 @@ def training_V2 ( Training_df  , Config_Receipt = {} , New_Model=True , model = 
 
         history  = model.fit(   Training_df, train_labels , 
 
-                                validation_split=0.1 , epochs=50 ,
+                                validation_split=0.1 , epochs=Num_Of_Epochs ,
 
                                 shuffle=True , verbose=2) 
 
@@ -696,6 +807,10 @@ def training_V2 ( Training_df  , Config_Receipt = {} , New_Model=True , model = 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# "Isotope_Shopping_List" allows selection of specific isotopes from the csv file to use throughout the programme.
+# "Isotope_List" is the list of all isotopes from the CSV file that is returned from "Read_File()".
+# "Shopping_List" is the list of specific isotopes the user is looking for.
+# "Shopping" is just to check whether the user is still choosing more isotopes, if "False" the funtion "Isotope_Shopping_List" will end.
 
 def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True , path = ""):
 
@@ -737,32 +852,60 @@ def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True , path
             for isotope in Shopping_List  :  Categotical_Shopping_List.append( Isotope_List[isotope])
             Operating_system = platform.system()
             print(Categotical_Shopping_List)
-
-            print( '\n{:20s} : {:} '. format( "Empty Isotope List" , "1" ) )
-            print( '\n{:20s} : {:} '. format( "Save Isotope List" , "2" ) )
-            print( '\n{:20s} : {:} '. format( "Load Isotope List" , "3" ) )
-            print( '\n{:20s} : {:} '. format( "Back" , "q" ) ) 
+            print( '\n{:20s} : {:} '. format( "Remove Isotope" , "1" ) )
+            print( '\n{:20s} : {:} '. format( "Empty Isotope List" , "2" ) )
+            print( '\n{:20s} : {:} '. format( "Save Isotope List" , "3" ) )
+            print( '\n{:20s} : {:} '. format( "Load Isotope List" , "4" ) )
+            print( '\n\n{:20s} : {:} '. format( "Back" , "q" ) ) 
 
             Option = input("Option : ")
 
             if Option =="1":
-                Shopping_List = [] 
+
+                if Shopping_List == []:
+                  pass
+      
+                else:
+                  while True :
+                    refresh()
+                    print("{:30s}\n\n".format( "Pick Isotope To Remove ") )
+
+                    for indx, isotope in enumerate( Shopping_List , start = 1):
+                      print("{:20s}{:30s}\n".format( Isotope_List[isotope] , str(indx) ) )
+                    
+                    Option = input('\n{:20s} :  '. format( "Option" ))
+
+                    if Option.isdigit() == True:
+                      if int( Option ) in range( 1 , len(Shopping_List) + 1 ):
+
+                        Shopping_List.remove(Shopping_List[ int(Option) - 1 ])
+
+                        break
+
+                    refresh()
+
+
+
 
             elif Option =="2":
-              refresh()
-              List_Name = input("Enter Name for this Isotope List : ")
+                Shopping_List = [] 
 
-              if Operating_system == "Windows":
-                with open(path+"\Text_Files\Saved_Shopping_List.txt",'a') as file:
-                  file.write( "{}~{}\n".format( List_Name , Shopping_List) )
-                
-              else:
-                with open(path+"/Text_Files/Saved_Shopping_List.txt",'a') as file:
-                  file.write( "{}~{}\n".format( List_Name , Shopping_List) )
+            elif Option =="3":
+              refresh()
+              if Shopping_List != []:
+                List_Name = input("Enter Name for this Isotope List : ")
+
+                if Operating_system == "Windows":
+                  with open(path+"\Text_Files\Saved_Shopping_List.txt",'a') as file:
+                    file.write( "{}~{}\n".format( List_Name , Shopping_List) )
+                  
+                else:
+                  with open(path+"/Text_Files/Saved_Shopping_List.txt",'a') as file:
+                    file.write( "{}~{}\n".format( List_Name , Shopping_List) )
 
 
                   
-            elif Option =="3":
+            elif Option =="4":
               refresh()
               try:
                 if Operating_system == "Windows":
@@ -778,13 +921,13 @@ def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True , path
 
               lines = file.splitlines()
               while True:
-                for index , line in enumerate(lines):
+                for index , line in enumerate( lines , start = 1):
 
                   name , iso_list = line.split("~")
                   temp_Categotical_Shopping_List=[]
 
                   for isotope in eval(iso_list)  :  temp_Categotical_Shopping_List.append( Isotope_List[isotope])
-                  print("{:20s}{:30s}   ({:})".format(name , str(temp_Categotical_Shopping_List) ,index) )
+                  print("{:20s}{:30s}   ({:})\n".format(name , str(temp_Categotical_Shopping_List) ,index) )
 
                 print( '\n{:20s} : {:} '. format( "Back" , "q" ) ) 
               
@@ -792,11 +935,11 @@ def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True , path
                 refresh()
 
                 if Option.isdigit() == True:
+                  if int( Option ) in range( 1 , len(lines) + 1 ):
 
-                  str_list = lines[int(Option)].split('~')[1]
-                  Shopping_List= eval(str_list)
-
-                  break
+                    str_list = lines[int(Option)-1].split('~')[1]
+                    Shopping_List= eval(str_list)
+                    break
                 
                 elif Option == 'q': 
                   refresh()
@@ -821,6 +964,11 @@ def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True , path
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "Evaluate()", evaluates trained models.
+# "model" is the trained model.
+# If "Unknown_Isotope" is set to "False" the model will be evaluated and the model accuracy will be displayed , If "True" the model will evaluate the model no accuracy will be displayed.
+
 
 def Evaluate( Testing_df , model , Unknown_Isotope = False):
 
@@ -856,6 +1004,17 @@ def Evaluate( Testing_df , model , Unknown_Isotope = False):
   return eval_result  , df_test_eval 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "Further_Evalutaion()" will display all of the model predictions at every instance of time from the time list ( from "Get_Time_List()" ).
+# "eval_result" a list of numpy arrays of predictions made by the model each position in the array matches to an isotope.
+# "Isotope_List" is the list of all isotopes from the CSV file that is returned from "Read_File()".
+# "df_test_eval" a list of integers that matched to the indexes of the correct isotopes.
+# If "Unknown_Isotope" is set to "False" the first and second predictions will be displayed along with their probabilities and if the models first guess was "Correct" or "Wrong" 
+# If "Unknown_Isotope" is set to "True" only the model prediction will be displayed.
+# "Radioactive_Shopping_List" is "True" if there is a shopping list and "False" if there is no shopping list.
+# "Shopping_List" is the list of specific isotopes the user is looking for.
+# If "Training_Logs" is true the programme will create text file that contain all of the predictions instead of displaying them (faster).
+# "path" is the location of the directory that the scripts are stored in.
 
 
 def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown_Isotope = False , Radioactive_Shopping_List = False  , Shopping_List = None , Training_Logs = False , path = ""):
@@ -897,7 +1056,6 @@ def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown
                 else:
                     answer= "Wrong"
 
-                #print("{:10n} : {:.2f}  {:10n} : {:.2f} {:10n} : {:.2f} Answer Given: {:8s} ..... {:11n} ".format(MP1, prob[MP1], MP2 , prob[MP2] , MP3 , prob[MP3] , answer , real ))
                 print("{:20s} : {:.2f}  {:20s} : {:.2f} Answer Given: {:8s} ..... {:11s} ".format(Isotope_List[MP1], prob[MP1], Isotope_List[MP2] , prob[MP2] , answer , Isotope_List[real] ))
 
           elif Training_Logs == True:
@@ -912,9 +1070,6 @@ def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown
 
                 with open(path+"\Text_Files\Further_Eval_{}.txt".format(Log_Date),'a') as file:
                   file.write( "{:20s} : {:.2f}  {:20s} : {:.2f} Answer Given: {:8s} ..... {:11s} \n".format(Isotope_List[MP1], prob[MP1], Isotope_List[MP2] , prob[MP2] , answer , Isotope_List[real] ) )
-
-
-
 
 
 
@@ -953,7 +1108,6 @@ def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown
 
           for MP1 , MP2  , prob in zip( Most_Probable_Index_1st , Most_Probable_Index_2nd  , eval_result):
 
-              # print("{:10n} : {:.2f}  {:10n} : {:.2f} {:10n} : {:.2f}  ".format(MP1, prob[MP1], MP2 , prob[MP2] , MP3 , prob[MP3]  ))
               print("{:20s} : {:.2f}  {:20s} : {:.2f}  ".format(Isotope_List[MP1], prob[MP1], Isotope_List[MP2] , prob[MP2]  ))
 
       if Radioactive_Shopping_List == True:
@@ -974,6 +1128,55 @@ def Further_Evalutaion ( eval_result, Isotope_List , df_test_eval=None , Unknown
           
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "Show_Confusion_Matrix()" will display a Confusion Matrix based of the model evaluation.
+# "eval_result" a list of numpy arrays of predictions made by the model each position in the array matches to an isotope.
+# "Isotope_List" is the list of all isotopes from the CSV file that is returned from "Read_File()".
+# "df_test_eval" a list of integers that matched to the indexes of the correct isotopes.
+# "Shopping_List" is the list of specific isotopes the user is looking for.
+
+
+def Show_Confusion_Matrix(eval_result, Isotope_List , df_test_eval=None , Shopping_List = None ):
+  if Shopping_List == [] :
+    Isotope_List = Isotope_List[679:848] 
+    
+  else :
+    Isotope_List_holder = []
+
+    for  i in  Shopping_List:
+      Isotope_List_holder.append(Isotope_List[i])
+    
+    Isotope_List = Isotope_List_holder
+ 
+  Ordered_Predictions = (-eval_result).argsort()
+
+  Most_Probable_Index_1st = []
+
+  for  i in Ordered_Predictions:
+
+    Most_Probable_Index_1st.append(i[0])
+  
+  Most_Probable_Index_1st = list(map( lambda i : Isotope_List[i] , Most_Probable_Index_1st))
+  df_test_eval = list(map( lambda i : Isotope_List[i] , df_test_eval))
+
+
+  data = pd.DataFrame( data = {'Actual': df_test_eval , 'Predicted': Most_Probable_Index_1st } )
+
+  confusion_matrix = pd.crosstab(data['Actual'], data['Predicted'], rownames=['Actual'], colnames=['Predicted'], margins = True)
+
+  sn.heatmap(confusion_matrix, annot=True)
+  plt.show()
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "Unknown_Isotope()" will allow the user to see how the programme might work in the real world (Only works for decay chain of 0)
+# "model" is the trained model.
+# "filename" is the file locative of the CSV file containing all of the isotope half-lifes , daughters and types of decay.
+# "Unit_Of_Time" is the unit of time decided by the user "Seconds", "Minutes" , "Hours" and "Days".
+# "Radioactive_Shopping_List" is "True" if there is a shopping list and "False" if there is no shopping list.
+# "Shopping_List" is the list of specific isotopes the user is looking for.
 
 
 def Unknown_Isotope ( model , filename ,Unit_Of_Time = 'Seconds' , Radioactive_Shopping_List = False , Shopping_List = None ) :
@@ -1048,18 +1251,21 @@ def Unknown_Isotope ( model , filename ,Unit_Of_Time = 'Seconds' , Radioactive_S
   return 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "Progression()" is a funtion that creats a progress bar for the user interface, It takes only two arguments.
+# "possision" is the current progress of the task being executed.
+# "termination" is the total number of task that have to be executed before the end of the task.
+
 def Progression(possision , termination):
   progress = 100 * (possision / float(termination))
   bar = str('~'*(100-(100-int(progress)))+'→' +' ' * (100-int(progress)))
-  # print("\rPlease Wait...",end='\n')
-  print( f"\r¦{bar}¦ {progress:.0f}%",end='')
-
+  print( "\r¦{}¦ {:.0f}%".format(bar ,progress ),end='')
   
 
 
-
-
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "Load_DataFrame()" ask the user to input the file path of a dataframe to be used .
 
 def Load_DataFrame():
   DF = pd.read_pickle(input("Enter file name or path : "))
@@ -1069,6 +1275,7 @@ def Load_DataFrame():
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# "Specific_model()" ask the user to input the file path of a Model to be used .
 
 
 def Specific_model():
@@ -1077,12 +1284,16 @@ def Specific_model():
 
   return loaded_model
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# "Example_model()" load the example model .
+
+
 def Example_model(filename):
   loaded_model = load_model(filename)
   loaded_model.summary()
 
   return loaded_model
-
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END OF FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
