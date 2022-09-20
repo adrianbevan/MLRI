@@ -497,7 +497,7 @@ while True:
             print("{:50s} {:50s}".format("Hours:","3"))
             print("{:50s} {:50s}".format("Days:","4"))
             print("\n{:50} {:50s}".format("Set Decay Chain :","5"))
-            print("{:50s} {:50s}".format("Apply Gaussian Noise :","6"))
+            print("{:50s} {:50s}".format("Apply Noise :","6"))
             print("{:50s} {:50s}".format("Set Training Logs ({}):".format(str( not UI_Options['Training_Logs'] )),"7"))
             print("\n{:50s} {:50s}".format("Select Specific Isotopes:","8"))
             print("{:50s} {:50s}".format('Switch OS from "{:}":'.format( Operating_system ), "9") )
