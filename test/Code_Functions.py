@@ -1,5 +1,7 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
+import matplotlib.cm as mplcm
 import numpy as np
 import pandas as pd
 import seaborn as sn
@@ -93,27 +95,16 @@ def Read_File( filename , Unit_Of_Time = 'Seconds' ):
 
 #This Function adds gaussian noise to a set of data when creatiing the digital twin.
 
-#'Data' is the input data that the noise is going to be apply to , 'mu' is the mean , and 'std' is standard deviation.  
+#'Data' is the input data that the noise is going to be apply to  and 'std' is standard deviation in percent.  
 
 
-def gaussian_noise( Data , mu = 0.0 , std = 0.01 ):
+def Add_Noise( Data  , std = 1 ):
 
-  if Data < 1:
-    return float(Data)
+  Data = np.array( float(Data) ) 
 
-  noise = np.random.normal( mu , std, size = 1)
+  Noisy_Data = np.random.normal( Data , std , 1 )[0]
 
-  Noisy_Data = Data + noise
-
-  if Noisy_Data <0:
-
-    return gaussian_noise( Data , mu = 0.0 , std = std)
-
-  if Noisy_Data == 0:
-    Noisy_Data = 1*(10**-21)
-
-  return float(Noisy_Data)
-
+  return Noisy_Data
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -226,7 +217,7 @@ def get_decay_chain( dataframe = None , Unit_Of_Time = None ,chain_num = 0 ):
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-# "Set_Unit_Of_Time()" allows the user to switch unit of time that programme is using , as the CSV file hale-lifes are in seconds and this may want to be changed to "Minutes" , "Hours" or "Days". 
+# "Set_Unit_Of_Time()" allows the user to switch unit of time that program is using , as the CSV file hale-lifes are in seconds and this may want to be changed to "Minutes" , "Hours" or "Days". 
 # The argument "DF" is the pandas DataFrame returned from the "Read_File()" funtion. 
 # "Unit_Of_Time" is the unit of time decided by the user "Seconds", "Minutes" , "Hours" and "Days".
 # "Csv_Col" is part of the lable of the column that you can make changes to.
@@ -405,7 +396,7 @@ def Get_Time_List(List_Type = 'Long'):
 
 # "Create_Data_Set()" takes in the the original pandas DataFrame and other arguments and outputs a pandas dataframe based on the users configuration that can be used to train and evaluate the Tensorflow models.
 # "DF" is the pandas DataFrame returned from the "Read_File()" funtion.
-# "std" is the standard deviation on the half-lifes if guassion noise is applied to the dataframe when replicating.
+# "std" is the standard deviation (in percent) on the half-lifes if guassion noise is applied to the dataframe when replicating.
 # "Num_Of_Replicates" is the number of times the "Create_Data_Set()" funtion will be recursive, each time guassion noise will be added to the Half-Life.
 # "Unit_Of_Time" is the unit of time decided by the user "Seconds", "Minutes" , "Hours" and "Days".
 # "decay_chain" is the length of how long the user want the decay chain to be, this will be used in the "get_decay_chain()" function.
@@ -418,13 +409,13 @@ def Get_Time_List(List_Type = 'Long'):
 # If "Num_Of_Replicates" = 0 then the function will return the first data set created.
 # If "Num_Of_Replicates" > 0 then the function will return the recurring dataframe with all the data sets appended. 
 
-def Create_Data_Set( DF , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = 'Seconds' , decay_chain=0 , List_Type = 'Long' , original_Data = None , recurring_DF = None , Decay_Seperation = False ,Shopping_List = [] ) :
+def Create_Data_Set( DF , std = 1  , Num_Of_Replicates = 0 , Unit_Of_Time = 'Seconds' , decay_chain=0 , List_Type = 'Long' , original_Data = None , recurring_DF = None , Decay_Seperation = False ,Shopping_List = [] ) :
 
     if str(type(recurring_DF)) != "<class 'pandas.core.frame.DataFrame'>" :
       original_Data = DF
     else:
       DF = original_Data
-      DF['Half_Life({:})'.format(Unit_Of_Time)] = [gaussian_noise( Data= half_life , mu = 0.0 , std = 0.01 )  for half_life in list(DF['Half_Life({:})'.format(Unit_Of_Time)]) ]
+      DF['Half_Life({:})'.format(Unit_Of_Time)] = [Add_Noise( Data= half_life , std = 1 )  for half_life in list(DF['Half_Life({:})'.format(Unit_Of_Time)]) ]
 
     time_list = Get_Time_List(List_Type = List_Type)
     
@@ -575,6 +566,15 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
 
     N0=1
     Progression(0 , len(Decay_const) )
+
+    Number_Of_Colours = len( list(Decay_const ) )
+    color_map = plt.get_cmap('gist_rainbow')
+    cNorm  = colors.Normalize(vmin=0, vmax=Number_Of_Colours-1)
+    scalarMap = mplcm.ScalarMappable(norm=cNorm, cmap=color_map)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.set_prop_cycle( color = [color_map(1.*i/Number_Of_Colours) for i in range(Number_Of_Colours)] )
+    plt.rc('font', size=30) 
     for isotope , index in zip(Decay_const,range(len(Decay_const))):
       Ns=[]
       
@@ -590,8 +590,11 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
         plt.plot(time_list , Ns )
       else:
         plt.plot(time_list , Ns , label = decay_name_chain[index])
+      
+
 
     if Shopping_List != []:
+      plt.rc('legend',fontsize=20)
       plt.legend(bbox_to_anchor=(1.01, 1), borderaxespad=0)
       plt.title("Radioactive Decays of Isotopes In Example Lab Setting")
     plt.xlabel("Time in {:}".format(Unit_Of_Time))
@@ -620,6 +623,15 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
 
       cnt=0
       x_axis =[]
+
+      Number_Of_Colours = len( list(plot_dict.keys() ) )
+      color_map = plt.get_cmap('gist_rainbow')
+      cNorm  = colors.Normalize(vmin=0, vmax=Number_Of_Colours-1)
+      scalarMap = mplcm.ScalarMappable(norm=cNorm, cmap=color_map)
+      fig = plt.figure()
+      ax = fig.add_subplot(111)
+      ax.set_prop_cycle( color = [color_map(1.*i/Number_Of_Colours) for i in range(Number_Of_Colours)] )
+
       for t in time_list:
 
         Ns = Bateman_equation( X0 = 1 , Decay_constants = Decay_const , t=t )
@@ -635,6 +647,8 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
         plt.ylim(0, 1.2)
         plt.plot( x_axis , plot_dict[i] , label = "{:}  :  {:}".format( str(d_n_c), str(t_o_d)))
 
+      plt.rc('font', size=30)
+      plt.rc('legend',fontsize=20)
       plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0)
       plt.xlabel(f"time in {Unit_Of_Time}")
       plt.ylabel(f"N")
@@ -648,15 +662,15 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-# "training_V2" , is responsible for training the algorithm .
+# "Training_V2" , is responsible for training the algorithm .
 # "Training_df" is the data set returned from "Create_Data_Set()", all the values will be scaled between 0 and 1 before training.
 # "Config_Receipt" is a dictionary containing all on the configurations by the user when "Training Logs" are set in the the User Interface.
-# "New_Model" can either be True or False. When True the programme will create and train a new model, when false the programme will continue to train the existing model.
+# "New_Model" can either be True or False. When True the program will create and train a new model, when false the program will continue to train the existing model.
 # "model" is a placeholder for and existing model if one is already trained.
-# If "Training_Logs" is true the programme will create text file that will store the model accuracy on each epoch trained.
+# If "Training_Logs" is true the program will create text file that will store the model accuracy on each epoch trained.
 # "Operating_system" is the operating system returned from "Get_OS()".
 
-def training_V2 ( Training_df  , Config_Receipt = {} , New_Model=True , model = None , Training_Logs = False , Operating_system =None):
+def Training_V2 ( Training_df  , Config_Receipt = {} , New_Model=True , model = None , Training_Logs = False , Operating_system =None):
 
     if New_Model== True and Training_Logs == False: 
 
@@ -807,14 +821,14 @@ def training_V2 ( Training_df  , Config_Receipt = {} , New_Model=True , model = 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-# "Isotope_Shopping_List" allows selection of specific isotopes from the csv file to use throughout the programme.
+# "Isotope_Shopping_List" allows selection of specific isotopes from the csv file to use throughout the program.
 # "Isotope_List" is the list of all isotopes from the CSV file that is returned from "Read_File()".
 # "Shopping_List" is the list of specific isotopes the user is looking for.
 # "Shopping" is just to check whether the user is still choosing more isotopes, if "False" the funtion "Isotope_Shopping_List" will end.
 
 def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True , path = ""):
 
-  Isotope_Identification = { i:index for i,index in zip( Isotope_List , range(len(Isotope_List)) )}
+  Isotope_Identification = { i:index for i,index in zip( Isotope_List , range(  len(Isotope_List) ) )}
   Sorted_Istope_List = np.sort(Isotope_List)
 
 
@@ -822,7 +836,7 @@ def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True , path
 
     refresh()
 
-    for  isotope , index in zip(Sorted_Istope_List , range(len(Sorted_Istope_List)) )  : 
+    for  isotope , index in zip(Sorted_Istope_List , range(  len(Sorted_Istope_List) ) )  : 
 
         print( '{:20s} : {:} '. format( isotope , index ) ) 
 
@@ -835,8 +849,8 @@ def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True , path
     Item = input('\n\n{:22s} : '. format( "Option" ) )
 
     if Item.isdigit()==True :
-        if int(Item) in range(len(Sorted_Istope_List)):
-          Item = Isotope_Identification [ Sorted_Istope_List [int(Item)]]
+        if int(Item) in range(  len(Sorted_Istope_List)  ):
+          Item = Isotope_Identification [ Sorted_Istope_List [ int(Item) ]]
 
           if Item not in Shopping_List : Shopping_List.append(Item)
 
@@ -1013,7 +1027,7 @@ def Evaluate( Testing_df , model , Unknown_Isotope = False):
 # If "Unknown_Isotope" is set to "True" only the model prediction will be displayed.
 # "Radioactive_Shopping_List" is "True" if there is a shopping list and "False" if there is no shopping list.
 # "Shopping_List" is the list of specific isotopes the user is looking for.
-# If "Training_Logs" is true the programme will create text file that contain all of the predictions instead of displaying them (faster).
+# If "Training_Logs" is true the program will create text file that contain all of the predictions instead of displaying them (faster).
 # "path" is the location of the directory that the scripts are stored in.
 
 
@@ -1171,7 +1185,7 @@ def Show_Confusion_Matrix(eval_result, Isotope_List , df_test_eval=None , Shoppi
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-# "Unknown_Isotope()" will allow the user to see how the programme might work in the real world (Only works for decay chain of 0)
+# "Unknown_Isotope()" will allow the user to see how the program might work in the real world (Only works for decay chain of 0)
 # "model" is the trained model.
 # "filename" is the file locative of the CSV file containing all of the isotope half-lifes , daughters and types of decay.
 # "Unit_Of_Time" is the unit of time decided by the user "Seconds", "Minutes" , "Hours" and "Days".
