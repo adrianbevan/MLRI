@@ -343,13 +343,13 @@ while True:
 
                 if Option == '1' and UI_Options['Training_DataFrame'] == True and UI_Options['Isotope_List'] == True :
                     refresh()
-                    model , history  = training_V2 ( Training_df = Training_Data , Config_Receipt = Config_Receipt , Training_Logs = UI_Options["Training_Logs"] , Operating_system = Operating_system)
+                    model , history  = Training_V2 ( Training_df = Training_Data , Config_Receipt = Config_Receipt , Training_Logs = UI_Options["Training_Logs"] , Operating_system = Operating_system)
                     UI_Options['Trained_Model']=True
 
                 elif Option == '2' and UI_Options['Training_DataFrame'] and UI_Options['Trained_Model'] == True and UI_Options['Isotope_List'] == True:
                     refresh()
                     try:
-                        model , history  = training_V2 ( Training_Data ,Isotope_List , New_Model=False , model = model)
+                        model , history  = Training_V2 ( Training_Data ,Isotope_List , New_Model=False , model = model)
                         UI_Options['Trained_Model']=True
                     except:
                         print('Must Create a set of "Training Data" to "Train Existing Model" ')
