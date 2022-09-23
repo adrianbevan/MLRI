@@ -102,7 +102,7 @@ while True:
                     time.sleep(2)
                     continue
                 
-                Training_Data = Create_Data_Set( DF = Training_Data  , std =0.01 , Num_Of_Replicates = UI_Options['Number_Of_Replicants']  , Unit_Of_Time = UI_Options['Unit_Of_Time'] , decay_chain = UI_Options['Decay_Chain'] , List_Type = 'Long' , Decay_Seperation = UI_Options["Decay_Type_ Seperation"] ,Shopping_List = UI_Options['Shopping_List']  )
+                Training_Data = Create_Data_Set( DF = Training_Data  , std =1 , Num_Of_Replicates = UI_Options['Number_Of_Replicants']  , Unit_Of_Time = UI_Options['Unit_Of_Time'] , decay_chain = UI_Options['Decay_Chain'] , List_Type = 'Long' , Decay_Seperation = UI_Options["Decay_Type_ Seperation"] ,Shopping_List = UI_Options['Shopping_List']  )
                 
                 
                 UI_Options['Training_DataFrame']=True
@@ -121,7 +121,7 @@ while True:
                     time.sleep(2)
                     continue
 
-                Testing_Data = Create_Data_Set( DF = Testing_Data  , std =0.01 , Num_Of_Replicates = 0 , Unit_Of_Time = UI_Options['Unit_Of_Time'] , decay_chain=0 , List_Type = 'Random' , Decay_Seperation = UI_Options["Decay_Type_ Seperation"] , Shopping_List = UI_Options['Shopping_List'] )
+                Testing_Data = Create_Data_Set( DF = Testing_Data  , std =1 , Num_Of_Replicates = 0 , Unit_Of_Time = UI_Options['Unit_Of_Time'] , decay_chain=0 , List_Type = 'Random' , Decay_Seperation = UI_Options["Decay_Type_ Seperation"] , Shopping_List = UI_Options['Shopping_List'] )
                 
                 
                 UI_Options['Testing_DataFrame']=True
@@ -492,10 +492,10 @@ while True:
         while True:
             refresh()
             print("{:10s}{:}( Currently {:} ) \n".format( "", "Select Unit_Of_Time ", UI_Options['Unit_Of_Time'] ))
-            print("{:50s} {:50s}".format("Seconds:","1"))
-            print("{:50s} {:50s}".format("Minutes:","2"))
-            print("{:50s} {:50s}".format("Hours:","3"))
-            print("{:50s} {:50s}".format("Days:","4"))
+            print("{:50s} {:50s}".format("Seconds ( 10 Years ) :","1"))
+            print("{:50s} {:50s}".format("Minutes ( 600 Years ) :","2"))
+            print("{:50s} {:50s}".format("Hours   ( 36000 Years ) :","3"))
+            print("{:50s} {:50s}".format("Days    ( 864000 Years ):","4"))
             print("\n{:50} {:50s}".format("Set Decay Chain :","5"))
             print("{:50s} {:50s}".format("Apply Noise :","6"))
             print("{:50s} {:50s}".format("Set Training Logs ({}):".format(str( not UI_Options['Training_Logs'] )),"7"))
@@ -529,31 +529,32 @@ while True:
             elif Option == "5":
                 
                 Option = int(UI_Options['Decay_Chain'] )
-                Example_chain = ['nobelium-256', 'fermium-252', 'californium-248', 'curium-244', 'plutonium-240', 'uranium-236', 'thorium-232', 'radium-228', 'actinium-228', 'thorium-228', 'radium-224', 'radon-220', 'polonium-216', 'lead-212', 'bismuth-212', 'polonium-212', 'lead-208']
-                
+                               
                 while True:
                     refresh()                   
                     print("{:10s}{:}( Currently {:} ) \n".format( "", "Select Decay Chain Length ", UI_Options['Decay_Chain'] ))
                     print("{:50s} {:50s}\n".format("Pick Number between:","0-30"))
-                    print("{:50s} {:50s}\n".format("Example : ",'e'))
-                    
-                    Example_chain_str=""
-                    for isotope in range(int (UI_Options['Decay_Chain'] )+1 ):
-                        try:
-                            if isotope>3:
-                                Example_chain_str = Example_chain_str +'...=>{:}'.format(Example_chain[int(Option)])
-                                break
-                            Example_chain_str = Example_chain_str +'=>{:}'.format(Example_chain[isotope])
-                            
-                        except:
-                            break
 
-                    print("{:50s}\n".format(Example_chain_str))
+                    if UI_Options["Shopping_List"] != []:
+
+                        print("{:50s} {:50s}\n".format("Show Example Decay Chian:","e"))
+
+
                     print("{:50s} {:50s}".format("Back:","q"))
                     Option=input("option : ")
                     if Option in [str(i) for i in range(31)]:
                         UI_Options['Decay_Chain'] = int(Option)
                     
+                    elif Option=='e' and UI_Options["Shopping_List"] != []:
+
+                        refresh()
+
+                        Display_Decay_Chain(    filename = str( path + file_paths['CSV_filename'] )  , 
+                                                Unit_Of_Time = UI_Options['Unit_Of_Time']            , 
+                                                chain_num= UI_Options['Decay_Chain']                 ,
+                                                Shopping_List = UI_Options["Shopping_List"] )
+                        
+
                     elif Option=='q':
                         break
 
