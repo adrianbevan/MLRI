@@ -1,3 +1,4 @@
+from cProfile import label
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
@@ -116,7 +117,6 @@ def Add_Noise( Data  , std = 1 ):
 #
 # The function returns a list of all of the counts/activties of each radioactive nuclie in the decay chain in order from parent to last daughter in decay chain. 
 
-
 def Bateman_equation( X0 , Decay_constants , t = None ):
   
   X = []
@@ -148,9 +148,7 @@ def Bateman_equation( X0 , Decay_constants , t = None ):
       for i,prdct in zip(Decay_constants,product_optimizer) :
       
         summarization.append( (e**(-i*t)) / prdct )
-      
-        
-
+            
       X.append( X0 * decay_product * sum(summarization) )
 
       Decay_constants = Decay_constants[:len(Decay_constants)-1]
@@ -214,7 +212,25 @@ def get_decay_chain( dataframe = None , Unit_Of_Time = None ,chain_num = 0 ):
 
   return Decay_const , type_of_decay_chain , unique_decay_types , decay_name_chain
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+#"Display_Decay_Chain()" print out the decat chain of all isotopes if the user has a Shoppping list.
+
+def Display_Decay_Chain(filename = None , Unit_Of_Time = None ,chain_num = 0 , Shopping_List=[]):
+
+  dataframe , Isotope_List = Read_File( filename = filename , Unit_Of_Time = Unit_Of_Time)
+
+  Decay_const , type_of_decay_chain , unique_decay_types , decay_name_chain = get_decay_chain( dataframe = dataframe , Unit_Of_Time = Unit_Of_Time ,chain_num = chain_num )
+
+  print("{:20s} => {:}\n".format("Parent:","Decay Chain"))
+
+  for isotope in Shopping_List:
+
+    print("{:20s} => {:}\n".format( Isotope_List[isotope] , str( decay_name_chain[ Isotope_List[isotope] ] ) ))
+
+  Option = input("Enter anything to go back : ")
+  
+  return
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 # "Set_Unit_Of_Time()" allows the user to switch unit of time that program is using , as the CSV file hale-lifes are in seconds and this may want to be changed to "Minutes" , "Hours" or "Days". 
@@ -567,6 +583,11 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
     N0=1
     Progression(0 , len(Decay_const) )
 
+    plt.rc("axes" , labelsize = 20 )
+    plt.rc('xtick', labelsize = 25 ) 
+    plt.rc('ytick', labelsize = 25 )
+    plt.rc('font', size=25) 
+
     Number_Of_Colours = len( list(Decay_const ) )
     color_map = plt.get_cmap('gist_rainbow')
     cNorm  = colors.Normalize(vmin=0, vmax=Number_Of_Colours-1)
@@ -574,8 +595,9 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.set_prop_cycle( color = [color_map(1.*i/Number_Of_Colours) for i in range(Number_Of_Colours)] )
-    plt.rc('font', size=30) 
+
     for isotope , index in zip(Decay_const,range(len(Decay_const))):
+      
       Ns=[]
       
       for t in time_list:
@@ -593,12 +615,12 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
       
 
 
-    if Shopping_List != []:
-      plt.rc('legend',fontsize=20)
+    if Shopping_List != []: 
       plt.legend(bbox_to_anchor=(1.01, 1), borderaxespad=0)
-      plt.title("Radioactive Decays of Isotopes In Example Lab Setting")
+      plt.title("Radioactive Isotopes In Example Lab Setting")
     plt.xlabel("Time in {:}".format(Unit_Of_Time))
     plt.ylabel("Total Activity")
+
     plt.show()
 
   else:
@@ -624,6 +646,11 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
       cnt=0
       x_axis =[]
 
+      plt.rc("axes" , labelsize = 20 )
+      plt.rc('xtick', labelsize = 25 ) 
+      plt.rc('ytick', labelsize = 25 )
+      plt.rc('font', size=25) 
+
       Number_Of_Colours = len( list(plot_dict.keys() ) )
       color_map = plt.get_cmap('gist_rainbow')
       cNorm  = colors.Normalize(vmin=0, vmax=Number_Of_Colours-1)
@@ -647,8 +674,6 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
         plt.ylim(0, 1.2)
         plt.plot( x_axis , plot_dict[i] , label = "{:}  :  {:}".format( str(d_n_c), str(t_o_d)))
 
-      plt.rc('font', size=30)
-      plt.rc('legend',fontsize=20)
       plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0)
       plt.xlabel(f"time in {Unit_Of_Time}")
       plt.ylabel(f"N")
@@ -1175,7 +1200,10 @@ def Show_Confusion_Matrix(eval_result, Isotope_List , df_test_eval=None , Shoppi
 
 
   data = pd.DataFrame( data = {'Actual': df_test_eval , 'Predicted': Most_Probable_Index_1st } )
-
+  plt.rc("axes" , labelsize = 20 )
+  plt.rc('xtick', labelsize = 25 ) 
+  plt.rc('ytick', labelsize = 25 )
+  plt.rc('font', size=17) 
   confusion_matrix = pd.crosstab(data['Actual'], data['Predicted'], rownames=['Actual'], colnames=['Predicted'], margins = True)
 
   sn.heatmap(confusion_matrix, annot=True)
