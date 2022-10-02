@@ -1,8 +1,6 @@
 from Code_Functions import *
 
-
-
-
+# The User Interface script is used to pass variables bewtween functions in the "Code_Functions" script.
 
 
 
@@ -23,7 +21,7 @@ UI_Options = {  'Training_DataFrame'        : False ,
                 'Number_Of_Replicants'      : 0     ,
                 'Radioactive_Shopping_List' : False ,
                 'Shopping_List'             : []    ,
-                'Decay_Type_ Seperation'     : False , 
+                'Decay_Type_Seperation'     : False , 
                 'Unit_Of_Time'              :'Seconds' }
 
 
@@ -46,7 +44,7 @@ while True:
         print("{:50s} {:50s}".format("Evaulate Model :","5"))
     
     if UI_Options['Model_Evaluated'] == True:
-        print("{:50s} {:50s}".format("Detailed vaulation of Model (end program):","6"))
+        print("{:50s} {:50s}".format("Detailed Evaluation of Model :","6"))
 
     if UI_Options['Trained_Model'] == True:
         print("{:52s} {:50s}".format("\n\nUnknown Isotope :","7"))
@@ -102,7 +100,7 @@ while True:
                     time.sleep(2)
                     continue
                 
-                Training_Data = Create_Data_Set( DF = Training_Data  , std =1 , Num_Of_Replicates = UI_Options['Number_Of_Replicants']  , Unit_Of_Time = UI_Options['Unit_Of_Time'] , decay_chain = UI_Options['Decay_Chain'] , List_Type = 'Long' , Decay_Seperation = UI_Options["Decay_Type_ Seperation"] ,Shopping_List = UI_Options['Shopping_List']  )
+                Training_Data = Create_Data_Set( DF = Training_Data  , std = 0.005, Num_Of_Replicates = UI_Options['Number_Of_Replicants']  , Unit_Of_Time = UI_Options['Unit_Of_Time'] , decay_chain = UI_Options['Decay_Chain'] , List_Type = 'Long' , Decay_Seperation = UI_Options["Decay_Type_Seperation"] ,Shopping_List = UI_Options['Shopping_List']  )
                 
                 
                 UI_Options['Training_DataFrame']=True
@@ -121,7 +119,7 @@ while True:
                     time.sleep(2)
                     continue
 
-                Testing_Data = Create_Data_Set( DF = Testing_Data  , std =1 , Num_Of_Replicates = 0 , Unit_Of_Time = UI_Options['Unit_Of_Time'] , decay_chain=0 , List_Type = 'Random' , Decay_Seperation = UI_Options["Decay_Type_ Seperation"] , Shopping_List = UI_Options['Shopping_List'] )
+                Testing_Data = Create_Data_Set( DF = Testing_Data  , std = 0.005 , Num_Of_Replicates = 0 , Unit_Of_Time = UI_Options['Unit_Of_Time'] , decay_chain= UI_Options['Decay_Chain']  , List_Type = 'Testing' , Decay_Seperation = UI_Options["Decay_Type_Seperation"] , Shopping_List = UI_Options['Shopping_List'] )
                 
                 
                 UI_Options['Testing_DataFrame']=True
@@ -338,8 +336,10 @@ while True:
                 Option=input("option : ")
 
                 Config_Receipt = {  'Unit_Of_Time'              : UI_Options['Unit_Of_Time'] ,
+                                    'Isotope Shopping List'     : UI_Options["Shopping_List"],
                                     'Number_Of_Replicants'      : UI_Options['Number_Of_Replicants'] , 
-                                    'Decay_Chain'               : UI_Options['Decay_Chain']  }
+                                    'Decay_Chain'               : UI_Options['Decay_Chain']  ,
+                                    'Decay Type Separation'     : UI_Options["Decay_Type_Seperation"]}
 
                 if Option == '1' and UI_Options['Training_DataFrame'] == True and UI_Options['Isotope_List'] == True :
                     refresh()
@@ -494,14 +494,14 @@ while True:
             print("{:10s}{:}( Currently {:} ) \n".format( "", "Select Unit_Of_Time ", UI_Options['Unit_Of_Time'] ))
             print("{:50s} {:50s}".format("Seconds ( 10 Years ) :","1"))
             print("{:50s} {:50s}".format("Minutes ( 600 Years ) :","2"))
-            print("{:50s} {:50s}".format("Hours   ( 36000 Years ) :","3"))
-            print("{:50s} {:50s}".format("Days    ( 864000 Years ):","4"))
+            print("{:50s} {:50s}".format("Hours   ( 360 Centuries ) :","3"))
+            print("{:50s} {:50s}".format("Days    ( 864 Millennium ):","4"))
             print("\n{:50} {:50s}".format("Set Decay Chain :","5"))
             print("{:50s} {:50s}".format("Apply Noise :","6"))
-            print("{:50s} {:50s}".format("Set Training Logs ({}):".format(str( not UI_Options['Training_Logs'] )),"7"))
-            print("\n{:50s} {:50s}".format("Select Specific Isotopes:","8"))
-            print("{:50s} {:50s}".format('Switch OS from "{:}":'.format( Operating_system ), "9") )
-            print("{:50s} {:50s}".format('Seperate Types of Decay ({:}):'.format( UI_Options["Decay_Type_ Seperation"] ) , "10") )
+            print("\n{:50s} {:50s}".format('Set "Seperate Types of Decay" ({:}):'.format( not UI_Options["Decay_Type_Seperation"] ) , "7") )
+            print("{:50s} {:50s}".format('Set "Training Logs" ({}):'.format(str( not UI_Options['Training_Logs'] )),"8"))
+            print("\n{:50s} {:50s}".format("Select Specific Isotopes:","9"))
+            print("{:50s} {:50s}".format('Switch OS from "{:}":'.format( Operating_system ), "10") )
             print("\n{:50s} {:50s}".format("Back :","q"))
 
 
@@ -578,12 +578,15 @@ while True:
                         break
 
 
+            elif Option =="7":
+
+                UI_Options["Decay_Type_Seperation"] = not UI_Options["Decay_Type_Seperation"]   
 
             
-            elif Option == "7":
+            elif Option == "8":
                 UI_Options['Training_Logs'] = not UI_Options['Training_Logs']
 
-            elif Option =="8":
+            elif Option =="9":
 
                 refresh()
                 Option = ''
@@ -618,7 +621,7 @@ while True:
                     print('Isotope List Not Found , Go into "Load" and load an Isotope List. ')
                     time.sleep(10)
 
-            elif Option =="9":
+            elif Option =="10":
 
                 Option = ''
                 while True:
@@ -634,9 +637,6 @@ while True:
                         break
 
 
-            elif Option =="10":
-
-                UI_Options["Decay_Type_ Seperation"] = not UI_Options["Decay_Type_ Seperation"]   
                     
 
             elif Option =="q":
@@ -651,10 +651,10 @@ while True:
         else :
             Amount_Of_Isotopes = len(UI_Options["Shopping_List"])
 
-        if UI_Options['Decay_Type_ Seperation'] == False:
-            RAM_Estimate = (( RAM_Estimate + (36*Amount_Of_Isotopes) ) * 50000)* 8 *(UI_Options['Number_Of_Replicants']+1)
+        if UI_Options['Decay_Type_Seperation'] == False:
+            RAM_Estimate = (( RAM_Estimate + (36*Amount_Of_Isotopes) ) * 50000)* 8 *(UI_Options['Number_Of_Replicants']+1) + 3
         else:
-            RAM_Estimate = (( RAM_Estimate + (36*Amount_Of_Isotopes) ) * 50000)* 8 *7 *(UI_Options['Number_Of_Replicants']+1)
+            RAM_Estimate = (( RAM_Estimate + (36*Amount_Of_Isotopes) ) * 50000)* 8 *7 *(UI_Options['Number_Of_Replicants']+1) + 3
 
         RAM_Estimate = RAM_Estimate/ 1073741824 
         while True:
@@ -664,7 +664,7 @@ while True:
             for  key , value in zip( UI_Options.keys() , UI_Options.values() ):
                 print("{:50s} {:50s}".format( str(key) , str(value) ))
             
-            print("\n{:51s} {:.2f} GB".format("Amount Of RAM :",RAM_Estimate))
+            print("\n{:51s} {:.2f} GB".format("Estimated Amount Of RAM :",RAM_Estimate))
             print("{:51s} {:50s}".format("\nBack :","q"))
 
         
