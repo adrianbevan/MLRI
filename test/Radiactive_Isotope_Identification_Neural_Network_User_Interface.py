@@ -1,8 +1,6 @@
 from Code_Functions import *
 
-# """The User Interface script is used to pass variables bewtween functions. 
-#    e""""
-
+# This Python script provides a user interface that changes as different options and configurations are chosen # 
 
 
 
@@ -11,19 +9,21 @@ path , file_paths , Operating_system = Get_OS()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# "UI_Options" is a dictionary that has values of variables that need to be passed between this script and the "Code_Functions" scirpt.
 
-UI_Options = {  'Training_DataFrame'        : False ,
-                'Testing_DataFrame'         : False , 
-                'Trained_Model'             : False ,
-                'Training_Logs'             : False , 
-                'Isotope_List'              : False ,
-                'Model_Evaluated'           : False ,
-                'Decay_Chain'               : 0     ,
-                'Number_Of_Replicants'      : 0     ,
-                'Radioactive_Shopping_List' : False ,
-                'Shopping_List'             : []    ,
-                'Decay_Type_Seperation'     : False , 
-                'Unit_Of_Time'              :'Seconds' }
+
+UI_Options = {  'Training_DataFrame'        : False ,           # "Training_DataFrame" is a check to see the user has generated a Pandas DataFrame for training.
+                'Testing_DataFrame'         : False ,           # "Testing_DataFrame" is a check to see the user has generated a Pandas DataFrame for evaluating trained models.
+                'Trained_Model'             : False ,           # "Trained_Model" is a check to see the user has a trained or load model to use.
+                'Training_Logs'             : False ,           # "Training_Logs" saves each model when a epoch is completed into a file and saves the output of "Further_Evalutaion".
+                'Isotope_List'              : False ,           # "Isotope_List" is a list containing all of the names of radioisotopes.
+                'Model_Evaluated'           : False ,           # "Model_Evaluated" check to see if a model has been evaluated with a "Testing_DataFrame"
+                'Decay_Chain'               : 0     ,           # "Decay_Chain" is how long the decay chain will be for radioisotopes when creating a "Training_DataFrame" or "Testing_DataFrame"
+                'Number_Of_Replicants'      : 0     ,           # "Number_Of_Replicants" is the amount of times the creation of a DataFrame is repeated, guassian noise will be applied to half-lifes on each repeat.
+                'Radioactive_Shopping_List' : False ,           # "Radioactive_Shopping_List" checks whether specific raidioisotopes to be used have been selected.
+                'Shopping_List'             : []    ,           # "Shopping_List" is a list of all the radioisotopes that have been selected.
+                'Decay_Type_Seperation'     : False ,           # "Decay_Type_Seperation" seperates the different types of decay when creating DataFrames to give more detail on how radioisotopes decay.
+                'Unit_Of_Time'              :'Seconds' }        # "Unit_Of_Time" is the time that the user wants the data to be in "Seconds", "Minutes" , "Hours" and "Days".
 
 
 refresh()
