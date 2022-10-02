@@ -1,4 +1,3 @@
-from cProfile import label
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
@@ -99,13 +98,16 @@ def Read_File( filename , Unit_Of_Time = 'Seconds' ):
 #'Data' is the input data that the noise is going to be apply to  and 'std' is standard deviation in percent.  
 
 
-def Add_Noise( Data  , std = 1 ):
+def Add_Noise( Data  , std = 0.005 ):
+  Large_Data = Data*(10**100)
 
-  Data = np.array( float(Data) ) 
+  Noisy_Data = np.random.normal( Large_Data , Large_Data*std , 1)
+  Noisy_Data = Noisy_Data/(10**100)
 
-  Noisy_Data = np.random.normal( Data , std , 1 )[0]
+  if Noisy_Data <=0:
+    Add_Noise( Data  , std = std )
 
-  return Noisy_Data
+  return Noisy_Data[0]
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -355,7 +357,7 @@ def Set_Unit_Of_Time( DF , Unit_Of_Time = None , Csv_Col='Half_Life'):
 
 
 
-def Get_Time_List(List_Type = 'Long'):
+def Get_Time_List(List_Type = 'Long' , Unit_Of_Time = 'Seconds'):
   print("Simulating Time...")
     
   if List_Type == 'Long':
@@ -381,10 +383,58 @@ def Get_Time_List(List_Type = 'Long'):
  
      
 
-  elif List_Type == 'Random':
-    time_list = [0,315576000]
+  elif List_Type == 'Testing':
 
-    [ time_list.append( np.random.randint(0,315576000) ) for i in range( 5000 )]
+    while True:
+
+      print("{:20s}{:30s}".format("","Generate How Much Time ?  \n"))
+      if Unit_Of_Time == 'Seconds':
+        print("{:50s} {:50s}".format("0 Seconds - 60 Seconds :" ,"1"))
+        print("{:50s} {:50s}".format("0 Seconds - 01 Hours :"   ,"2"))
+        print("{:50s} {:50s}".format("0 Seconds - 01 Day :"     ,"3"))
+        print("{:50s} {:50s}".format("0 Seconds - 10 Years :"   ,"4"))
+
+      elif Unit_Of_Time == 'Minutes':
+        print("{:50s} {:50s}".format("0 Minutes - 01 Hour :"     ,"1"))
+        print("{:50s} {:50s}".format("0 Minutes - 2.5 Days :"    ,"2"))
+        print("{:50s} {:50s}".format("0 Minutes - 60 Days :"     ,"3"))
+        print("{:50s} {:50s}".format("0 Minutes - 600 Years :"   ,"4"))
+
+      elif Unit_Of_Time == 'Hours':
+        print("{:50s} {:50s}".format("0 Hours - 60 Hours :"  ,"1"))
+        print("{:50s} {:50s}".format("0 Hours - 150 Days :"    ,"2"))
+        print("{:50s} {:50s}".format("0 Hours - 9.86 Years :"    ,"3"))
+        print("{:50s} {:50s}".format("0 Hours - 360 Centuries :"  ,"4"))
+    
+      elif Unit_Of_Time == 'Days':
+        print("{:50s} {:50s}".format("0 Days - 60 Days :"         ,"1"))
+        print("{:50s} {:50s}".format("0 Days - 9.86 Years :"      ,"2"))
+        print("{:50s} {:50s}".format("0 Days - 23.67 Decades :"   ,"3"))
+        print("{:50s} {:50s}".format("0 Days - 864 Millennium :"  ,"4"))
+
+      Option=input("option : ")
+
+      if Option == '1':
+        time_list = [i for i in range(0,61)]
+        break
+      
+      elif Option == '2':
+        time_list = [i for i in range(0,3601)]
+        break
+
+      elif Option == '3':
+        time_list = [0,86400]
+        [ time_list.append( np.random.randint(0,86400) ) for i in range( 5000 )]
+        break
+      
+      elif Option == '4':
+        time_list = [0,315576000]
+        [ time_list.append( np.random.randint(0,315576000) ) for i in range( 5000 )]
+        break
+
+      else:
+        refresh()
+      
 
   elif List_Type == 'Specific':
 
@@ -425,15 +475,15 @@ def Get_Time_List(List_Type = 'Long'):
 # If "Num_Of_Replicates" = 0 then the function will return the first data set created.
 # If "Num_Of_Replicates" > 0 then the function will return the recurring dataframe with all the data sets appended. 
 
-def Create_Data_Set( DF , std = 1  , Num_Of_Replicates = 0 , Unit_Of_Time = 'Seconds' , decay_chain=0 , List_Type = 'Long' , original_Data = None , recurring_DF = None , Decay_Seperation = False ,Shopping_List = [] ) :
+def Create_Data_Set( DF , std = 0.005  , Num_Of_Replicates = 0 , Unit_Of_Time = 'Seconds' , decay_chain=0 , List_Type = 'Long' , original_Data = None , recurring_DF = None , Decay_Seperation = False ,Shopping_List = [] ) :
 
     if str(type(recurring_DF)) != "<class 'pandas.core.frame.DataFrame'>" :
       original_Data = DF
     else:
       DF = original_Data
-      DF['Half_Life({:})'.format(Unit_Of_Time)] = [Add_Noise( Data= half_life , std = 1 )  for half_life in list(DF['Half_Life({:})'.format(Unit_Of_Time)]) ]
+      DF['Half_Life({:})'.format(Unit_Of_Time)] = [Add_Noise( Data= half_life , std = 0.005 )  for half_life in list(DF['Half_Life({:})'.format(Unit_Of_Time)]) ]
 
-    time_list = Get_Time_List(List_Type = List_Type)
+    time_list = Get_Time_List(List_Type = List_Type , Unit_Of_Time = Unit_Of_Time )
     
     print("Creating Data Set Please Wait... ({:} Replications Left)".format(Num_Of_Replicates))
     
@@ -560,6 +610,7 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
 
   DF , Isotope_List  = Read_File( filename = filename , Unit_Of_Time = Unit_Of_Time )
 
+
   if Specific_Radioisotope == False:
     time_list = Get_Time_List( List_Type = 'Long' )
     print("Plotting Data Please Wait...")
@@ -583,10 +634,10 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
     N0=1
     Progression(0 , len(Decay_const) )
 
-    plt.rc("axes" , labelsize = 20 )
-    plt.rc('xtick', labelsize = 25 ) 
-    plt.rc('ytick', labelsize = 25 )
-    plt.rc('font', size=25) 
+    plt.rc("axes" , labelsize = 30 )
+    plt.rc('xtick', labelsize = 29 ) 
+    plt.rc('ytick', labelsize = 29 )
+    plt.rc('font', size=30) 
 
     Number_Of_Colours = len( list(Decay_const ) )
     color_map = plt.get_cmap('gist_rainbow')
@@ -646,10 +697,10 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
       cnt=0
       x_axis =[]
 
-      plt.rc("axes" , labelsize = 20 )
-      plt.rc('xtick', labelsize = 25 ) 
-      plt.rc('ytick', labelsize = 25 )
-      plt.rc('font', size=25) 
+      plt.rc("axes" , labelsize = 30 )
+      plt.rc('xtick', labelsize = 29 ) 
+      plt.rc('ytick', labelsize = 29 )
+      plt.rc('font', size=30) 
 
       Number_Of_Colours = len( list(plot_dict.keys() ) )
       color_map = plt.get_cmap('gist_rainbow')
@@ -674,7 +725,7 @@ def Plot_Data_Frame( filename , Unit_Of_Time = 'Seconds' , decay_chain=0 , Speci
         plt.ylim(0, 1.2)
         plt.plot( x_axis , plot_dict[i] , label = "{:}  :  {:}".format( str(d_n_c), str(t_o_d)))
 
-      plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0)
+      plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0 , prop={'size': 25})
       plt.xlabel(f"time in {Unit_Of_Time}")
       plt.ylabel(f"N")
       plt.title(str(Isotope_List[isotope]))
@@ -711,7 +762,8 @@ def Training_V2 ( Training_df  , Config_Receipt = {} , New_Model=True , model = 
 
         scaler = MinMaxScaler()
 
-        Training_df[['t','Decay_Type']] = scaler.fit_transform(Training_df[['t','Decay_Type']])
+        Training_df['t'] = Training_df['t'].map((lambda x : x/315576000))
+        Training_df[['Decay_Type']] = scaler.fit_transform(Training_df[['Decay_Type']])
 
 
 
@@ -813,10 +865,6 @@ def Training_V2 ( Training_df  , Config_Receipt = {} , New_Model=True , model = 
                 model.save("Model_Log_{:}/{:}_Epoch_{:}".format( Log_Date,Log_Date, i ))
                 with open("Model_Log_{:}/Model_Logs_{:}.txt".format(Log_Date,Log_Date),'a') as file:
                   file.write("\n{:} - Epoch_{:} ".format( history.history , i ))
-
-            
-
-
 
 
         return model , history 
@@ -990,7 +1038,7 @@ def Isotope_Shopping_List(Isotope_List , Shopping_List=[] ,Shopping =True , path
     elif Item == 'q':
         break 
 
-  if Shopping_List == []  : return
+  if Shopping_List == []  : return []
 
   else : return Shopping_List
 
@@ -1018,7 +1066,8 @@ def Evaluate( Testing_df , model , Unknown_Isotope = False):
     df_test_eval = Testing_df.pop('Isotope')
   except:
     pass
-  Testing_df[['t','Decay_Type']] = scaler.fit_transform(Testing_df[['t','Decay_Type']])
+  Testing_df['t'] = Testing_df['t'].map((lambda x : x/315576000))
+  Testing_df[['Decay_Type']] = scaler.fit_transform(Testing_df[['Decay_Type']])
   try:
     scaled_df_test,df_test_eval = shuffle(Testing_df,df_test_eval)
   except:
@@ -1204,7 +1253,7 @@ def Show_Confusion_Matrix(eval_result, Isotope_List , df_test_eval=None , Shoppi
   plt.rc('xtick', labelsize = 25 ) 
   plt.rc('ytick', labelsize = 25 )
   plt.rc('font', size=17) 
-  confusion_matrix = pd.crosstab(data['Actual'], data['Predicted'], rownames=['Actual'], colnames=['Predicted'], margins = True)
+  confusion_matrix = pd.crosstab(data['Actual'], data['Predicted'], rownames=['Actual'], colnames=['Predicted'], margins = True , normalize = True)
 
   sn.heatmap(confusion_matrix, annot=True)
   plt.show()
