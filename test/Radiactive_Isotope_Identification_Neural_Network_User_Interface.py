@@ -1,6 +1,7 @@
 from Code_Functions import *
 
-# The User Interface script is used to pass variables bewtween functions in the "Code_Functions" script.
+# """The User Interface script is used to pass variables bewtween functions. 
+#    e""""
 
 
 
@@ -219,7 +220,6 @@ while True:
                     Option=''
                     print("{:20s}{:30s}".format("","Load Model \n"))
                     print("{:50s} {:50s}".format("Load Specific Model :","1"))
-                    print("{:50s} {:50s}".format("Load Example  Model :","2"))
                     print("{:51s} {:50s}".format("\nBack :","q"))
 
                     Option=input("option : ")
@@ -237,34 +237,6 @@ while True:
                             print("Model file Missing or Path not entered corectly")
                             time.sleep(2)
 
-                    elif Option == '2':
-
-                        while True :
-                            refresh()
-
-                            Option=''
-                            print('{:10s}{:}(Currrently on "{}" & Decay_Chain "{}")\n'.format("","Load Example Model \n", UI_Options['Unit_Of_Time'] , UI_Options["Decay_Chain"] ) )
-                            print("{:50s} {:50s}".format("Load Seconds  Model (0 Decay Chain):","1"))
-                            print("{:50s} {:50s}".format("Info :","i"))
-                            print("{:51s} {:50s}".format("\nBack :","q"))
-                            Option=input("option : ")
-
-                            if Option=='1':
-
-                                try:
-                                    model = Example_model(filename = str( path + file_paths['Example_Seconds'] ))
-                                    UI_Options['Trained_Model']=True
-                                except:
-                                    print("Example file(s) are missing ")
-                                    time.sleep(2)
-
-
-                            elif Option=='i':
-                                print(path)
-                                print(file_paths)
-                                time.sleep(30)
-                            elif Option=='q':
-                                break
                             
                     elif Option=='q':
                         break
