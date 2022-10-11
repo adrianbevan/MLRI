@@ -59,7 +59,7 @@ Evaluating models provides the accuracy and insight into how the program
  
 <img  src="Images/Example_Detailed_Output.png" width = 600 >
 
-A segment of all predictions made by a trained model
+Predictions and probabilities for radioisotopes made by a trained model. ( Only displaying the two radioisotopes with the highest probabilities) 
  
 <img  src="Images/Confusion_Matrix.png" width = 600 >
 
